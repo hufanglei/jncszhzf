@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.activiti.dao.TComplaintKhMapper" >
+  <resultMap id="BaseResultMap" type="com.java.activiti.model.TComplaintKhBean" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+    <result column="qhzd_id" property="qhzdId" jdbcType="VARCHAR" />
+    <result column="qhzd_name" property="qhzdName" jdbcType="VARCHAR" />
+    <result column="kh_group_id" property="khGroupId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, source, content, score, qhzd_id, qhzd_name, kh_group_id, create_time, type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_complaint_kh
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_complaint_kh
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.java.activiti.model.TComplaintKhBean" >
+    insert into t_complaint_kh (id, source, content,
+    score, qhzd_id, qhzd_name,
+    kh_group_id, create_time, type
+    )
+    values (#{id,jdbcType=INTEGER}, #{source,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+    #{score,jdbcType=VARCHAR}, #{qhzdId,jdbcType=VARCHAR}, #{qhzdName,jdbcType=VARCHAR},
+    #{khGroupId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.java.activiti.model.TComplaintKhBean" >
+    insert into t_complaint_kh
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="qhzdId != null" >
+        qhzd_id,
+      </if>
+      <if test="qhzdName != null" >
+        qhzd_name,
+      </if>
+      <if test="khGroupId != null" >
+        kh_group_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdId != null" >
+        #{qhzdId,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdName != null" >
+        #{qhzdName,jdbcType=VARCHAR},
+      </if>
+      <if test="khGroupId != null" >
+        #{khGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.java.activiti.model.TComplaintKhBean" >
+    update t_complaint_kh
+    <set >
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdId != null" >
+        qhzd_id = #{qhzdId,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdName != null" >
+        qhzd_name = #{qhzdName,jdbcType=VARCHAR},
+      </if>
+      <if test="khGroupId != null" >
+        kh_group_id = #{khGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.java.activiti.model.TComplaintKhBean" >
+    update t_complaint_kh
+    set source = #{source,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR},
+      qhzd_id = #{qhzdId,jdbcType=VARCHAR},
+      qhzd_name = #{qhzdName,jdbcType=VARCHAR},
+      kh_group_id = #{khGroupId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectCount" resultType="int" parameterType="HashMap">
+    select count(1) from t_complaint_kh
+    <where>
+      <if test="qhzdId!=null and qhzdId!='' ">
+        and qhzd_id = #{qhzdId}
+      </if>
+      <if test="qhzdName!=null and qhzdName!='' ">
+        and qhzd_name like '%${qhzdName}%'
+      </if>
+      <if test="type!=null and type!='' ">
+         and type = #{type}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectListPage" parameterType="HashMap"
+          resultMap="BaseResultMap">
+    select * from t_complaint_kh
+    <where>
+
+      <if test="qhzdId!=null and qhzdId!='' ">
+        and qhzd_id = #{qhzdId}
+      </if>
+      <if test="qhzdName!=null and qhzdName!='' ">
+        and qhzd_name like '%${qhzdName}%'
+      </if>
+      <if test="type!=null and type!='' ">
+        and type = #{type}
+      </if>
+
+    </where>
+    <if test="orderString !=null">
+      order by ${orderString}
+    </if>
+    <if test="pageIndex!=null and pageSize!=null">
+      limit #{pageIndex},#{pageSize}
+    </if>
+  </select>
+
+
+  <!--//查询所有的机构-->
+  <select id="selectAllOrg" resultType="java.util.HashMap">
+    select qhdm,qhmc from t_sys_qhzd where qhjb in('2','5')
+    union all
+    select power_code, ss_weibanju from t_sys_power_list
+  </select>
+
+  <!--删除所有的考核项-->
+  <delete id="deleteComplaint" parameterType="java.util.List">
+    delete from t_complaint_kh where id in
+    <foreach collection="list" item="id" index="index" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+</mapper>

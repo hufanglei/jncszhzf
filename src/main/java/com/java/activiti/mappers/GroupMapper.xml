@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.activiti.dao.GroupDao">
+
+	<resultMap type="Group" id="GroupResult">
+		<result property="groupId" column="id_"/>
+		<result property="groupName" column="name_"/>
+		<result property="groupTag" column="type_"/>
+		<result property="groupTypeId" column="gid_"/>
+		<result property="groupPid" column="pid_"/>
+	</resultMap>
+	<select id="findGroup"  resultMap="GroupResult">
+			select * from act_id_group order by GID_
+	</select>
+	
+	<select id="checkGroup" parameterType="java.util.Map" resultMap="GroupResult">
+			select * from act_id_group
+		<where>
+		<if test="groupId != '' and groupId != null">
+			and ID_ = #{groupId}
+		</if>
+		<if test="groupName != '' and groupName != null">
+			and NAME_ = #{groupName}
+		</if>
+		</where>
+	</select>
+	
+	<select id="groupPage" parameterType="java.util.Map" resultType="java.util.Map">
+		select t1.ID_ AS groupId,t1.GID_ AS groupTypeId,t1.NAME_ AS groupName,t1.TYPE_ AS groupTag,t1.PID_ AS groupPid,t2.dmms AS roleTypeName
+		FROM act_id_group t1
+		JOIN t_sys_zd t2 ON t1.TYPE_=t2.dmbh AND t2.dmmc='${@com.java.activiti.common.constraint.JncszhzfSysParam$SysZdCodeName@ROLE_NAME}'
+		<where>
+			<if test="groupTag != '' and groupTag != null">
+				and t1.TYPE_ = #{groupTag}
+			</if>
+		</where>
+		<if test="pageIndex!=null and pageSize!=null">
+		  	limit #{pageIndex},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="findByUserId" parameterType="java.lang.String" resultMap="GroupResult">
+		SELECT g.ID_ AS id_,g.NAME_ AS name_ FROM act_id_group g LEFT JOIN act_id_membership m ON m.GROUP_ID_=g.ID_ LEFT JOIN act_id_user u ON u.ID_=m.USER_ID_ WHERE u.ID_=#{id}
+	</select>
+
+	<select id="findByUserPk" parameterType="java.lang.String" resultMap="GroupResult">
+		SELECT g.* FROM act_id_group g LEFT JOIN act_id_membership m ON m.GROUP_ID_=g.ID_ LEFT JOIN act_id_user u ON u.ID_=m.USER_ID_ WHERE u.ID_=#{id}
+	</select>
+
+	<select id="findGroupByType" parameterType="java.lang.String" resultMap="GroupResult">
+		select * from act_id_group where TYPE_ = #{typeId} and pid_ is  null order by  TYPE_ desc
+	</select>
+
+	<select id="findLianbanGroupByType"  resultMap="GroupResult">
+		select * from act_id_group where TYPE_ = '5'
+		and pid_ is not null
+		UNION
+		select * from act_id_group where TYPE_ = '2'
+		and pid_ is not null
+	</select>
+
+
+
+
+	<select id="findByType" parameterType="java.util.Map" resultMap="GroupResult">
+		SELECT
+			distinct c.ID_ , c.GID_ ,c.NAME_ ,c.TYPE_ ,c.PID_
+		 FROM
+		act_id_user a,
+		act_id_membership b,
+		act_id_group c,
+		act_id_group d,
+		act_id_membership e
+		where
+		a.ID_ = b.USER_ID_
+		AND b.GROUP_ID_ = c.ID_
+		AND c.type_ =#{userTypeID}
+		AND c.pid_ = d.pid_
+		AND d.ID_ = e.GROUP_ID_
+		AND e.USER_ID_ = #{userID}
+
+	</select>
+
+	<select id="groupCount" parameterType="java.util.Map" resultType="int">
+		select count(1) FROM act_id_group t1
+		JOIN t_sys_zd t2 ON t1.TYPE_=t2.dmbh AND t2.dmmc='${@com.java.activiti.common.constraint.JncszhzfSysParam$SysZdCodeName@ROLE_NAME}'
+		<where>
+			<if test="groupTag != '' and groupTag != null">
+				and t1.TYPE_ = #{groupTag}
+			</if>
+		</where>
+	</select>
+	
+	<delete id="deleteGroup" parameterType="java.util.List">
+		delete from act_id_group where id_ in
+		<foreach collection="list" item="groupId" index="index" open="(" separator="," close=")">
+		           		 #{groupId}
+       	</foreach>
+	</delete>
+	
+	<insert id="addGroup" parameterType="com.java.activiti.model.Group">
+		insert into act_id_group values(
+		#{groupId},
+		#{groupTypeId},
+		#{groupName},
+		#{groupTag},
+		#{groupPid}
+		);
+	</insert>
+	
+	<update id="updateGroup" parameterType="com.java.activiti.model.Group">
+		update act_id_group
+		<set>
+			<if test="groupTypeId!=null and groupTypeId!='' ">
+				gid_=#{groupTypeId},
+			</if>
+			<if test="groupName!=null and groupName!='' ">
+				name_=#{groupName},
+			</if>
+			<if test="groupTag!=null and groupTag!='' ">
+				type_=#{groupTag},
+			</if>
+			<if test="groupPid!=null and groupPid!='' ">
+				pid_=#{groupPid},
+			</if>
+		</set>
+		where id_=#{groupId}
+	</update>
+
+	<select id="selectGroupsFirstLevel" parameterType="java.lang.String" resultMap="GroupResult">
+		SELECT t1.* FROM act_id_group t1
+		JOIN t_sys_zd t2 ON t1.GID_ = t2.dmbh AND t2.dmmc='${@com.java.activiti.common.constraint.JncszhzfSysParam$SysZdCodeName@GROUP_NAME}'
+		WHERE t1.PID_ IS NULL AND t1.GID_= #{groupTypeId}
+	</select>
+
+	<select id="findGroupByGroupPk" resultMap="GroupResult">
+		select * from act_id_group
+		where id_ = #{groupId}
+	</select>
+
+	<select id="selectArchiveOfGroup"  resultMap="GroupResult">
+		select * from act_id_group
+		where
+		(gid_ = '2' or gid_ = '6')
+		and (pid_ is null or pid_ ='')
+		<if test="groupId != '' and groupId != null">
+			and id_ = #{groupId}
+		</if>
+		order by GID_
+	</select>
+
+	<!--查询组菜单id-->
+	<select id="getGroupMenuByUserId" resultType="string" parameterType="string">
+		select pid_ from  act_id_group
+		where ID_ = (
+          select group_id_ from act_id_membership where USER_ID_ = #{userId})
+	</select>
+	<!--查询组菜单name -->
+	<select id="getGroupMenuByUserName" resultType="string" parameterType="string">
+		select name_ from  act_id_group where  pid_ is NULL and  id_= #{userId}
+	</select>
+
+	<!-- 根据组织group_gid 查询机构信息 -->
+	<select id="selectGroupByGid" resultMap="GroupResult">
+		SELECT *
+		FROM act_id_group
+		<where>
+			(pid_ is null or pid_='')
+			<if test="type !='' and type != null">
+				and gid_ = #{type}
+			</if>
+		</where>
+		order by id_
+	</select>
+
+	<!-- 根据组织group_pid 查询机构信息 -->
+	<select id="selectGroupByPid" resultMap="GroupResult">
+		SELECT *
+		FROM act_id_group
+		<where>
+			type_ =1
+			<if test="pid !='' and pid != null">
+				and pid_ = #{pid}
+			</if>
+		</where>
+		order by id_
+	</select>
+
+    <select id="getTypeById" parameterType="java.lang.String" resultType="java.lang.String">
+     select TYPE_ from act_id_group where id_ = #{id}
+    </select>
+
+	<select id="findLianbanListByType"   resultMap="GroupResult">
+ 	select * from act_id_group where TYPE_ in('2','5') and pid_ is  not null order by  TYPE_ desc
+    </select>
+
+</mapper> 

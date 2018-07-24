@@ -1,0 +1,16 @@
+.filter{height: 50px;background-color: #eff0f4;}
+			.btn_group button{float: left;height: 36px;width: 36px;background-color:#19a8ec ;line-height: 36px;text-align: center;padding: 0;border-radius: 0;margin-left: 15px;margin-top: 7px;}
+			.btn_group{float: right;margin-right: 30px;}
+			#myModal .col-sm-3{padding-left: 0;padding-right: 0;}
+			#myModal .col-sm-6{padding-left: 15px;padding-right: 15px;}
+			#myModal .form-control{border-radius: 0;height: 28px !important;padding-top:0 ;padding-bottom: 0;line-height: 28px;}
+			#myModal .form-horizontal .control-label{padding-top: 4px;font-weight: normal;}
+			#myModal .form-group{margin-bottom: 8px;height: 28px !important}
+			.thead .table>thead>tr>th{height: 52px;line-height: 52px;padding-top:0 ;padding-bottom: 0;}
+			/* .table tr td,.table tr th{box-sizing: content-box;text-align: center;} */
+			.table>thead>tr>th{padding:0}
+			.table>tbody>tr>td{padding:8px 0}
+			.table>tr>td:last-child,.table>tr>th:last-child{width: 10%;}
+			.content>nav{position: absolute;right: 80px;bottom: 0;}
+			.pagination>li>a{margin-right: 5px;border-color: #ccc;}
+			.pagination>li>a:active{border:1px solid transparent}

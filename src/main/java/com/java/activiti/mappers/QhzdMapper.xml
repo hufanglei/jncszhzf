@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.QhzdDao">
+
+	<resultMap id="qhzdMap" type="com.java.activiti.model.QhzdBean">
+		<result property="id" column="id" />
+		<result property="qhdm" column="qhdm" />
+		<result property="qhmc" column="qhmc" />
+		<result property="qhjb" column="qhjb" />
+		<result property="ssqhdm" column="ssqhdm" />
+	</resultMap>
+	
+	<select id="selectQhzdByClause" parameterType="HashMap"
+		resultMap="qhzdMap">
+		select * from t_sys_qhzd
+		<where>
+		
+			<if test="qhdm !=null and qhdm != ''">
+				and qhdm = #{qhdm}
+			</if>
+			<if test="qhmc !=null and qhmc != ''">
+				and qhmc = #{qhmc}
+			</if>
+			<if test="qhjb !=null and qhjb != ''">
+				and qhjb = #{qhjb}
+			</if>
+			<if test="ssqhdm !=null and ssqhdm != ''">
+				and ssqhdm = #{ssqhdm}
+			</if>
+			<if test="paramIN !=null and paramIN != ''">
+				and  col in (${paramIN})
+			</if>
+			
+			<if test="paramLike !=null and paramLike != ''">
+				and col like '%${paramLike}%'
+			</if>
+			<if test="paramStartStringDate != null and paramStartStringDate != ''">
+				<![CDATA[
+					and col >= #{paramStartStringDate}   
+					 ]]>
+			</if>
+			<if test="paramEndStringDate != null and paramEndStringDate != ''">
+					 <![CDATA[
+					and col <= #{paramEndStringDate}
+					 ]]>
+			</if>
+			<if test="paramStartDate !=null and paramStartDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') >= #{paramStartDate}
+					 ]]>
+			</if>
+			<if test="paramEndDate !=null and paramEndDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') <= #{paramEndDate}
+					 ]]>
+			</if>
+			<if test="paramList != null and paramList.size>0">
+                 and  col in
+                <foreach close=")" collection="paramList" index="index" item="item" open="(" separator="," >
+                     #{item}
+                </foreach>
+            </if>
+				
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+			limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectQhzdByPk" parameterType="int" resultMap="qhzdMap">
+		select * from t_sys_qhzd where id =#{id}
+	</select>
+
+	<select id="selectQhzdCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from t_sys_qhzd
+		<where>
+		</where>
+	</select>
+	
+	<select id="selectQhzdTreeDataByOrgPrefix" parameterType="HashMap" resultMap="qhzdMap">
+		select * from t_sys_qhzd
+		<where>
+			<if test="qhdm !=null and qhdm != ''">
+				and qhdm like '%${qhdm}%'
+			</if>			
+		</where>
+	</select>
+
+	<insert id="insertQhzd" parameterType="com.java.activiti.model.QhzdBean" >
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			 
+			 
+			 select IFNULL(max(id),1) AS id from t_sys_qhzd
+		</selectKey>
+		insert into t_sys_qhzd(
+		qhdm,qhmc,qhjb,ssqhdm)
+		values
+		(
+		#{qhdm, jdbcType=VARCHAR},
+		#{qhmc, jdbcType=VARCHAR},
+		#{qhjb, jdbcType=INTEGER},
+		#{ssqhdm, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<delete id="deleteQhzd" parameterType="int">
+		delete from t_sys_qhzd where id = #{id}
+	</delete>
+
+	<update id="updateQhzd" parameterType="com.java.activiti.model.QhzdBean">
+		update t_sys_qhzd 
+		<set>
+		<if test = "qhdm != null">
+		qhdm=#{qhdm, jdbcType=VARCHAR},
+		</if>
+		<if test = "qhmc != null">
+		qhmc=#{qhmc, jdbcType=VARCHAR},
+		</if>
+		<if test = "qhjb != null">
+		qhjb=#{qhjb, jdbcType=INTEGER},
+		</if>
+		<if test = "ssqhdm != null">
+		ssqhdm=#{ssqhdm, jdbcType=VARCHAR}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

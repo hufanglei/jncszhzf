@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.WeibanjuzdMapper">
+
+	<resultMap id="weibanjuzdMap" type="com.java.activiti.model.WeibanjuzdBean">
+		<result property="id" column="id" />
+		<result property="wbjName" column="wbj_name" />
+		<result property="dm" column="dm" />
+	</resultMap>
+
+	<!-- 
+	<association property="userTypeBean" column="FK_USER_TYPE_ID"
+		javaType="com.sugon.mssq.model.UserTypeBean" select="userType.selectUserTypeById" />
+	 -->
+	 
+	<select id="selectAllWeibanjuzdByClause" parameterType="HashMap"
+		resultMap="weibanjuzdMap">
+		select * from t_sys_weibanjuzd
+	</select>
+		 
+	<select id="selectWeibanjuzdByClause" parameterType="HashMap"
+		resultMap="weibanjuzdMap">
+		select * from t_sys_weibanjuzd
+		<where>
+		
+			<if test="paramEqual !=null and paramEqual != ''">
+				and col = #{paramEqual}
+			</if>
+			<if test="paramIN !=null and paramIN != ''">
+				and  col in (${paramIN})
+			</if>
+			
+			<if test="paramLike !=null and paramLike != ''">
+				and col like '%${paramLike}%'
+			</if>
+			<if test="paramStartStringDate != null and paramStartStringDate != ''">
+				<![CDATA[
+					and col >= #{paramStartStringDate}   
+					 ]]>
+			</if>
+			<if test="paramEndStringDate != null and paramEndStringDate != ''">
+					 <![CDATA[
+					and col <= #{paramEndStringDate}
+					 ]]>
+			</if>
+			<if test="paramStartDate !=null and paramStartDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') >= #{paramStartDate}
+					 ]]>
+			</if>
+			<if test="paramEndDate !=null and paramEndDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') <= #{paramEndDate}
+					 ]]>
+			</if>
+			<if test="paramList != null and paramList.size>0">
+                 and  col in
+                <foreach close=")" collection="paramList" index="index" item="item" open="(" separator="," >
+                     #{item}
+                </foreach>
+            </if>
+				
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+			limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectWeibanjuzdByPk" parameterType="int" resultMap="weibanjuzdMap">
+		select * from t_sys_weibanjuzd where id =#{id}
+	</select>
+
+	<select id="selectWeibanjuzdCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from t_sys_weibanjuzd
+		<where>
+			
+		</where>
+	</select>
+
+	<insert id="insertWeibanjuzd" parameterType="com.java.activiti.model.WeibanjuzdBean" >
+		<selectKey resultType="int" keyProperty="id" order="BEFORE">
+			 
+			 
+			 select IFNULL(max(id)+1,1) from t_sys_weibanjuzd</selectKey>
+		<!--  IF PK IS STRING
+		oracle
+		<selectKey resultType="string" keyProperty="testPk" order="BEFORE">
+			 select to_char(nvl(max(to_number(test_pk))+1,1)) from TB_TEST
+		</selectKey>
+		
+		postgre
+		<selectKey resultType="string" keyProperty="testPk" order="BEFORE">
+			 select to_char(COALESCE(max(to_number(test_pk,'999999999'))+1,1),'999999999') from TB_TEST
+		</selectKey>
+	-->
+		insert into t_sys_weibanjuzd(
+		id,wbj_name,dm
+		)
+		values( 
+		#{id, jdbcType=VARCHAR}, 
+		#{wbjName, jdbcType=VARCHAR}, 
+		#{dm, jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="deleteWeibanjuzd" parameterType="int">
+		delete from t_sys_weibanjuzd where id = #{id}
+	</delete>
+
+	<update id="updateWeibanjuzd" parameterType="com.java.activiti.model.WeibanjuzdBean">
+		update t_sys_weibanjuzd 
+		<set>
+		<if test = "wbjName != null">
+		wbj_name=#{wbjName, jdbcType=VARCHAR},
+		</if>
+		<if test = "dm != null">
+		dm=#{dm, jdbcType=VARCHAR}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

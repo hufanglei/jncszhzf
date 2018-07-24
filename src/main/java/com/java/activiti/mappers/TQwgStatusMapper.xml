@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.TQwgStatusMapper">
+
+	<resultMap id="tQwgStatusMap" type="com.java.activiti.model.TQwgStatusBean">
+		<result property="orderno" column="orderno" />
+		<result property="status" column="status" />
+		<result property="processTime" column="process_time" />
+		<result property="comments" column="comments" />
+		<result property="issuccess" column="issuccess" />
+	</resultMap>
+
+	<!-- 
+	<association property="userTypeBean" column="FK_USER_TYPE_ID"
+		javaType="com.sugon.mssq.model.UserTypeBean" select="userType.selectUserTypeById" />
+	 -->
+		 
+	<select id="selectTQwgStatusByClause" parameterType="HashMap"
+		resultMap="tQwgStatusMap">
+		select * from t_qwg_status
+		<where>
+		
+			<if test="paramEqual !=null and paramEqual != ''">
+				and col = #{paramEqual}
+			</if>
+			<if test="paramIN !=null and paramIN != ''">
+				and  col in (${paramIN})
+			</if>
+			
+			<if test="paramLike !=null and paramLike != ''">
+				and col like '%${paramLike}%'
+			</if>
+			<if test="paramStartStringDate != null and paramStartStringDate != ''">
+				<![CDATA[
+					and col >= #{paramStartStringDate}   
+					 ]]>
+			</if>
+			<if test="paramEndStringDate != null and paramEndStringDate != ''">
+					 <![CDATA[
+					and col <= #{paramEndStringDate}
+					 ]]>
+			</if>
+			<if test="paramStartDate !=null and paramStartDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') >= #{paramStartDate}
+					 ]]>
+			</if>
+			<if test="paramEndDate !=null and paramEndDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') <= #{paramEndDate}
+					 ]]>
+			</if>
+			<if test="paramList != null and paramList.size>0">
+                 and  col in
+                <foreach close=")" collection="paramList" index="index" item="item" open="(" separator="," >
+                     #{item}
+                </foreach>
+            </if>
+				
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+			limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectTQwgStatusByPk" parameterType="int" resultMap="tQwgStatusMap">
+		select * from t_qwg_status where orderno =#{orderno}
+	</select>
+
+	<select id="selectTQwgStatusCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from t_qwg_status
+		<where>
+			
+		</where>
+	</select>
+
+	<insert id="insertTQwgStatus" parameterType="com.java.activiti.model.TQwgStatusBean" >
+		insert into t_qwg_status(
+		orderno,status,process_time,comments,issuccess
+		)
+		values( 
+		#{orderno, jdbcType=VARCHAR}, 
+		#{status, jdbcType=VARCHAR}, 
+		#{processTime, jdbcType=VARCHAR}, 
+		#{comments, jdbcType=VARCHAR}, 
+		#{issuccess, jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="deleteTQwgStatus" parameterType="int">
+		delete from t_qwg_status where orderno = #{orderno}
+	</delete>
+
+	<update id="updateTQwgStatus" parameterType="com.java.activiti.model.TQwgStatusBean">
+		update t_qwg_status 
+		<set>
+		<if test = "status != null">
+		status=#{status, jdbcType=VARCHAR},
+		</if>
+		<if test = "processTime != null">
+		process_time=#{processTime, jdbcType=VARCHAR},
+		</if>
+		<if test = "comments != null">
+		comments=#{comments, jdbcType=VARCHAR},
+		</if>
+		<if test = "issuccess != null">
+		issuccess=#{issuccess, jdbcType=VARCHAR}
+		</if>
+		</set>
+		where orderno = #{orderno}
+	</update>
+
+
+	<select id="selectTQwgStatusByOrderNo" parameterType="HashMap" resultMap="tQwgStatusMap">
+		select * from t_qwg_status where orderno =#{orderNo}
+	</select>
+
+
+</mapper>

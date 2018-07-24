@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.UserTaskMapper">
+    <resultMap id="commentDetail" type="com.java.activiti.model.CommentDetail">
+        <result property="taskId" column="task_id_"/>
+        <result property="processId" column="proc_inst_id_"/>
+        <result property="userName" column="user_id_"/>
+        <result property="department" column=""/>
+        <result property="handleWay" column="deal_way"/>
+        <result property="beginTime" column="start_time_"/>
+        <result property="endTime" column="end_time_"/>
+        <result property="comment" column="message_"/>
+    </resultMap>
+
+    <select id="getCommonDetailList" resultMap="commentDetail">
+     SELECT
+            b.TASK_ID_,
+            a.PROC_INST_ID_,
+            b.USER_ID_,
+            b.MESSAGE_,
+            a.START_TIME_,
+            a.END_TIME_,
+            i.deal_way
+        FROM
+            `act_hi_taskinst` a,
+            `act_hi_comment` b,
+							issue_deal i
+        WHERE
+            a.ID_ = b.TASK_ID_
+       AND b.PROC_INST_ID_ = #{processInstanceId}
+				and b.PROC_INST_ID_=i.process_id
+       and i.act_comment_id=b.TASK_ID_
+
+    </select>
+    <select id="getDbDetailList" resultMap="commentDetail">
+     SELECT
+            b.TASK_ID_,
+            a.PROC_INST_ID_,
+            b.USER_ID_,
+            b.MESSAGE_,
+            a.START_TIME_,
+            a.END_TIME_,
+            i.deal_way
+        FROM
+            `act_hi_taskinst` a,
+            `act_hi_comment` b,
+			  db_issue_deal i
+        WHERE
+            a.ID_ = b.TASK_ID_
+       AND b.PROC_INST_ID_ =#{processInstanceId}
+				and b.PROC_INST_ID_=i.process_id
+       and i.task_id=b.TASK_ID_
+
+    </select>
+
+    <select id="selectUserDepartment"  resultType="java.util.HashMap">
+          SELECT
+             a.name_ as departmentName,
+            c.dmms as roleName
+        FROM
+            act_id_group a,
+            act_id_membership b,
+            t_sys_zd c
+        WHERE
+            a.ID_ = b.GROUP_ID_
+            and a.type_ = c.dmbh
+            and c.dmmc='rolename'
+            AND b.USER_ID_=#{userId}
+
+    </select>
+    <select id="getPtCommonDetailList" resultMap="commentDetail">
+         SELECT
+            b.TASK_ID_,
+            a.PROC_INST_ID_,
+            b.USER_ID_,
+            b.MESSAGE_,
+            a.START_TIME_,
+            a.END_TIME_,
+            i.deal_way
+        FROM
+            `act_hi_comment` b
+        RIGHT JOIN (
+            SELECT
+                t1.*
+            FROM
+                (
+                    SELECT
+                        *
+                    FROM
+                        t_issue_dcdb_kh
+                    WHERE
+                        process_id = #{processInstanceId}
+                ) t
+            LEFT JOIN t_main_issue t1 ON t.issueNum = t1.issue_number
+        ) t2 ON t2.process_id = b.PROC_INST_ID_
+        LEFT JOIN `act_hi_taskinst` a ON a.ID_ = b.TASK_ID_
+        left JOIN (SELECT * FROM issue_deal) i ON i.process_id = b.PROC_INST_ID_  and i.act_comment_id=b.TASK_ID_
+
+
+    </select>
+
+
+</mapper>

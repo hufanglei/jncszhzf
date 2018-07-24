@@ -1,0 +1,93 @@
+@CHARSET "UTF-8";
+.minheight {
+	padding: 10px;
+	height: auto !important;
+	_height: 550px;
+	min-height: 550px;
+}
+.bootstrap-table{
+	padding: 0 5px;
+}
+th,td{
+	text-align: center;
+}
+#treeview{
+	height: 550px;
+	overflow: auto;
+}
+#treeview .list-group-item , #powertree .list-group-item{
+	border: none!important;
+}
+.black_overlay{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 610px;
+	background-color: black;
+	z-index:1001;
+	-moz-opacity: 0.6;
+	opacity:.60;
+	filter: alpha(opacity=60);
+}
+.white_content {
+	display: none;
+	position: absolute;
+	padding: 5px;
+	top: 10%;
+	left: 10%;
+	width: 80%;
+	height: 400px;
+	background-color: white;
+	z-index:1002;
+	overflow: auto;
+}
+.allot_content {
+	display: none;
+	position: absolute;
+	padding: 5px;
+	top: 5%;
+	left: 25%;
+	width: 50%;
+	height: 500px;
+	background-color: white;
+	z-index:1002;
+	overflow: auto;
+}
+.white_content_small {
+	display: none;
+	position: absolute;
+	top: 20%;
+	left: 30%;
+	width: 40%;
+	border: 16px solid lightblue;
+	background-color: white;
+	z-index:1002;
+	overflow: auto;
+}
+.white_content th{
+	border-top:none!important;
+}
+nav:after{
+	display: block;
+	content: "";
+	clear: both;
+	
+}
+#area{
+	width: 50%;
+	float: left;
+}
+#street{
+	width: 50%;
+}
+th:after{
+	content: "";
+	display: block;
+	clear: both;
+}
+.bootstrap-table .fixed-table-container{
+	height: 413px!important;
+	padding: 0!important;
+}

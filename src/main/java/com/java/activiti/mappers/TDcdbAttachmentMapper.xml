@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.activiti.dao.TDcdbAttachmentMapper">
+
+    <resultMap id="TDcdbAttachmentMap" type="com.java.activiti.model.TDcdbAttachment">
+        <result property="id" column="id"/>
+        <result property="mainIssueId" column="main_issue_id"/>
+        <result property="addUserId" column="add_user_id"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="size" column="size"/>
+        <result property="savePath" column="save_path"/>
+        <result property="addtime" column="addtime"/>
+    </resultMap>
+    <!-- 插入附件 -->
+    <insert id="insert" parameterType="com.java.activiti.model.TDcdbAttachment">
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select IFNULL(max(id)+1,1) AS id from t_attachment
+        </selectKey>
+        insert into t_dcdb_attachment (
+        id,
+        main_issue_id,
+        add_user_id,
+        type,
+        name,
+        size,
+        save_path,
+        addtime
+        )values (
+        #{id},
+        #{mainIssueId},
+        #{addUserId},
+        #{type},
+        #{name},
+        #{size},
+        #{savePath},
+        #{addtime})
+    </insert>
+    <!-- 查询案件的附件 -->
+    <select id="selectAttachentListByIssueId" parameterType="string" resultMap="TDcdbAttachmentMap">
+    SELECT
+      id,
+      main_issue_id,
+      add_user_id,
+      type,
+      name,
+      size,
+      save_path,
+      addtime
+    FROM
+      t_dcdb_attachment
+    WHERE
+      main_issue_id = #{issueId}
+  </select>
+
+    <!--根据流程id查询获取督办id-->
+    <select id="selectAttachmentByProccessId" parameterType="java.lang.String" resultMap="TDcdbAttachmentMap">
+        select * from t_dcdb_attachment  t1
+        inner  join t_issue_dcdb_kh  t2
+        on t1.main_issue_id  = t2.id and  t2.process_id = #{processId}
+    </select>
+</mapper>

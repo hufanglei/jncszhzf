@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.PermissionMapper">
+
+	<resultMap id="permissionMap" type="com.java.activiti.model.PermissionBean">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="description" column="description" />
+		<result property="tag" column="tag" />
+		<result property="fatherid" column="fatherid" />
+		<result property="order" column="order_" />
+	</resultMap>
+
+	<!-- 
+	<association property="userTypeBean" column="FK_USER_TYPE_ID"
+		javaType="com.sugon.mssq.model.UserTypeBean" select="userType.selectUserTypeById" />
+	 -->
+
+	<select id="selectPermissionIdsByGroupTag" parameterType="HashMap" resultType="java.lang.Integer">
+		SELECT DISTINCT permission_id
+		FROM group_permission
+		<where>
+			<if test="groupTag !=null and groupTag != ''">
+				and group_type = #{groupTag}
+			</if>
+		</where>
+	</select>
+		 
+	<select id="selectPermissionByClause" parameterType="HashMap" resultMap="permissionMap">
+		select * from t_sys_permission
+		<where>
+			<if test="groupType !=null and groupType != ''">
+				and id IN (SELECT permission_id FROM group_permission WHERE group_type = ${groupType})
+			</if>
+			<if test="parentId !=null and parentId != ''">
+				and fatherid = #{parentId}
+			</if>
+				
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="orderString ==null">
+			ORDER BY fatherid,order_
+		</if>
+		<if test="begin != null and pageSize !=null">
+			limit #{begin},#{pageSize}
+		</if>
+	</select>
+
+	<select id="selectPermissionCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from t_sys_permission
+		<where>
+			<if test="groupType !=null and groupType != ''">
+				and id IN (SELECT permission_id FROM group_permission WHERE group_type = ${groupType})
+			</if>
+			<if test="parentId !=null and parentId != ''">
+				and fatherid = #{parentId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectPermissionByGroupTags" parameterType="HashMap" resultMap="permissionMap">
+		SELECT DISTINCT t_sys_permission.* 
+		FROM group_permission LEFT JOIN t_sys_permission 
+		ON group_permission.permission_id = t_sys_permission.id 
+		<where>
+			<if test="groupType !=null and groupType != ''">
+				and group_type = #{groupType}
+			</if>
+<!-- 			<if test="group_types != null and group_types.size()>0">
+                 and  group_type in
+                <foreach close=")" collection="group_types" index="index" item="item" open="(" separator="," >
+                     #{item}
+                </foreach>
+            </if> -->
+		</where>
+		ORDER BY fatherid,order_
+	</select>
+
+	<select id="selectPermissionByPk" parameterType="int" resultMap="permissionMap">
+		select * from t_sys_permission where id =#{id}
+	</select>
+
+	<insert id="insertPermission" parameterType="com.java.activiti.model.PermissionBean" >
+		<selectKey resultType="java.lang.Integer"  keyProperty="id" order="AFTER">
+			 
+			 
+			 select    LAST_INSERT_ID()  AS id 
+		</selectKey>
+		insert into t_sys_permission(
+		name,description,tag,fatherid,order_)
+		values
+		(
+		#{name, jdbcType=VARCHAR},
+		#{description, jdbcType=VARCHAR},
+		#{tag, jdbcType=VARCHAR},
+		#{fatherid, jdbcType=INTEGER},
+		#{order, jdbcType=INTEGER}
+		)
+	</insert>
+
+	<delete id="deletePermission" parameterType="int">
+		delete from t_sys_permission where id = #{id}
+	</delete>
+
+	<update id="updatePermission" parameterType="com.java.activiti.model.PermissionBean">
+		update t_sys_permission 
+		<set>
+		<if test = "name != null">
+		name=#{name, jdbcType=VARCHAR},
+		</if>
+		<if test = "description != null">
+		description=#{description, jdbcType=VARCHAR},
+		</if>
+		<if test = "tag != null">
+		tag=#{tag, jdbcType=VARCHAR},
+		</if>
+		<if test = "fatherid != null">
+		fatherid=#{fatherid, jdbcType=INTEGER},
+		</if>
+		<if test = "order != null">
+		order_=#{order, jdbcType=INTEGER}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

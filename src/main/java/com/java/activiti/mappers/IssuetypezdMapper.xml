@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.IssuetypezdDao">
+
+	<resultMap id="issuetypezdMap" type="com.java.activiti.model.IssuetypezdBean">
+		<result property="id" column="id" />
+		<result property="mc" column="mc" />
+		<result property="bh" column="bh" />
+		<result property="sssjbh" column="sssjbh" />
+		<result property="ms" column="ms" />
+		<result property="bhorder" column="bhorder" />
+		<result property="description" column="description" />
+		<result property="extend" column="extend" />
+	</resultMap>
+	
+	<select id="selectIssuetypezdByClause" parameterType="HashMap"
+		resultMap="issuetypezdMap">
+		select * from t_sys_issuetypezd
+		<where>
+			<if test="mc !=null and mc != ''">
+				and mc = #{mc}
+			</if>
+			<if test="bh !=null and bh != ''">
+				and bh = #{bh}
+			</if>
+			<if test="sssjbh !=null and sssjbh != ''">
+				and sssjbh = #{sssjbh}
+			</if>
+			<if test="paramEqual !=null and paramEqual != ''">
+				and col = #{paramEqual}
+			</if>
+			<if test="paramIN !=null and paramIN != ''">
+				and  col in (${paramIN})
+			</if>
+			
+			<if test="paramLike !=null and paramLike != ''">
+				and col like '%${paramLike}%'
+			</if>
+			<if test="paramStartStringDate != null and paramStartStringDate != ''">
+				<![CDATA[
+					and col >= #{paramStartStringDate}   
+					 ]]>
+			</if>
+			<if test="paramEndStringDate != null and paramEndStringDate != ''">
+					 <![CDATA[
+					and col <= #{paramEndStringDate}
+					 ]]>
+			</if>
+			<if test="paramStartDate !=null and paramStartDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') >= #{paramStartDate}
+					 ]]>
+			</if>
+			<if test="paramEndDate !=null and paramEndDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') <= #{paramEndDate}
+					 ]]>
+			</if>
+			<if test="paramList != null and paramList.size>0">
+                 and  col in
+                <foreach close=")" collection="paramList" index="index" item="item" open="(" separator="," >
+                     #{item}
+                </foreach>
+            </if>
+				
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+			limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectIssuetypezdByPk" parameterType="int" resultMap="issuetypezdMap">
+		select * from t_sys_issuetypezd where id =#{id}
+	</select>
+	
+	<select id="selectIssuetypezdByMcAndBh" parameterType="HashMap" resultMap="issuetypezdMap">
+		select * from t_sys_issuetypezd where mc =#{mc} and bh =#{bh} limit 1
+	</select>
+
+	<select id="selectIssuetypezdCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from t_sys_issuetypezd
+		<where>
+			
+		</where>
+	</select>
+
+	<insert id="insertIssuetypezd" parameterType="com.java.activiti.model.IssuetypezdBean" >
+		<selectKey resultType="int" keyProperty="id" order="BEFORE">
+			 
+			 
+			 select IFNULL(max(id)+1,1) AS id from t_sys_issuetypezd
+		</selectKey>
+		insert into t_sys_issuetypezd(
+		id,mc,bh,sssjbh,ms,bhorder,description,extend)
+		values
+		(
+		#{id, jdbcType=INTEGER},
+		#{mc, jdbcType=VARCHAR},
+		#{bh, jdbcType=VARCHAR},
+		#{sssjbh, jdbcType=VARCHAR},
+		#{ms, jdbcType=VARCHAR},
+		#{bhorder, jdbcType=INTEGER},
+		#{description, jdbcType=VARCHAR},
+		#{extend, jdbcType=INTEGER}
+		)
+	</insert>
+
+	<delete id="deleteIssuetypezd" parameterType="int">
+		delete from t_sys_issuetypezd where id = #{id}
+	</delete>
+
+	<update id="updateIssuetypezd" parameterType="com.java.activiti.model.IssuetypezdBean">
+		update t_sys_issuetypezd 
+		<set>
+		<if test = "mc != null">
+		mc=#{mc, jdbcType=VARCHAR},
+		</if>
+		<if test = "bh != null">
+		bh=#{bh, jdbcType=VARCHAR},
+		</if>
+		<if test = "sssjbh != null">
+		sssjbh=#{sssjbh, jdbcType=VARCHAR},
+		</if>
+		<if test = "ms != null">
+		ms=#{ms, jdbcType=VARCHAR},
+		</if>
+		<if test = "bhorder != null">
+		bhorder=#{bhorder, jdbcType=INTEGER},
+		</if>
+		<if test = "description != null">
+		description=#{description, jdbcType=VARCHAR},
+		</if>
+		<if test = "extend != null">
+		extend=#{extend, jdbcType=INTEGER}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

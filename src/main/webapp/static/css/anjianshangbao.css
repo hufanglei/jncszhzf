@@ -1,0 +1,47 @@
+	.filter{height: 50px;background-color: #eff0f4;line-height: 50px;}
+			#container,#container *{box-sizing: content-box !important;}
+			.breadcrumb > li + li:before {color: #CCCCCC;content: "> "; padding: 0 5px;}
+			.breadcrumb {padding: 2px 15px;margin-bottom:0;list-style:none;background-color: #f5f5f5;border-radius: 4px;}
+			.fill {padding-top: 30px;background: #fff;padding-bottom: 30px;}
+			.fill .col-sm-3{padding-left: 0;padding-right: 0;}
+			.fill .col-sm-6{padding-left: 15px;padding-right: 15px;}
+			.fill .form-control{border-radius: 0;height: 28px !important;padding-top:0 ;padding-bottom: 0;line-height: 28px;}
+			.fill .form-horizontal .control-label{padding-top: 4px;font-weight: normal;}
+			.fill .form-group{margin-bottom: 8px;}
+			.fill .form_date2,.fill .form_date{padding-left:15px ;padding-right: 15px;}
+			.fill .input-group-addon{height: 28px;}
+			/*.fill .hasarea{height: 70px !important;}*/
+			.fill .hasarea .form-control{height: 65px !important;position: relative;}
+			.col-sm-4{padding-right: 0;}
+			.col-sm-7{position:relative}
+			input{outline: none;}
+			.fill .select{position: absolute;width: 50px;height: 28px;line-height: 28px;text-align: center;color: #fff;background-color: #66afe9;border:none;z-index:20;right:15px;top:0;border:2px solid #66afe9}
+			.fill .select:hover,.fill .select:active{border:2px solid #2178f3}
+			.has-tanchuang{padding-right: 60px;}
+			.propbox{width:600px;height: 400px;background: red;display: none;}
+			.show{display: block;}
+			.tbody{height: auto !important;}
+			.tbody thead tr th{padding: 10px 0;}
+			.filter .form-group{float: right;}
+			.pagination{margin:0}
+			@media screen and (max-width: 1000px){
+				html,body{background: #fff;}
+				.top{display: none;}
+				.filter{display: none;}
+				section{background: #fff;}
+				.fill{padding-top: 0;}
+				.content{border: none;}
+			}
+			
+.modal-body .search input {
+    background-color: #fff;
+    height: 29px;
+}
+
+.modal-body .search{
+	padding-top:0; 
+}
+
+/* #tb_powerlist > tbody > tr > td {
+    text-align: left;
+} */

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.activiti.dao.TissueJdjcKhMapper" >
+  <resultMap id="BaseResultMap" type="com.java.activiti.model.TissueJdjcKhBean" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="issue_num" property="issueNum" jdbcType="VARCHAR" />
+    <result column="source_id" property="sourceId" jdbcType="VARCHAR" />
+    <result column="qhzd_name" property="qhzdName" jdbcType="VARCHAR" />
+    <result column="qhzd_id" property="qhzdId" jdbcType="VARCHAR" />
+    <result column="descript" property="descript" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="khyf" property="khyf" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, issue_num, source_id, qhzd_name, qhzd_id, descript, score, create_time, khyf, 
+    comment, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_issue_jdjc_kh
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_issue_jdjc_kh
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.java.activiti.model.TissueJdjcKhBean" >
+    insert into t_issue_jdjc_kh (id, issue_num, source_id, 
+      qhzd_name, qhzd_id, descript, 
+      score, create_time, khyf, 
+      comment, status)
+    values (#{id,jdbcType=INTEGER}, #{issueNum,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, 
+      #{qhzdName,jdbcType=VARCHAR}, #{qhzdId,jdbcType=VARCHAR}, #{descript,jdbcType=VARCHAR}, 
+      #{score,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{khyf,jdbcType=VARCHAR}, 
+      #{comment,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.java.activiti.model.TissueJdjcKhBean" >
+    insert into t_issue_jdjc_kh
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="issueNum != null" >
+        issue_num,
+      </if>
+      <if test="sourceId != null" >
+        source_id,
+      </if>
+      <if test="qhzdName != null" >
+        qhzd_name,
+      </if>
+      <if test="qhzdId != null" >
+        qhzd_id,
+      </if>
+      <if test="descript != null" >
+        descript,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="khyf != null" >
+        khyf,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="issueNum != null" >
+        #{issueNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceId != null" >
+        #{sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdName != null" >
+        #{qhzdName,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdId != null" >
+        #{qhzdId,jdbcType=VARCHAR},
+      </if>
+      <if test="descript != null" >
+        #{descript,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="khyf != null" >
+        #{khyf,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.java.activiti.model.TissueJdjcKhBean" >
+    update t_issue_jdjc_kh
+    <set >
+      <if test="issueNum != null" >
+        issue_num = #{issueNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceId != null" >
+        source_id = #{sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdName != null" >
+        qhzd_name = #{qhzdName,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdId != null" >
+        qhzd_id = #{qhzdId,jdbcType=VARCHAR},
+      </if>
+      <if test="descript != null" >
+        descript = #{descript,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="khyf != null" >
+        khyf = #{khyf,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.java.activiti.model.TissueJdjcKhBean" >
+    update t_issue_jdjc_kh
+    set issue_num = #{issueNum,jdbcType=VARCHAR},
+      source_id = #{sourceId,jdbcType=VARCHAR},
+      qhzd_name = #{qhzdName,jdbcType=VARCHAR},
+      qhzd_id = #{qhzdId,jdbcType=VARCHAR},
+      descript = #{descript,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      khyf = #{khyf,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="countByMonth" resultType="int" parameterType="HashMap">
+    select count(1) from t_issue_jdjc_kh
+    <where>
+      <if test="month != null and month != ''">
+        khyf = #{month}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByMonth" resultMap="BaseResultMap" parameterType="HashMap" >
+    select
+    <include refid="Base_Column_List" />
+    from t_issue_jdjc_kh
+    <where>
+      <if test="month != null and month != ''">
+        khyf = #{month}
+      </if>
+    </where>
+    order by create_time desc
+    <if test="pageIndex!=null and pageSize!=null">
+      limit #{pageIndex},#{pageSize}
+    </if>
+  </select>
+
+</mapper>

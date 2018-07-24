@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.activiti.dao.TissueRadioKhMapper" >
+  <resultMap id="BaseResultMap" type="com.java.activiti.model.TissueRadioKhBean" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="qhzd_id" property="qhzdId" jdbcType="VARCHAR" />
+    <result column="qhzd_name" property="qhzdName" jdbcType="VARCHAR" />
+    <result column="issueNum" property="issuenum" jdbcType="INTEGER" />
+    <result column="avg12345Num" property="avg12345num" jdbcType="INTEGER" />
+    <result column="coefficient" property="coefficient" jdbcType="DOUBLE" />
+    <result column="proportion" property="proportion" jdbcType="VARCHAR" />
+    <result column="khyf" property="khyf" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, qhzd_id, qhzd_name, issueNum, avg12345Num, coefficient, proportion, khyf, score
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_issue_radio_kh
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_issue_radio_kh
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.java.activiti.model.TissueRadioKhBean" >
+    insert into t_issue_radio_kh (id, qhzd_id, qhzd_name, 
+      issueNum, avg12345Num, coefficient, 
+      proportion, khyf, score
+      )
+    values (#{id,jdbcType=INTEGER}, #{qhzdId,jdbcType=VARCHAR}, #{qhzdName,jdbcType=VARCHAR}, 
+      #{issuenum,jdbcType=INTEGER}, #{avg12345num,jdbcType=INTEGER}, #{coefficient,jdbcType=DOUBLE}, 
+      #{proportion,jdbcType=VARCHAR}, #{khyf,jdbcType=VARCHAR}, #{score,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.java.activiti.model.TissueRadioKhBean" >
+    insert into t_issue_radio_kh
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="qhzdId != null" >
+        qhzd_id,
+      </if>
+      <if test="qhzdName != null" >
+        qhzd_name,
+      </if>
+      <if test="issuenum != null" >
+        issueNum,
+      </if>
+      <if test="avg12345num != null" >
+        avg12345Num,
+      </if>
+      <if test="coefficient != null" >
+        coefficient,
+      </if>
+      <if test="proportion != null" >
+        proportion,
+      </if>
+      <if test="khyf != null" >
+        khyf,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="qhzdId != null" >
+        #{qhzdId,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdName != null" >
+        #{qhzdName,jdbcType=VARCHAR},
+      </if>
+      <if test="issuenum != null" >
+        #{issuenum,jdbcType=INTEGER},
+      </if>
+      <if test="avg12345num != null" >
+        #{avg12345num,jdbcType=INTEGER},
+      </if>
+      <if test="coefficient != null" >
+        #{coefficient,jdbcType=DOUBLE},
+      </if>
+      <if test="proportion != null" >
+        #{proportion,jdbcType=VARCHAR},
+      </if>
+      <if test="khyf != null" >
+        #{khyf,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.java.activiti.model.TissueRadioKhBean" >
+    update t_issue_radio_kh
+    <set >
+      <if test="qhzdId != null" >
+        qhzd_id = #{qhzdId,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdName != null" >
+        qhzd_name = #{qhzdName,jdbcType=VARCHAR},
+      </if>
+      <if test="issuenum != null" >
+        issueNum = #{issuenum,jdbcType=INTEGER},
+      </if>
+      <if test="avg12345num != null" >
+        avg12345Num = #{avg12345num,jdbcType=INTEGER},
+      </if>
+      <if test="coefficient != null" >
+        coefficient = #{coefficient,jdbcType=DOUBLE},
+      </if>
+      <if test="proportion != null" >
+        proportion = #{proportion,jdbcType=VARCHAR},
+      </if>
+      <if test="khyf != null" >
+        khyf = #{khyf,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByKhyf" parameterType="com.java.activiti.model.TissueRadioKhBean" >
+    update t_issue_radio_kh
+    <set >
+      <if test="qhzdId != null" >
+        qhzd_id = #{qhzdId,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdName != null" >
+        qhzd_name = #{qhzdName,jdbcType=VARCHAR},
+      </if>
+      <if test="issuenum != null" >
+        issueNum = #{issuenum,jdbcType=INTEGER},
+      </if>
+      <if test="avg12345num != null" >
+        avg12345Num = #{avg12345num,jdbcType=INTEGER},
+      </if>
+      <if test="coefficient != null" >
+        coefficient = #{coefficient,jdbcType=DOUBLE},
+      </if>
+      <if test="proportion != null" >
+        proportion = #{proportion,jdbcType=VARCHAR},
+      </if>
+      <if test="khyf != null" >
+        khyf = #{khyf,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByQhzdId" parameterType="com.java.activiti.model.TissueRadioKhBean" >
+    update t_issue_radio_kh
+    <set >
+      <if test="qhzdId != null" >
+        qhzd_id = #{qhzdId,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdName != null" >
+        qhzd_name = #{qhzdName,jdbcType=VARCHAR},
+      </if>
+      <if test="issuenum != null" >
+        issueNum = #{issuenum,jdbcType=INTEGER},
+      </if>
+      <if test="avg12345num != null" >
+        avg12345Num = #{avg12345num,jdbcType=INTEGER},
+      </if>
+      <if test="coefficient != null" >
+        coefficient = #{coefficient,jdbcType=DOUBLE},
+      </if>
+      <if test="proportion != null" >
+        proportion = #{proportion,jdbcType=VARCHAR},
+      </if>
+      <if test="khyf != null" >
+        khyf = #{khyf,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where qhzd_id = #{qhzdId,jdbcType=VARCHAR}
+    and khyf = #{khyf,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.java.activiti.model.TissueRadioKhBean" >
+    update t_issue_radio_kh
+    set qhzd_id = #{qhzdId,jdbcType=VARCHAR},
+    qhzd_name = #{qhzdName,jdbcType=VARCHAR},
+    issueNum = #{issuenum,jdbcType=INTEGER},
+    avg12345Num = #{avg12345num,jdbcType=INTEGER},
+    coefficient = #{coefficient,jdbcType=DOUBLE},
+    proportion = #{proportion,jdbcType=VARCHAR},
+    khyf = #{khyf,jdbcType=VARCHAR},
+    score = #{score,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+    select count(1) from t_issue_radio_kh
+    <where>
+      <if test="qhzdId!=null and qhzdId!='' ">
+        and qhzd_id = #{qhzdId}
+      </if>
+      <if test="qhzdName!=null and qhzdName!='' ">
+        and qhzd_name like '%${qhzdName}%'
+      </if>
+      <if test="khyf!=null and khyf!='' ">
+        and khyf = #{khyf}
+      </if>
+    </where>
+  </select>
+    <select id="selectJdCountBykhyf" resultType="double" parameterType="java.util.HashMap">
+      SELECT sum(t4.issueNum) as issunum FROM ( select t3.qhzd_id,t3.qhzd_name,IFNULL(t2.issueNum,0)as issueNum,IFNULL(t3.avg12345Num,0) as  avg12345Num,
+      t3.coefficient,t3.proportion,t3.khyf from (select * from t_issue_radio_kh where khyf=#{khyf}) t3
+      LEFT JOIN (
+      SELECT * FROM	(SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
+      left JOIN (
+      select t1.issue_exec_street,COUNT(t1.issue_exec_street)issueNum,t1.khyf from(select * from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue  )t
+      INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+      and   t.`status`='16' and t.zxcz_type='1' )t1 where khyf= #{khyf} group by t1.issue_exec_street  ) c ON
+      c.issue_exec_street=b.ID_)t2 on t2.id_=t3.qhzd_id) t4
+  <!--  <where>
+
+      <if test="khyf!=null and khyf!='' ">
+        and khyf = #{khyf}
+      </if>
+    </where>-->
+  </select>
+    <select id="selectSumByKhyf" resultType="double" parameterType="java.util.HashMap">
+        SELECT sum(avg12345Num) as avg12345Num FROM `t_issue_radio_kh`
+    <where>
+
+      <if test="khyf!=null and khyf!='' ">
+        and khyf = #{khyf}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectListPage" parameterType="java.util.HashMap"
+          resultMap="BaseResultMap">
+    select * from t_issue_radio_kh
+    <where>
+
+      <if test="qhzdId!=null and qhzdId!='' ">
+        and qhzd_id = #{qhzdId}
+      </if>
+      <if test="qhzdName!=null and qhzdName!='' ">
+        and qhzd_name like '%${qhzdName}%'
+      </if>
+      <if test="khyf!=null and khyf!='' ">
+        and khyf = #{khyf}
+      </if>
+
+    </where>
+    <if test="orderString !=null">
+      order by ${orderString}
+    </if>
+    <if test="pageIndex!=null and pageSize!=null">
+      limit #{pageIndex},#{pageSize}
+    </if>
+  </select>
+  <select id="selectPageList" parameterType="java.util.HashMap"
+          resultMap="BaseResultMap">
+    SELECT
+    t.id,t.qhzd_id,t.qhzd_name,t.issueNum,t1.avg12345Num,t.coefficient,t.proportion,t.khyf,t.score
+    FROM
+    (select  * from  t_issue_radio_kh where  khyf = #{khyf}) t
+    LEFT JOIN (
+    SELECT
+    t.qhzd_id,
+    t.avg12345Num
+    FROM
+    t_issue_radio_kh t
+    WHERE
+    t.khyf = #{newKhyf}
+    ) t1 ON t.qhzd_id = t1.qhzd_id
+    <if test="orderString !=null">
+      order by ${orderString}
+    </if>
+    <if test="pageIndex!=null and pageSize!=null">
+      limit #{pageIndex},#{pageSize}
+    </if>
+  </select>
+  <select id="selectByKhyf" resultMap="BaseResultMap" parameterType="java.util.Map">
+  select t2.id_ as qhzd_id ,t2.NAME_ as qhzd_name,IFNULL(t2.issueNum,0)as issueNum,IFNULL(t3.avg12345Num,0) as  avg12345Num,t3.coefficient,t3.proportion,t3.khyf,t3.score
+   from ( select g.id_ as qhzd_id ,g.NAME_ as qhzd_name,IFNULL(t.issueNum,0)as issueNum,IFNULL(t.avg12345Num,0) as  avg12345Num,t.coefficient,t.proportion,t.khyf,t.score from (SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_)g
+ left  join (select  *  from t_issue_radio_kh where  khyf=#{khyf}) t  on t.qhzd_id=g.id_) t3
+      LEFT JOIN (
+      SELECT * FROM	(SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
+      left JOIN (
+      select t1.issue_exec_street,COUNT(t1.issue_exec_street)issueNum,t1.khyf from(select * from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue  )t
+      INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+      and   t.`status`='16' and t.zxcz_type='1' )t1 where khyf=#{khyf} group by t1.issue_exec_street  ) c ON
+      c.issue_exec_street=b.ID_)t2 on t2.id_=t3.qhzd_id
+  </select>
+
+  <select id="selectTissue" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select * from t_issue_radio_kh WHERE khyf= #{khyf} and qhzd_id=#{id}
+  </select>
+
+</mapper>

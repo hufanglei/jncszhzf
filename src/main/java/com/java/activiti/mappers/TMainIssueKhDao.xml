@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.TMainIssueKhDao">
+
+    <resultMap id="tMainIssueKhMap" type="com.java.activiti.model.TMainIssueKhBean">
+        <result property="id" column="id"/>
+        <result property="qhzdId" column="qhzd_id"/>
+        <result property="qhzdName" column="qhzd_name"/>
+        <result property="zxcl" column="zxcl"/>
+        <result property="ajbz" column="ajbz"/>
+        <result property="ascl" column="ascl"/>
+        <result property="kscl" column="kscl"/>
+        <result property="wzxgfx" column="wzxgfx"/>
+        <result property="ffts" column="ffts"/>
+        <result property="dbwz" column="dbwz"/>
+        <result property="gzxt" column="gzxt"/>
+        <result property="sljb" column="sljb"/>
+        <result property="xcjz" column="xcjz"/>
+        <result property="xcbd" column="xcbd"/>
+        <result property="jdjc" column="jdjc"/>
+        <result property="khyf" column="khyf"/>
+        <result property="khsj" column="khsj"/>
+        <result property="bmType" column="bm_type"/>
+    </resultMap>
+
+
+    <select id="selectTMainIssueKhByPk" parameterType="int" resultMap="tMainIssueKhMap">
+        select * from t_main_issue_kh where id =#{id}
+    </select>
+
+    <insert id="insertTMainIssueKh" parameterType="com.java.activiti.model.TMainIssueKhBean">
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select IFNULL(max(id)+1,1) AS id from t_main_issue_kh
+        </selectKey>
+        insert into t_main_issue_kh(
+        id,qhzd_id,qhzd_name,zxcl,ajbz,ascl,kscl,wzxgfx,ffts,dbwz,gzxt,sljb,xcjz,xcbd,jdjc,khyf,khsj,bm_type
+        )
+        values(
+        #{id, jdbcType=INTEGER},
+        #{qhzdId, jdbcType=VARCHAR},
+        #{qhzdName, jdbcType=VARCHAR},
+        #{zxcl, jdbcType=VARCHAR},
+        #{ajbz, jdbcType=VARCHAR},
+        #{ascl, jdbcType=VARCHAR},
+        #{kscl, jdbcType=VARCHAR},
+        #{wzxgfx, jdbcType=VARCHAR},
+        #{ffts, jdbcType=VARCHAR},
+        #{dbwz, jdbcType=VARCHAR},
+        #{gzxt, jdbcType=VARCHAR},
+        #{sljb, jdbcType=VARCHAR},
+        #{xcjz, jdbcType=VARCHAR},
+        #{xcbd, jdbcType=VARCHAR},
+        #{jdjc, jdbcType=VARCHAR},
+        #{khyf, jdbcType=VARCHAR},
+        #{khsj, jdbcType=VARCHAR},
+        #{bmType, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateTMainIssueKh" parameterType="com.java.activiti.model.TMainIssueKhBean">
+        update t_main_issue_kh
+        <set>
+            <if test="qhzdId != null">
+                qhzd_id=#{qhzdId, jdbcType=VARCHAR},
+            </if>
+            <if test="qhzdName != null">
+                qhzd_name=#{qhzdName, jdbcType=VARCHAR},
+            </if>
+            <if test="zxcl != null">
+                zxcl=#{zxcl, jdbcType=VARCHAR},
+            </if>
+            <if test="ajbz != null">
+                ajbz=#{ajbz, jdbcType=VARCHAR},
+            </if>
+            <if test="ascl != null">
+                ascl=#{ascl, jdbcType=VARCHAR},
+            </if>
+            <if test="kscl != null">
+                kscl=#{kscl, jdbcType=VARCHAR},
+            </if>
+            <if test="wzxgfx != null">
+                wzxgfx=#{wzxgfx, jdbcType=VARCHAR},
+            </if>
+            <if test="ffts != null">
+                ffts=#{ffts, jdbcType=VARCHAR},
+            </if>
+            <if test="dbwz != null">
+                dbwz=#{dbwz, jdbcType=VARCHAR},
+            </if>
+            <if test="gzxt != null">
+                gzxt=#{gzxt, jdbcType=VARCHAR},
+            </if>
+            <if test="sljb != null">
+                sljb=#{sljb, jdbcType=VARCHAR},
+            </if>
+            <if test="xcjz != null">
+                xcjz=#{xcjz, jdbcType=VARCHAR},
+            </if>
+            <if test="xcbd != null">
+                xcbd=#{xcbd, jdbcType=VARCHAR},
+            </if>
+            <if test="jdjc != null">
+                jdjc=#{jdjc, jdbcType=VARCHAR},
+            </if>
+            <if test="khyf != null">
+                khyf=#{khyf, jdbcType=VARCHAR},
+            </if>
+            <if test="khsj != null">
+                khsj=#{khsj, jdbcType=VARCHAR},
+            </if>
+            <if test="bmType != null">
+                bm_type=#{bmType, jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateTMainIssueXcbd" parameterType="com.java.activiti.model.TMainIssueKhBean">
+        update t_main_issue_kh
+        <set>
+            <if test="qhzdId != null">
+                qhzd_id=#{qhzdId, jdbcType=VARCHAR},
+            </if>
+            <if test="qhzdName != null">
+                qhzd_name=#{qhzdName, jdbcType=VARCHAR},
+            </if>
+            <if test="zxcl != null">
+                zxcl=#{zxcl, jdbcType=VARCHAR},
+            </if>
+            <if test="ajbz != null">
+                ajbz=#{ajbz, jdbcType=VARCHAR},
+            </if>
+            <if test="ascl != null">
+                ascl=#{ascl, jdbcType=VARCHAR},
+            </if>
+            <if test="kscl != null">
+                kscl=#{kscl, jdbcType=VARCHAR},
+            </if>
+            <if test="wzxgfx != null">
+                wzxgfx=#{wzxgfx, jdbcType=VARCHAR},
+            </if>
+            <if test="ffts != null">
+                ffts=#{ffts, jdbcType=VARCHAR},
+            </if>
+            <if test="dbwz != null">
+                dbwz=#{dbwz, jdbcType=VARCHAR},
+            </if>
+            <if test="gzxt != null">
+                gzxt=#{gzxt, jdbcType=VARCHAR},
+            </if>
+            <if test="sljb != null">
+                sljb=#{sljb, jdbcType=VARCHAR},
+            </if>
+            <if test="xcjz != null">
+                xcjz=#{xcjz, jdbcType=VARCHAR},
+            </if>
+            <if test="xcbd != null">
+                xcbd=#{xcbd, jdbcType=VARCHAR},
+            </if>
+            <if test="jdjc != null">
+                jdjc=#{jdjc, jdbcType=VARCHAR},
+            </if>
+            <if test="khyf != null">
+                khyf=#{khyf, jdbcType=VARCHAR},
+            </if>
+            <if test="khsj != null">
+                khsj=#{khsj, jdbcType=VARCHAR},
+            </if>
+            <if test="bmType != null">
+                bm_type=#{bmType, jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectCount" resultType="int" parameterType="HashMap">
+        select count(1) from t_main_issue_kh
+        <where>
+            <if test="qhzdId!=null and qhzdId!='' ">
+                and qhzd_id = #{qhzdId}
+            </if>
+            <if test="khyf!=null and khyf!='' ">
+                and khyf = #{khyf}
+            </if>
+            <if test="bmType!=null and bmType!='' ">
+                and bm_type = #{bmType}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectListPage" parameterType="HashMap"
+            resultMap="tMainIssueKhMap">
+        select
+        t.id,t.qhzd_id,t.qhzd_name,ifnull(t.zxcl,0)zxcl,ifnull(t.ajbz,0)ajbz,ifnull(t.ascl,0)ascl,ifnull(t.kscl,0)kscl,
+        ifnull(t.wzxgfx,0)wzxgfx,ifnull(t.ffts,0)ffts,ifnull(t.dbwz,0)dbwz,ifnull(t.gzxt,0)gzxt,ifnull(t.jdjc,0)jdjc,
+        ifnull(t.xcjz,0)xcjz,ifnull(t.xcbd,0)xcbd,t.khyf,t.khsj,t.bm_type from t_main_issue_kh t
+        <where>
+
+            <if test="qhzdId!=null and qhzdId!='' ">
+                and t.qhzd_id = #{qhzdId}
+            </if>
+            <if test="khyf!=null and khyf!='' ">
+                and t.khyf = #{khyf}
+            </if>
+            <if test="bmType!=null and bmType!='' ">
+                and t.bm_type = #{bmType}
+            </if>
+
+        </where>
+        <if test="orderString !=null">
+            order by t.khyf desc
+        </if>
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectZhzf" parameterType="HashMap"
+            resultMap="tMainIssueKhMap">
+        select g.id_ as qhzd_id ,g.name_ as qhzd_name,t1.zxcl,t1.ajbz,
+        t1.ascl,t1.kscl,t1.wzxgfx,t1.ffts,
+        t1.dbwz,t1.gzxt,t1.sljb,t1.xcjz,t1.xcbd,t1.jdjc from (select * from act_id_group where pid_ is null and
+        type_=#{bmType})g left join (
+        select t.qhzd_id,t.qhzd_name,FORMAT(avg(t.zxcl),2)as zxcl,FORMAT(avg(t.ajbz),2) as ajbz,
+        FORMAT(avg(t.ascl),2) as ascl,FORMAT(avg(t.kscl),2) as kscl,FORMAT(avg(t.wzxgfx),2)as
+        wzxgfx,FORMAT(avg(t.ffts),2)as ffts,
+        FORMAT(avg(t.dbwz),2)as dbwz,FORMAT(avg(t.gzxt),2)as gzxt,FORMAT(avg(t.sljb),2) as sljb,FORMAT(avg(t.xcjz),2) as
+        xcjz,
+        FORMAT(avg(IFNULL(t.xcbd,0)),2)as xcbd,FORMAT(avg(t.jdjc),2) as jdjc
+        from t_main_issue_kh t
+        <where>
+
+            <if test="bmType!=null and bmType!='' ">
+                and t.bm_type = #{bmType}
+            </if>
+            <if test="khyf!=null and khyf!='' ">
+                and t.khyf like '${khyf}%'
+            </if>
+
+        </where>
+        GROUP BY t.qhzd_id )t1 on g.ID_=t1.qhzd_id
+
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectCountZhzf" resultType="int" parameterType="HashMap">
+        select count(*) from (select * from act_id_group where pid_ is null and type_=#{bmType})g left join (
+        select t.qhzd_id,t.qhzd_name,FORMAT(avg(t.zxcl),2)as zxcl,FORMAT(avg(t.ajbz),2) as ajbz,
+        FORMAT(avg(t.ascl),2) as ascl,FORMAT(avg(t.kscl),2) as kscl,FORMAT(avg(t.wzxgfx),2)as
+        wzxgfx,FORMAT(avg(t.ffts),2)as ffts,
+        FORMAT(avg(t.dbwz),2)as dbwz,FORMAT(avg(t.gzxt),2)as gzxt,FORMAT(avg(t.sljb),2) as sljb,FORMAT(avg(t.xcjz),2) as
+        xcjz,FORMAT(avg(t.xcbd),2)as xcbd,FORMAT(avg(t.jdjc),2) as jdjc
+        from t_main_issue_kh t
+        <where>
+
+            <if test="bmType!=null and bmType!='' ">
+                and t.bm_type = #{bmType}
+            </if>
+            <if test="khyf!=null and khyf!='' ">
+                and t.khyf like '${khyf}%'
+            </if>
+
+        </where>
+        GROUP BY t.qhzd_id )t1 on g.ID_=t1.qhzd_id
+    </select>
+
+    <select id="zhzfJdPage" parameterType="HashMap"
+            resultMap="tMainIssueKhMap">
+        select g.id_ as qhzd_id ,g.name_ as qhzd_name,t1.zxcl,t1.ajbz,
+        t1.ascl,t1.kscl,t1.wzxgfx,t1.ffts,
+        t1.dbwz,t1.gzxt,t1.sljb,t1.xcjz,t1.xcbd,t1.jdjc from (select * from act_id_group where pid_ is null and
+        type_=#{bmType})g left join (
+        select t.qhzd_id,t.qhzd_name,FORMAT(avg(t.zxcl),2)as zxcl,FORMAT(avg(t.ajbz),2) as ajbz,
+        FORMAT(avg(t.ascl),2) as ascl,FORMAT(avg(t.kscl),2) as kscl,FORMAT(avg(t.wzxgfx),2)as
+        wzxgfx,FORMAT(avg(t.ffts),2)as ffts,
+        FORMAT(avg(t.dbwz),2)as dbwz,FORMAT(avg(t.gzxt),2)as gzxt,FORMAT(avg(t.sljb),2) as sljb,FORMAT(avg(t.xcjz),2) as
+        xcjz,FORMAT(avg(IFNULL(t.xcbd,0)),2)as xcbd,
+        FORMAT(avg(t.jdjc),2) as jdjc from t_main_issue_kh t
+        <where>
+
+            <if test="bmType!=null and bmType!='' ">
+                and t.bm_type = #{bmType}
+            </if>
+            and t.khyf
+            BETWEEN #{start} and #{end}
+
+        </where>
+
+        GROUP BY t.qhzd_id )t1 on g.ID_=t1.qhzd_id
+
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectCountjd" resultType="int" parameterType="HashMap">
+        select count(t2.id_)from (select * from (select * from act_id_group where pid_ is null and type_=#{bmType})g
+        left join (
+        select t.qhzd_id,t.qhzd_name,FORMAT(avg(t.zxcl),2)as zxcl,FORMAT(avg(t.ajbz),2) as ajbz,
+        FORMAT(avg(t.ascl),2) as ascl,FORMAT(avg(t.kscl),2) as kscl,FORMAT(avg(t.wzxgfx),2)as
+        wzxgfx,FORMAT(avg(t.ffts),2)as ffts,
+        FORMAT(avg(t.dbwz),2)as dbwz,FORMAT(avg(t.gzxt),2)as gzxt,FORMAT(avg(t.sljb),2) as sljb,FORMAT(avg(t.xcjz),2) as
+        xcjz,FORMAT(avg(t.xcbd),2)as xcbd,
+        FORMAT(avg(t.jdjc),2) as jdjc
+        from t_main_issue_kh t
+        <where>
+
+            <if test="bmType!=null and bmType!='' ">
+                and t.bm_type = #{bmType}
+            </if>
+            and t.khyf
+            BETWEEN #{start} and #{end}
+
+        </where>
+        GROUP BY t.qhzd_id )t1 on g.ID_=t1.qhzd_id)t2
+    </select>
+
+    <select id="statistictDealSelf" resultType="java.util.HashMap">
+        select t1.qhdm,t1.qhmc, t1.zi_xing_counts, t2.li_an_counts, IFNULL(t1.zi_xing_counts/(t1.zi_xing_counts+t2.li_an_counts),0)*150  as score
+        FROM
+            (
+            SELECT
+              a.qhdm,
+                a.qhmc AS qhmc,
+                IFNULL(b.counts,0) as zi_xing_counts
+            FROM
+                (
+                    SELECT
+                        LEFT (qhdm, 9) AS qhdm,
+                        qhmc
+                    FROM
+                        t_sys_qhzd
+                    WHERE
+                        qhjb = 2
+                ) a
+            LEFT JOIN (
+                    select t3.counts, left(t4.org_no_,9) qhdm from
+                    (
+                    select count(add_userid) as counts ,add_userid
+                    from
+                    (select process_id , add_userid from  t_main_issue where status = '16') t1,
+                    (select proc_inst_id_ from  act_hi_taskinst where name_ in ('自处置','线下督查','街道处理') and  date_format(start_time_,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 0 MONTH),'%Y-%m')  GROUP BY proc_inst_id_)  t2
+                    where  t1.process_id = t2.proc_inst_id_
+                    )t3
+                    left join  act_id_user t4
+                    on t3.add_userid = t4.id_
+                    GROUP BY qhdm
+            ) b ON a.qhdm = b.qhdm
+            GROUP BY
+                a.qhdm
+            ) t1
+            join
+            (
+            SELECT
+              a.qhdm,
+                a.qhmc AS qhmc,
+                IFNULL(b.counts,0) as li_an_counts
+            FROM
+                (
+                    SELECT
+                        LEFT (qhdm, 9) AS qhdm,
+                        qhmc
+                    FROM
+                        t_sys_qhzd
+                    WHERE
+                        qhjb = 2
+                ) a
+            LEFT JOIN (
+                    SELECT t3.counts,left(t4.org_no_,9) as qhdm
+                    from
+                    (select count(1) as counts ,add_userid,issue_type
+                    from
+                    (select process_id, add_userid, issue_type from t_main_issue) t1,
+                    (select proc_inst_id_ from  act_hi_taskinst where name_ = '主管部门处理' and  date_format(start_time_,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 0 MONTH),'%Y-%m') GROUP BY proc_inst_id_)  t2
+                    where t1.process_id = t2.proc_inst_id_
+                    ) t3
+                    left join act_id_user t4  on t3.add_userid = t4.id_
+                    GROUP BY qhdm
+            ) b ON a.qhdm = b.qhdm
+            GROUP BY
+                a.qhdm
+            ) t2
+            on t1.qhdm = t2.qhdm
+            order by t1.qhdm
+    </select>
+
+    <select id="statistictStreetRatio" resultType="java.util.HashMap">
+        select t1.qhdm, t1.qhmc, t1.counts, t2.last_year_avg_counts, IFNULL(t1.counts/t2.last_year_avg_counts,1)*150 as score FROM
+        (
+            SELECT
+            a.qhdm,
+            a.qhmc AS qhmc,
+            IFNULL(b.counts,0) as counts
+            FROM
+            (
+            SELECT
+            LEFT (qhdm, 9) AS qhdm,
+            qhmc
+            FROM
+            t_sys_qhzd
+            WHERE
+            qhjb = 2
+            ) a
+            LEFT JOIN (
+            select count(1) AS counts ,LEFT(issue_number, 9) AS qhdm from t_main_issue where date_format(add_time,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m')
+            GROUP BY qhdm
+            )b ON a.qhdm = b.qhdm
+            GROUP BY
+            a.qhdm
+        ) t1
+        JOIN
+        (
+            SELECT
+            a.qhmc AS qhmc,
+            a.qhdm,
+            IFNULL(b.counts,0) as last_year_avg_counts
+            FROM
+            (
+            SELECT
+            LEFT (qhdm, 9) AS qhdm,
+            qhmc
+            FROM
+            t_sys_qhzd
+            WHERE
+            qhjb = 2
+            ) a
+            LEFT JOIN (
+            select IFNULL(count(1),0)/5 counts, LEFT(issue_number, 9) AS qhdm  from t_main_issue where date_format(add_time,'%Y%m') &gt;=  concat(date_format(now(),'%Y')-1,'01') and date_format(add_time,'%Y%m') &lt;=  concat(date_format(now(),'%Y')-1,'05')
+            GROUP BY qhdm
+            )b ON a.qhdm = b.qhdm
+            GROUP BY
+            a.qhdm
+        ) t2
+        on t1.qhdm = t2.qhdm
+        order by t1.qhdm
+    </select>
+
+    <select id="statistictDealOnTime" resultType="java.util.HashMap">
+        select t1.qhdm, t1.qhmc, t1.overtime_counts,t2.counts,IFNULL((1-t1.overtime_counts/t2.counts)*150,0) as score FROM
+        (
+                SELECT
+                    a.qhdm,
+                    a.qhmc AS qhmc,
+                  IFNULL(b.counts,0) as overtime_counts
+                FROM
+                (
+                        SELECT
+                            LEFT (qhdm, 9) AS qhdm,
+                            qhmc
+                        FROM
+                            t_sys_qhzd
+                        WHERE
+                            qhjb = 2
+                    ) a
+                LEFT JOIN
+                    (
+                        select count(id) as counts,left(issue_number, 9) as qhdm  from t_main_issue
+                        where status = '16' and TIMESTAMPDIFF(SECOND,add_time,end_time) > 2*24*60*60 AND add_time IS NOT NULL AND end_time IS NOT NULL and
+                            date_format(end_time,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m')
+                        group by qhdm
+                )b ON a.qhdm = b.qhdm
+                GROUP BY
+                    a.qhdm
+        ) t1
+        JOIN
+        (
+                SELECT
+                    a.qhdm,
+                    a.qhmc AS qhmc,
+                  IFNULL(b.counts,0) as counts
+                FROM
+                (
+                        SELECT
+                            LEFT (qhdm, 9) AS qhdm,
+                            qhmc
+                        FROM
+                            t_sys_qhzd
+                        WHERE
+                            qhjb = 2
+                    ) a
+                LEFT JOIN
+                    (
+                        select count(id) as counts,left(issue_number, 9) as qhdm  from t_main_issue
+                        where status = '16' AND add_time IS NOT NULL AND end_time IS NOT NULL and
+                            date_format(end_time,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m')
+                        group by qhdm
+                )b ON a.qhdm = b.qhdm
+                GROUP BY
+                    a.qhdm
+        ) t2
+        on t1.qhdm = t2.qhdm
+        order by t1.qhdm
+    </select>
+
+    <select id="statistictDealQuick" resultType="java.util.HashMap">
+        SELECT
+            a.qhdm,
+            a.qhmc AS qhmc,
+            IFNULL(b.score,0) as score
+        FROM
+        (
+                SELECT
+                    LEFT (qhdm, 9) AS qhdm,
+                    qhmc
+                FROM
+                    t_sys_qhzd
+                WHERE
+                    qhjb = 2
+            ) a
+        LEFT JOIN
+            (
+                select AVG((1-CONVERT(TIMESTAMPDIFF(SECOND,add_time,end_time),SIGNED)/(CONVERT(time_limit,SIGNED)*24*60*60))*150) as score ,left(issue_number, 9) qhdm from t_main_issue
+            where end_time IS NOT NULL and time_limit is not null and time_limit!='' and add_time is not null
+            and date_format(end_time,'%Y-%m')=date_format(DATE_SUB(curdate(), INTERVAL 1  MONTH),'%Y-%m')
+             group by qhdm
+        )b ON a.qhdm = b.qhdm
+        GROUP BY
+            a.qhdm
+        order by
+            a.qhdm
+    </select>
+
+    <select id="selectXcbd" resultMap="tMainIssueKhMap" parameterType="HashMap">
+        select * from t_main_issue_kh
+        <where>
+            <if test="qhzdDm!=null and qhzdDm!='' ">
+                and qhzd_id =#{qhzdDm}
+            </if>
+            <if test="khyf!=null and khyf!='' ">
+                and khyf like '${khyf}%'
+            </if>
+        </where>
+
+    </select>
+    <select id="selectDealSelf" resultType="java.util.HashMap" parameterType="HashMap">
+       select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf}) h LEFT JOIN (select t3.id_,t3.name_,FORMAT(IFNULL(t3.c1/(t3.c2),0)*150,2)  as score,t3.khyf  from (
+    select t1.id_,t1.name_,t1.c1,t2.c2,t2.khyf from (
+    SELECT * FROM	(SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
+          left JOIN (
+          select t1.issue_exec_street,IFNULL(COUNT(t1.issue_exec_street),0) c1,t1.khyf from
+    (select * from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like '%${khyf}%'  )t
+          INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+          and   t.`status`='16' and t.zxcz_type='1' )t1  group by t1.issue_exec_street  ) c ON
+          c.issue_exec_street=b.ID_)t1 left join(
+    SELECT * FROM	(SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
+          left JOIN (
+          select t1.issue_exec_street,IFNULL(COUNT(t1.issue_exec_street),0) c2,t1.khyf from
+    (select * from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like '%${khyf}%'  )t
+          INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+          and   t.`status`='16' and t.zxcz_type in('1','2'))t1  group by t1.issue_exec_street  ) c ON
+          c.issue_exec_street=b.ID_)t2 on t1.id_=t2.id_)t3)t6 on h.qhzd_id=t6.id_
+    </select>
+
+    <select id="onTimeList" resultType="java.util.HashMap">
+        select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf} ) h LEFT JOIN (
+    select t1.id_,t1.name_,FORMAT(IFNULL(if(t1.c1/(t2.c2)>0,t1.c1/(t2.c2),0),0)*150,2)   as score,t1.khyf from
+    (select  d.id_,d.name_,d.c1,d.khyf from (   SELECT * FROM	(select  *  FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
+     left JOIN (select t2.issue_exec,count(t2.issue_exec)as c1,t.khyf
+     from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue) t
+    INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+        and   t.`status`='16' and  t.time_limit-t.actual_time>0  and khyf= #{khyf}
+ inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number
+group BY issue_exec) c ON  c.issue_exec=b.ID_) d)t1,
+    (select  d.id_,d.name_,d.c2,d.khyf from (SELECT * FROM	(select  *  FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
+left JOIN (select t2.issue_exec,count(t2.issue_exec)as c2,t.khyf
+from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue) t
+INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+and  t.`status`='16' and khyf=#{khyf}
+inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number
+group BY issue_exec
+) c ON  c.issue_exec=b.ID_
+) d)t2 where t1.id_=t2.id_)t6  on h.qhzd_id=t6.id_
+
+    </select>
+    <select id="onTimeListWbj" resultType="java.util.HashMap">
+         select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='5'  and khyf=#{khyf}) h LEFT JOIN (
+        select t1.id_,t1.name_,FORMAT(IFNULL(if(t1.c1/(t2.c2)>0,t1.c1/(t2.c2),0),0)*150,2)   as score,t1.khyf from
+        (select  d.id_,d.name_,d.c1,d.khyf from (
+            SELECT * FROM	(select  *  FROM act_id_group WHERE	TYPE_ ='5' AND PID_ IS NULL ORDER BY TYPE_) b
+            left JOIN (select t.issue_exec_street,count(t.issue_exec_street)as c1,t.khyf
+         from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue) t
+        INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+            and   t.`status`='16' and  t.time_limit-t.actual_time>0  and khyf= #{khyf} group BY issue_exec_street) c ON
+            c.issue_exec_street=b.ID_) d)t1,
+
+        (select  d.id_,d.name_,d.c2,d.khyf from (
+            SELECT * FROM	(select  *  FROM act_id_group WHERE	TYPE_ ='5' AND PID_ IS NULL ORDER BY TYPE_) b
+            left JOIN (select t.issue_exec_street,count(t.issue_exec_street)as c2,t.khyf
+         from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue) t
+        INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+            and  t.`status`='16' and khyf=#{khyf} group BY issue_exec_street) c ON
+            c.issue_exec_street=b.ID_) d)t2 where t1.id_=t2.id_)t6  on h.qhzd_id=t6.id_
+    </select>
+    <select id="quickList" resultType="java.util.HashMap">
+       select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf}) h LEFT JOIN (
+        select  t1.id_,t1.NAME_,FORMAT(IFNULL(t2.score,0),2)score from
+		(SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_)t1
+		LEFT JOIN(select l.issue_exec ,	avg(IFNULL(if(1 - t.actual_time /t.time_limit>0,1 - t.actual_time /t.time_limit,0),0) * 150)   AS score
+         from  (select * from t_main_issue where  add_time like '%${khyf}%' ) t LEFT JOIN t_issue_lbbm l on t.issue_number=l.issue_number and
+         t.time_limit is not null GROUP BY   l.issue_exec )t2 on t1.id_=t2.issue_exec) t6   on h.qhzd_id=t6.id_
+           </select>
+    <select id="quickListWbj" resultType="java.util.HashMap">
+       	select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='5'  and khyf=#{khyf}) h LEFT JOIN (
+        select  t1.id_,t1.NAME_,FORMAT(IFNULL(t2.score,0),2)score from
+		(SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='5' AND PID_ IS NULL ORDER BY TYPE_)t1
+		LEFT JOIN(select l.issue_exec ,	avg(IFNULL(if(1 - t.actual_time /t.time_limit>0,1 - t.actual_time /t.time_limit,0),0) * 150)   AS score
+         from  (select * from t_main_issue where  add_time like '%${khyf}%') t LEFT JOIN t_issue_lbbm l on t.issue_number=l.issue_number and
+         t.time_limit is not null GROUP BY   l.issue_exec )t2 on t1.id_=t2.issue_exec ) t6   on h.qhzd_id=t6.id_
+
+    </select>
+    <select id="selectDcdbList" resultType="java.util.HashMap">
+select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf}) h LEFT JOIN (
+ SELECT	g.id_,g.name_,FORMAT(IFNULL(a.c,0),2)as score,a.source_id,a.source_name FROM
+    (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) g
+    left join(SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name
+    FROM (select  * from `t_issue_dcdb_kh` where khyf like '2018-04%') d group  by d.qhzd_id,d.source_id)a on g.id_=a.qhzd_id
+    ORDER BY g.TYPE_)  t6   on h.qhzd_id=t6.id_
+
+    </select>
+    <select id="selectDcdbWbjList" resultType="java.util.HashMap">
+select h.id,h.qhzd_id,h.qhzd_name,t6.score from (select * from t_main_issue_kh where  bm_type='5'  and khyf=#{khyf}) h LEFT JOIN (
+          SELECT	g.id_,g.name_,FORMAT(IFNULL(a.c,0),2)as score,a.source_id,a.source_name FROM
+    (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='5' AND PID_ IS NULL ORDER BY TYPE_) g
+    left join(SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name
+    FROM (select  * from `t_issue_dcdb_kh` where khyf like '%${khyf}%') d group  by d.qhzd_id,d.source_id)a on g.id_=a.qhzd_id
+    ORDER BY g.TYPE_)  t6   on h.qhzd_id=t6.id_
+
+
+    </select>
+    <select id="zfhjList" resultType="java.util.HashMap">
+        select h.id,h.qhzd_id,h.qhzd_name,t6.score from (select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf}) h LEFT JOIN (
+        SELECT	t5.id_,	t5.name_,FORMAT(IFNULL(t5.c1/(t5.c2),0)*150,2)  as score FROM(
+        select t3.id_,t3.name_,t3.c1,t4.c2,t3.khyf from
+                (SELECT b.id_,b.name_,IFNULL(c.issueNum2,0) as c1,c.khyf FROM
+        (SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
+      left JOIN (
+      select t1.issue_exec_street,COUNT(t1.issue_exec_street)issueNum2,t1.khyf from(SELECT t.* from
+        (select a.main_issue_id as main_issue_id,count(a.main_issue_id) as count from (select * from t_attachment where addtime like '%${khyf}%')a
+        where a.type=1 or a.type=5
+        GROUP BY a.main_issue_id
+        HAVING  count=2
+        ORDER BY a.main_issue_id) as b LEFT JOIN (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue )t
+				on  b.main_issue_id=t.id  and t.khyf= #{khyf})t1
+				   group by t1.issue_exec_street  ) c ON
+      c.issue_exec_street=b.ID_)t3
+      left join
+        (SELECT * FROM	(SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
+      left JOIN (
+      select t1.issue_exec_street,IFNULL(COUNT(t1.issue_exec_street),0) c2,t1.khyf from(select * from
+      (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like '%${khyf}%' )t
+      INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+      and   t.`status`='16' and t.zxcz_type='1' )t1  group by t1.issue_exec_street  ) c ON
+      c.issue_exec_street=b.ID_)t4 on t3.id_=t4.id_)t5)t6 on h.qhzd_id=t6.id_
+    </select>
+    <select id="zfhjWbjList" resultType="java.util.HashMap">
+      select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='5'  and khyf=#{khyf}) h LEFT JOIN (
+        SELECT	t5.id_,	t5.name_,FORMAT(IFNULL(t6.c1/(t6.c2),0)*150,2)  as score FROM
+        (SELECT id_,	NAME_,TYPE_ FROM act_id_group WHERE	TYPE_='5' AND PID_ IS NULL ORDER BY TYPE_ ) t5
+            LEFT JOIN (select  t3.c1,t4.c2,t3.pid_ from
+        (select count(t1.pid_)c1,t1.pid_ from  (
+        SELECT * FROM	act_id_group b
+        INNER JOIN (select * from (select * from t_main_issue WHERE add_time like '%${khyf}%') t  INNER JOIN act_id_membership a
+        ON t.add_userid = a.USER_ID_  and t.zxcz_type='1') c ON
+        c.group_id_=b.ID_)t1
+        inner JOIN
+        (SELECT * from
+        (select main_issue_id as main_issue_id,count(main_issue_id) as count from t_attachment
+        where type=1 or type=5
+        GROUP BY main_issue_id
+        HAVING  count=2
+        ORDER BY main_issue_id) as b
+        )t2 on t1.id=t2.main_issue_id)t3
+        ,
+        (select  count(d.pid_) c2,	d.pid_ from (
+            SELECT * FROM	act_id_group b
+            INNER JOIN (select * from (select * from t_main_issue WHERE add_time like '%${khyf}%') t  INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+         and t.zxcz_type='1') c ON
+            c.group_id_=b.ID_) d)t4)t6 on t5.id_ = t6.pid_)t6  on h.qhzd_id=t6.id_
+    </select>
+    <select id="selectFftsList" resultType="java.util.HashMap">
+      select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf}) h LEFT JOIN (
+      SELECT	g.id_,g.name_,FORMAT(IFNULL(a.c,0),2)as score,a.source_id,a.source_name FROM
+        (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL  ORDER BY TYPE_) g
+        left join(SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name
+        FROM (select  * from `t_issue_dcdb_kh` where khyf like '%${khyf}%' and source_id='反复投诉') d
+    group  by d.qhzd_id,d.source_id)a on g.id_=a.qhzd_id )t6  on h.qhzd_id=t6.id_
+    </select>
+    <select id="selectFftsWbjList" resultType="java.util.HashMap">
+         select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='5'  and khyf=#{khyf}) h LEFT JOIN (
+        SELECT	g.id_,g.name_,FORMAT(IFNULL(a.c,0),2)as score,a.source_id,a.source_name FROM
+        (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='5' AND PID_ IS NULL  ORDER BY TYPE_) g
+        left join(SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name
+        FROM (select  * from `t_issue_dcdb_kh` where khyf like '%${khyf}%'and source_id='反复投诉') d
+        group  by d.qhzd_id,d.source_id)a on g.id_=a.qhzd_id)t6  on h.qhzd_id=t6.id_
+    </select>
+    <select id="selectDbwzList" resultType="java.util.HashMap">
+         select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf}) h LEFT JOIN (
+        SELECT	g.id_,g.name_,FORMAT(IFNULL(a.c,0),2)as score,a.source_id,a.source_name FROM
+        (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL  ORDER BY TYPE_) g
+        left join(SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name
+        FROM (select  * from `t_issue_dcdb_kh` where khyf like '%${khyf}%'and source_id='督办问责') d
+         group  by d.qhzd_id,d.source_id)a on g.id_=a.qhzd_id)t6  on h.qhzd_id=t6.id_
+
+    </select>
+    <select id="selectDbwzWbjList" resultType="java.util.HashMap">
+         select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='5'  and khyf=#{khyf}) h LEFT JOIN (
+        SELECT	g.id_,g.name_,FORMAT(IFNULL(a.c,0),2)as score,a.source_id,a.source_name FROM
+        (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='5' AND PID_ IS NULL  ORDER BY TYPE_) g
+        left join(SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name
+        FROM (select  * from `t_issue_dcdb_kh` where khyf like '%${khyf}%'and source_id='督办问责') d
+        group  by d.qhzd_id,d.source_id)a on g.id_=a.qhzd_id )t6  on h.qhzd_id=t6.id_
+
+
+
+    </select>
+    <select id="selectGzxtList" resultType="java.util.HashMap">
+    select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf}) h LEFT JOIN (
+        SELECT	g.id_,g.name_,FORMAT(IFNULL(a.c,0),2)as score,a.source_id,a.source_name FROM
+        (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL  ORDER BY TYPE_) g
+        left join(SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name
+        FROM (select  * from `t_issue_dcdb_kh` where khyf like '%${khyf}%'and source_id='工作协调') d
+        group  by d.qhzd_id,d.source_id)a on g.id_=a.qhzd_id )t6  on h.qhzd_id=t6.id_
+
+    </select>
+    <select id="selectGzxtWbjList" resultType="java.util.HashMap">
+ select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='5'  and khyf=#{khyf}) h LEFT JOIN (
+        SELECT	g.id_,g.name_,FORMAT(IFNULL(a.c,0),2)as score,a.source_id,a.source_name FROM
+        (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='5' AND PID_ IS NULL  ORDER BY TYPE_) g
+        left join(SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name
+        FROM (select  * from `t_issue_dcdb_kh` where khyf like '%${khyf}%'and source_id='工作协调') d
+         group  by d.qhzd_id,d.source_id)a on g.id_=a.qhzd_id )t6  on h.qhzd_id=t6.id_
+
+
+    </select>
+    <select id="selectJdjcListt" resultType="java.util.HashMap">
+ select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf}) h LEFT JOIN (
+        SELECT	g.id_,g.name_,FORMAT(IFNULL(a.c,0),2)as score,a.source_id,a.source_name FROM
+        (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL   ORDER BY TYPE_ ) g
+        left join(SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name
+        FROM (select  * from `t_issue_dcdb_kh` where khyf like '%${khyf}%'and source_id='监督检查') d
+         group  by d.qhzd_id,d.source_id)a on g.id_=a.qhzd_id)t6  on h.qhzd_id=t6.id_
+
+    </select>
+    <select id="selectJdjcWbjList" resultType="java.util.HashMap">
+ select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='5'  and khyf=#{khyf}) h LEFT JOIN (
+        SELECT	g.id_,g.name_,FORMAT(IFNULL(a.c,0),2)as score,a.source_id,a.source_name FROM
+        (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='5' AND PID_ IS NULL  ORDER BY TYPE_) g
+        left join(SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name
+        FROM (select  * from `t_issue_dcdb_kh` where khyf like '%${khyf}%'and source_id='监督检查') d
+         group  by d.qhzd_id,d.source_id)a on g.id_=a.qhzd_id )t6  on h.qhzd_id=t6.id_
+    </select>
+    <select id="selectXcjzList" resultType="java.util.HashMap">
+ select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf}) h LEFT JOIN (
+        SELECT	g.id_,g.name_,FORMAT(IFNULL(a.c,0),2)as score,a.source_id,a.source_name FROM
+        (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL  ORDER BY TYPE_) g
+        left join(SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name
+        FROM (select  * from `t_issue_dcdb_kh` where khyf like '%${khyf}%'and source_id='巡查机制') d
+         group  by d.qhzd_id,d.source_id)a on g.id_=a.qhzd_id)t6  on h.qhzd_id=t6.id_
+    </select>
+
+
+</mapper>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.activiti.dao.TIssueXcbdKhMapper" >
+  <resultMap id="BaseResultMap" type="com.java.activiti.model.TIssueXcbdKh" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="qhzd_dm" property="qhzdDm" jdbcType="VARCHAR" />
+    <result column="qhzd_mc" property="qhzdMc" jdbcType="VARCHAR" />
+    <result column="khyf" property="khyf" jdbcType="VARCHAR" />
+    <result column="countrywlmt" property="countrywlmt" jdbcType="INTEGER" />
+    <result column="countryfwlmt" property="countryfwlmt" jdbcType="INTEGER" />
+    <result column="provincewlmt" property="provincewlmt" jdbcType="INTEGER" />
+    <result column="provincefwlmt" property="provincefwlmt" jdbcType="INTEGER" />
+    <result column="citywlmt" property="citywlmt" jdbcType="INTEGER" />
+    <result column="cityfwlmt" property="cityfwlmt" jdbcType="INTEGER" />
+    <result column="districtwlmt" property="districtwlmt" jdbcType="INTEGER" />
+    <result column="districtfwlmt" property="districtfwlmt" jdbcType="INTEGER" />
+    <result column="score" property="score" jdbcType="FLOAT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, qhzd_dm, qhzd_mc, countrywlmt, countryfwlmt, provincewlmt, provincefwlmt, citywlmt, 
+    cityfwlmt, districtwlmt, districtfwlmt, score, create_time,khyf
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_issue_xcbd_kh
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByMonth" resultType="int" parameterType="HashMap">
+    select count(1) from t_issue_xcbd_kh
+    <where>
+      <if test="month != null and month != ''">
+         khyf = #{month}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByMonth" resultMap="BaseResultMap" parameterType="HashMap" >
+    select
+    <include refid="Base_Column_List" />
+      from t_issue_xcbd_kh
+    <where>
+      <if test="month != null and month != ''">
+         khyf = #{month}
+      </if>
+    </where>
+    order by create_time desc
+    <if test="pageIndex!=null and pageSize!=null">
+      limit #{pageIndex},#{pageSize}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_issue_xcbd_kh
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.java.activiti.model.TIssueXcbdKh" >
+    insert into t_issue_xcbd_kh (id, qhzd_dm, qhzd_mc, 
+      countrywlmt, countryfwlmt, provincewlmt, 
+      provincefwlmt, citywlmt, cityfwlmt, 
+      districtwlmt, districtfwlmt, score, 
+      create_time,khyf)
+    values (#{id,jdbcType=INTEGER}, #{qhzdDm,jdbcType=VARCHAR}, #{qhzdMc,jdbcType=VARCHAR}, 
+      #{countrywlmt,jdbcType=INTEGER}, #{countryfwlmt,jdbcType=INTEGER}, #{provincewlmt,jdbcType=INTEGER}, 
+      #{provincefwlmt,jdbcType=INTEGER}, #{citywlmt,jdbcType=INTEGER}, #{cityfwlmt,jdbcType=INTEGER}, 
+      #{districtwlmt,jdbcType=INTEGER}, #{districtfwlmt,jdbcType=INTEGER}, #{score,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{khyf,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.java.activiti.model.TIssueXcbdKh" >
+    insert into t_issue_xcbd_kh
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="qhzdDm != null" >
+        qhzd_dm,
+      </if>
+      <if test="qhzdMc != null" >
+        qhzd_mc,
+      </if>
+      <if test="countrywlmt != null" >
+        countrywlmt,
+      </if>
+      <if test="countryfwlmt != null" >
+        countryfwlmt,
+      </if>
+      <if test="provincewlmt != null" >
+        provincewlmt,
+      </if>
+      <if test="provincefwlmt != null" >
+        provincefwlmt,
+      </if>
+      <if test="citywlmt != null" >
+        citywlmt,
+      </if>
+      <if test="cityfwlmt != null" >
+        cityfwlmt,
+      </if>
+      <if test="districtwlmt != null" >
+        districtwlmt,
+      </if>
+      <if test="districtfwlmt != null" >
+        districtfwlmt,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="khyf != null" >
+        khyf
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="qhzdDm != null" >
+        #{qhzdDm,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdMc != null" >
+        #{qhzdMc,jdbcType=VARCHAR},
+      </if>
+      <if test="countrywlmt != null" >
+        #{countrywlmt,jdbcType=INTEGER},
+      </if>
+      <if test="countryfwlmt != null" >
+        #{countryfwlmt,jdbcType=INTEGER},
+      </if>
+      <if test="provincewlmt != null" >
+        #{provincewlmt,jdbcType=INTEGER},
+      </if>
+      <if test="provincefwlmt != null" >
+        #{provincefwlmt,jdbcType=INTEGER},
+      </if>
+      <if test="citywlmt != null" >
+        #{citywlmt,jdbcType=INTEGER},
+      </if>
+      <if test="cityfwlmt != null" >
+        #{cityfwlmt,jdbcType=INTEGER},
+      </if>
+      <if test="districtwlmt != null" >
+        #{districtwlmt,jdbcType=INTEGER},
+      </if>
+      <if test="districtfwlmt != null" >
+        #{districtfwlmt,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="khyf != null" >
+        #{khyf,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.java.activiti.model.TIssueXcbdKh" >
+    update t_issue_xcbd_kh
+    <set >
+      <if test="qhzdDm != null" >
+        qhzd_dm = #{qhzdDm,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdMc != null" >
+        qhzd_mc = #{qhzdMc,jdbcType=VARCHAR},
+      </if>
+      <if test="countrywlmt != null" >
+        countrywlmt = #{countrywlmt,jdbcType=INTEGER},
+      </if>
+      <if test="countryfwlmt != null" >
+        countryfwlmt = #{countryfwlmt,jdbcType=INTEGER},
+      </if>
+      <if test="provincewlmt != null" >
+        provincewlmt = #{provincewlmt,jdbcType=INTEGER},
+      </if>
+      <if test="provincefwlmt != null" >
+        provincefwlmt = #{provincefwlmt,jdbcType=INTEGER},
+      </if>
+      <if test="citywlmt != null" >
+        citywlmt = #{citywlmt,jdbcType=INTEGER},
+      </if>
+      <if test="cityfwlmt != null" >
+        cityfwlmt = #{cityfwlmt,jdbcType=INTEGER},
+      </if>
+      <if test="districtwlmt != null" >
+        districtwlmt = #{districtwlmt,jdbcType=INTEGER},
+      </if>
+      <if test="districtfwlmt != null" >
+        districtfwlmt = #{districtfwlmt,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="khyf != null" >
+        khyf = #{khyf,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.java.activiti.model.TIssueXcbdKh" >
+    update t_issue_xcbd_kh
+    set qhzd_dm = #{qhzdDm,jdbcType=VARCHAR},
+      qhzd_mc = #{qhzdMc,jdbcType=VARCHAR},
+      countrywlmt = #{countrywlmt,jdbcType=INTEGER},
+      countryfwlmt = #{countryfwlmt,jdbcType=INTEGER},
+      provincewlmt = #{provincewlmt,jdbcType=INTEGER},
+      provincefwlmt = #{provincefwlmt,jdbcType=INTEGER},
+      citywlmt = #{citywlmt,jdbcType=INTEGER},
+      cityfwlmt = #{cityfwlmt,jdbcType=INTEGER},
+      districtwlmt = #{districtwlmt,jdbcType=INTEGER},
+      districtfwlmt = #{districtfwlmt,jdbcType=INTEGER},
+      score = #{score,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      khyf = #{khyf,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="checkXcbd" parameterType="Hashmap" resultType="int" >
+    select count(*)c from t_issue_xcbd_kh
+    <where>
+      <if test="qhzdDm!=null and qhzdDm!='' ">
+        and qhzd_dm=#{qhzdDm}
+      </if>
+      <if test="khyf!=null and khyf!='' ">
+        and khyf = #{khyf}
+      </if>
+    </where>
+  </select>
+  <select id="selectXcbd" parameterType="Hashmap" resultMap="BaseResultMap" >
+    select count(*)c from t_issue_xcbd_kh
+    <where>
+      <if test="qhzdDm!=null and qhzdDm!='' ">
+        and qhzd_dm=#{qhzdDm}
+      </if>
+      <if test="khyf!=null and khyf!='' ">
+        and khyf = #{khyf}
+      </if>
+    </where>
+  </select>
+
+  <select id="showXcbdDetails" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from t_issue_xcbd_kh
+    where khyf=#{khyf} and qhzd_dm=#{jgmc}
+  </select>
+</mapper>

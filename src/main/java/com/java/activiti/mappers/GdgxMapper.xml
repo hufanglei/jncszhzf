@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.GdgxDao">
+
+
+    <resultMap id="tMainIssueMap" type="com.java.activiti.model.TMainIssueBean">
+        <result property="id" column="id"/>
+        <result property="issueNumber" column="issue_number"/>
+        <result property="addUserTel" column="add_user_tel"/>
+        <result property="addUserid" column="add_userid"/>
+        <result property="addTime" column="add_time"/>
+        <result property="isMultiExector" column="is_multi_exector"/>
+        <result property="issueExecDept" column="issue_exec_dept"/>
+        <result property="belongWeibanjuId" column="belong_weibanju_id"/>
+        <result property="issueTime" column="issue_time"/>
+        <result property="issueSource" column="issue_source"/>
+        <result property="issueType" column="issue_type"/>
+        <result property="issueSubject" column="issue_subject"/>
+        <result property="issueDesc" column="issue_desc"/>
+        <result property="requestorType" column="requestor_type"/>
+        <result property="refCompanyName" column="ref_company_name"/>
+        <result property="orgId" column="org_id"/>
+        <result property="requestorName" column="requestor_name"/>
+        <result property="requestorTel" column="requestor_tel"/>
+        <result property="requestorIdcard" column="requestor_idcard"/>
+        <result property="requestorSex" column="requestor_sex"/>
+        <result property="requestorAge" column="requestor_age"/>
+        <result property="requestorAddress" column="requestor_address"/>
+        <result property="hasModLimit" column="has_mod_limit"/>
+        <result property="timeLimit" column="time_limit"/>
+        <result property="emrgencyLevel" column="emrgency_level"/>
+        <result property="comment" column="comment"/>
+        <result property="endTime" column="end_time"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+        <result property="addrDesc" column="addr_desc"/>
+        <result property="status" column="status"/>
+        <result property="evaluationStatus" column="evaluation_status"/>
+        <result property="evaluationLevel" column="evaluation_level"/>
+        <result property="d1" column="d1"/>
+        <result property="processId" column="process_id"/>
+        <result property="isArchived" column="is_archived"/>
+        <result property="whoReported" column="who_reported"/>
+        <result property="isOpen" column="is_open"/>
+        <result property="dealWay" column="deal_way"/>
+        <result property="isPassDistrictcenter" column="is_pass_districtcenter"/>
+    </resultMap>
+
+    <select id="selectGdgxIssueCountByClause" resultType="int" parameterType="HashMap">
+        SELECT count(1) from `t_main_issue` as a ,`act_hi_procinst` as b
+        <where>
+            a.process_id=b.PROC_INST_ID_
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+            and a.add_time >= #{createTime}
+            ]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+            and a.add_time <= #{endTime}
+            ]]>
+            </if>
+            <if test="issueSubject!=null and issueSubject!='' ">
+                and a.issue_subject like (concat(#{issueSubject},'%'))
+            </if>
+            <if test="userId !=null and userId != ''">
+                AND a.issue_number like (
+                SELECT
+                concat(replace(LEFT (c.ORG_NO_, 9),'000',''),'%') AS org_no
+                FROM
+                `act_id_user` c
+                WHERE
+                c.id_ = #{userId})
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectGdgxIssueByClause" parameterType="HashMap" resultMap="tMainIssueMap">
+        SELECT a.* FROM `t_main_issue` as a ,`act_hi_procinst` as b
+        <where>
+            a.process_id=b.PROC_INST_ID_
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and a.add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and a.add_time <= #{endTime}
+				]]>
+            </if>
+            <if test="issueSubject!=null and issueSubject!='' ">
+                and a.issue_subject like (concat(#{issueSubject},'%'))
+            </if>
+            <if test="userId !=null and userId != ''">
+                AND a.issue_number like (
+                SELECT
+                concat(replace(LEFT (c.ORG_NO_, 9),'000',''),'%') AS org_no
+                FROM
+                `act_id_user` c
+                WHERE
+                c.id_ = #{userId})
+            </if>
+        </where>
+        <if test="orderString !=null">
+            order by a.id desc
+        </if>
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+
+    <select id="selectGdgxWgyIssueCountByClause" resultType="int" parameterType="HashMap">
+        SELECT COUNT(DISTINCT a.id) FROM `t_main_issue` as a ,`act_hi_identitylink` as b
+        <where>
+            a.process_id=b.PROC_INST_ID_
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and a.add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and a.add_time <= #{endTime}
+				]]>
+            </if>
+            <if test="issueSubject!=null and issueSubject!='' ">
+                and a.issue_subject like (concat(#{issueSubject},'%'))
+            </if>
+            <if test="userId !=null and userId != ''">
+                and b.USER_ID_ like concat(#{userId},'%')
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectGdgxWgyIssueByClause" parameterType="HashMap" resultMap="tMainIssueMap">
+        SELECT DISTINCT a.* FROM `t_main_issue` as a ,`act_hi_identitylink` as b
+        <where>
+            a.process_id=b.PROC_INST_ID_
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and a.add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and a.add_time <= #{endTime}
+				]]>
+            </if>
+            <if test="userId !=null and userId != ''">
+                and b.USER_ID_ like concat(#{userId},'%')
+            </if>
+            <if test="issueSubject!=null and issueSubject!='' ">
+                and a.issue_subject like (concat( #{issueSubject},'%'))
+            </if>
+        </where>
+        <if test="orderString !=null">
+            order by a.id desc
+        </if>
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectGdgxIssueCountByGroupId" resultType="int" parameterType="HashMap">
+        SELECT count(1) from `t_main_issue` as a left join t_issue_lbbm d on a.issue_number=d.issue_number
+        left join `act_hi_procinst` as b on a.process_id=b.PROC_INST_ID_
+        <where>
+            <if test="status!=null and status!='' ">
+                and status = '16'
+            </if>
+            <if test="issueExecStreet!=null and issueExecStreet!='' ">
+                and d.issue_exec = #{issueExecStreet}
+            </if>
+
+            <if test="caseType!=null and caseType!='' ">
+                and a.case_type = #{caseType}
+            </if>
+            <if test="caseType!=null and caseType!='' ">
+                and a.case_type = #{caseType}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+            and a.add_time >= #{createTime}
+            ]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+            and a.add_time <= #{endTime}
+            ]]>
+            </if>
+            <if test="issueSubject!=null and issueSubject!='' ">
+                and a.issue_subject like (concat(#{issueSubject},'%'))
+            </if>
+            <if test="userId !=null and userId != ''">
+                AND a.issue_number like (
+                SELECT
+                concat(replace(LEFT (c.ORG_NO_, 9),'000',''),'%') AS org_no
+                FROM
+                `act_id_user` c
+                WHERE
+                c.id_ = #{userId})
+            </if>
+        </where>
+    </select>
+    <select id="selectZzajWgyIssueCount" resultType="int" parameterType="HashMap">
+        SELECT count(a.id) FROM t_main_issue a
+        inner JOIN act_hi_identitylink b ON a.process_id = b.PROC_INST_ID_
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject=c.id
+        LEFT JOIN t_sys_zd t1 ON a.STATUS = t1.dmbh
+        INNER JOIN act_id_membership m ON a.add_userid = m.USER_ID_
+        <where>
+            t1.dmmc = 'statuscode'
+            and b.TYPE_ = 'participant'
+            and `status`!=16
+            <if test="userId!=null and userId!='' ">
+                and b.`USER_ID_` = #{userId}
+            </if>
+            <if test="caseType!=null and caseType!='' ">
+                and a.case_type = #{caseType}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and a.add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and a.add_time <= #{endTime}
+				]]>
+            </if>
+            <!--   <if test="userId !=null and userId != ''">
+                   and b.USER_ID_ like concat(#{userId},'%')
+               </if>-->
+            <if test="issueSubject != null and issueSubject != ''">
+                and a.issue_subject like concat(#{issueSubject},'%')
+            </if>
+        </where>
+
+    </select>
+    <select id="selectZzajIssueCount" resultType="int" parameterType="HashMap">
+        SELECT count(DISTINCT a.id) FROM `t_main_issue` As a
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject=c.id left join `act_hi_identitylink` AS b on
+        a.process_id=b.PROC_INST_ID_
+        left join t_issue_lbbm d on a.issue_number=d.issue_number
+        LEFT JOIN act_id_membership t1 ON a.add_userid = t1.USER_ID_
+        LEFT JOIN act_id_group t2 on t1.GROUP_ID_= t2.ID_
+        <where>
+            and status !='16'
+            and b.TYPE_ = 'participant'
+
+            <if test="issueExecStreet!=null and issueExecStreet!='' ">
+                and t2.PID_ = #{issueExecStreet}
+            </if>
+            <!-- <if test="issueExecDept!=null and issueExecDept!='' ">
+                 and a.issue_exec_dept = #{issueExecDept}
+             </if>-->
+            <if test="caseType!=null and caseType!='' ">
+                and a.case_type = #{caseType}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and a.add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and a.add_time <= #{endTime}
+				]]>
+            </if>
+            <if test="issueSubject != null and issueSubject != ''">
+                and a.issue_subject like concat(#{issueSubject},'%')
+            </if>
+            <if test="userId !=null and userId != ''">
+                AND a.issue_number like (
+                SELECT
+                concat(replace(LEFT (c.ORG_NO_, 9),'000',''),'%') AS org_no
+                FROM
+                `act_id_user` c
+                WHERE
+                c.id_ = #{userId})
+            </if>
+        </where>
+
+    </select>
+    <select id="selectGdgxIssueCountByDept" resultType="int" parameterType="HashMap">
+        select COUNT(1) from (select
+        wbj_bh,id,issue_number,issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,is_open from(
+        SELECT substring_index(substring_index(a.issue_exec_dept,',',b.help_topic_id + 1),',' ,- 1) AS wbj_bh,a.*FROM(
+        SELECT*FROM t_main_issue WHERE issue_exec_dept IS NOT NULL ) a
+        JOIN mysql.help_topic b ON b.help_topic_id &lt;(length(a.issue_exec_dept) - length(REPLACE (a.issue_exec_dept,
+        ',', '')) + 1)) t)a,act_hi_procinst b
+
+        <where>
+            a.process_id=b.PROC_INST_ID_
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="issueExecDept!=null and issueExecDept!='' ">
+                and a.wbj_bh = #{issueExecDept}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+            and a.add_time >= #{createTime}
+            ]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+            and a.add_time <= #{endTime}
+            ]]>
+                <if test="caseType!=null and caseType!='' ">
+                    and a.case_type = #{caseType}
+                </if>
+            </if>
+            <if test="issueSubject != null and issueSubject != ''">
+                and a.issue_subject like concat(#{issueSubject},'%')
+            </if>
+            <if test="userId !=null and userId != ''">
+                AND a.issue_number like (
+                SELECT
+                concat(replace(LEFT (c.ORG_NO_, 9),'000',''),'%') AS org_no
+                FROM
+                `act_id_user` c
+                WHERE
+                c.id_ = #{userId})
+            </if>
+        </where>
+    </select>
+    <select id="selectGdgxWgyIssueByGroupId" parameterType="HashMap" resultMap="tMainIssueMap">
+        SELECT DISTINCT d.issue_exec, a.id,a.issue_number,c.name
+        issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,is_open FROM `t_main_issue`
+        As a
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject=c.id left join `act_hi_identitylink` AS b on
+        a.process_id=b.PROC_INST_ID_
+        left join t_issue_lbbm d on a.issue_number=d.issue_number
+        <where>
+
+            <if test="status!=null and status!='' ">
+                and status ='16'
+            </if>
+            <if test="issueExecStreet!=null and issueExecStreet!='' ">
+                and d.issue_exec = #{issueExecStreet}
+            </if>
+            <if test="caseType!=null and caseType!='' ">
+                and a.case_type = #{caseType}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and a.add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and a.add_time <= #{endTime}
+				]]>
+            </if>
+            <if test="userId !=null and userId != ''">
+                and b.USER_ID_ like concat(#{userId},'%')
+            </if>
+            <if test="issueSubject != null and issueSubject != ''">
+                and a.issue_subject like concat(#{issueSubject},'%')
+            </if>
+        </where>
+        <!--<if test="orderString !=null">-->
+        order by a.id desc
+        <!--</if>-->
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectZzajWgyIssueByGroupId" parameterType="HashMap" resultMap="tMainIssueMap">
+        SELECT a.id,issue_number,c.name issue_subject,process_id,t1.dmms as
+        `status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,is_open FROM t_main_issue a
+        inner JOIN act_hi_identitylink b ON a.process_id = b.PROC_INST_ID_
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject=c.id
+        LEFT JOIN t_sys_zd t1 ON a.STATUS = t1.dmbh
+        INNER JOIN act_id_membership m ON a.add_userid = m.USER_ID_
+        <where>
+            t1.dmmc = 'statuscode'
+            and b.TYPE_ = 'participant'
+            and `status`!=16
+            <if test="userId!=null and userId!='' ">
+                and b.`USER_ID_` = #{userId}
+            </if>
+            <if test="caseType!=null and caseType!='' ">
+                and a.case_type = #{caseType}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and a.add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and a.add_time <= #{endTime}
+				]]>
+            </if>
+            <!--   <if test="userId !=null and userId != ''">
+                   and b.USER_ID_ like concat(#{userId},'%')
+               </if>-->
+            <if test="issueSubject != null and issueSubject != ''">
+                and a.issue_subject like concat(#{issueSubject},'%')
+            </if>
+        </where>
+        <!--<if test="orderString !=null">-->
+        ORDER BY add_time desc
+        <!--</if>-->
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectGdgxIssueByDept" parameterType="HashMap" resultMap="tMainIssueMap">
+        select wbj_bh,a.id,issue_number,c.name
+        issue_subject,,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,is_open from(
+        SELECT substring_index( substring_index(a.issue_exec_dept,',',b.help_topic_id + 1),',' ,- 1) AS wbj_bh,a.*FROM(
+        SELECT*FROM t_main_issue WHERE issue_exec_dept IS NOT NULL ) a
+        JOIN mysql.help_topic b ON b.help_topic_id &lt;(length(a.issue_exec_dept) - length( REPLACE (a.issue_exec_dept,
+        ',', '')) + 1)) a LEFT JOIN t_sys_sxgkzd c ON a.issue_subject=c.id
+        left join act_hi_identitylink b on a.process_id=b.PROC_INST_ID_
+
+        <where>
+
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="issueExecDept!=null and issueExecDept!='' ">
+                and a.wbj_bh = #{issueExecDept}
+            </if>
+            <if test="caseType!=null and caseType!='' ">
+                and a.case_type = #{caseType}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and a.add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and a.add_time <= #{endTime}
+				]]>
+            </if>
+            <if test="userId !=null and userId != ''">
+                and b.USER_ID_ like concat(#{userId},'%')
+            </if>
+            <if test="issueSubject != null and issueSubject != ''">
+                and a.issue_subject like concat(#{issueSubject},'%')
+            </if>
+        </where>
+        <!--<if test="orderString !=null">-->
+        order by a.id desc
+        <!--</if>-->
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectGdgxIssueByGroupId" parameterType="HashMap" resultMap="tMainIssueMap">
+        SELECT DISTINCT d.issue_exec, a.id,a.issue_number,c.name
+        issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,is_open FROM `t_main_issue`
+        As a
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject=c.id left join `act_hi_identitylink` AS b on
+        a.process_id=b.PROC_INST_ID_
+        left join t_issue_lbbm d on a.issue_number=d.issue_number
+        <where>
+            <if test="status!=null and status!='' ">
+                and status ='16'
+            </if>
+            <if test="issueExecStreet!=null and issueExecStreet!='' ">
+                and d.issue_exec = #{issueExecStreet}
+            </if>
+            <!-- <if test="issueExecDept!=null and issueExecDept!='' ">
+                 and a.issue_exec_dept = #{issueExecDept}
+             </if>-->
+            <if test="caseType!=null and caseType!='' ">
+                and a.case_type = #{caseType}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and a.add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and a.add_time <= #{endTime}
+				]]>
+            </if>
+            <if test="issueSubject != null and issueSubject != ''">
+                and a.issue_subject like concat(#{issueSubject},'%')
+            </if>
+            <if test="userId !=null and userId != ''">
+                AND a.issue_number like (
+                SELECT
+                concat(replace(LEFT (c.ORG_NO_, 9),'000',''),'%') AS org_no
+                FROM
+                `act_id_user` c
+                WHERE
+                c.id_ = #{userId})
+            </if>
+        </where>
+        <!--<if test="orderString !=null">-->
+        order by a.id desc
+        <!--</if>-->
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+
+        </if>
+    </select>
+    <select id="selectZzajIssueByGroupId" parameterType="HashMap" resultMap="tMainIssueMap">
+        SELECT DISTINCT d.issue_exec, a.id,a.issue_number,c.name issue_subject,process_id,t3.dmms as
+        `status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,is_open FROM `t_main_issue`
+        As a
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject=c.id left join `act_hi_identitylink` AS b on
+        a.process_id=b.PROC_INST_ID_
+        left join t_issue_lbbm d on a.issue_number=d.issue_number
+        LEFT JOIN act_id_membership t1 ON a.add_userid = t1.USER_ID_
+        LEFT JOIN act_id_group t2 on t1.GROUP_ID_= t2.ID_
+        LEFT JOIN t_sys_zd t3 ON a.STATUS = t3.dmbh
+        <where>
+            and status !='16'
+            and b.TYPE_ = 'participant'
+            and t3.dmmc = 'statuscode'
+            <if test="issueExecStreet!=null and issueExecStreet!='' ">
+                and t2.PID_ = #{issueExecStreet}
+            </if>
+            <!-- <if test="issueExecDept!=null and issueExecDept!='' ">
+                 and a.issue_exec_dept = #{issueExecDept}
+             </if>-->
+            <if test="caseType!=null and caseType!='' ">
+                and a.case_type = #{caseType}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and a.add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and a.add_time <= #{endTime}
+				]]>
+            </if>
+            <if test="issueSubject != null and issueSubject != ''">
+                and a.issue_subject like concat(#{issueSubject},'%')
+            </if>
+            <if test="userId !=null and userId != ''">
+                AND a.issue_number like (
+                SELECT
+                concat(replace(LEFT (c.ORG_NO_, 9),'000',''),'%') AS org_no
+                FROM
+                `act_id_user` c
+                WHERE
+                c.id_ = #{userId})
+            </if>
+        </where>
+        <!--<if test="orderString !=null">-->
+        order by a.id desc
+        <!--</if>-->
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+
+        </if>
+    </select>
+    <select id="selectGdgxIssueBydept" parameterType="HashMap" resultMap="tMainIssueMap">
+        select wbj_bh,a.id,issue_number,c.name
+        issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,is_open from(
+        SELECT substring_index( substring_index(a.issue_exec_dept,',',b.help_topic_id + 1),',' ,- 1) AS wbj_bh,a.*FROM(
+        SELECT*FROM t_main_issue WHERE issue_exec_dept IS NOT NULL ) a
+        JOIN mysql.help_topic b ON b.help_topic_id &lt;(length(a.issue_exec_dept) - length( REPLACE (a.issue_exec_dept,
+        ',', '')) + 1)) a LEFT JOIN t_sys_sxgkzd c ON a.issue_subject=c.id
+        left join act_hi_identitylink b on a.process_id=b.PROC_INST_ID_
+
+        <where>
+
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="caseType!=null and caseType!='' ">
+                and a.case_type = #{caseType}
+            </if>
+            <if test="issueExecDept!=null and issueExecDept!='' ">
+                and a.wbj_bh = #{issueExecDept}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and a.add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and a.add_time <= #{endTime}
+				]]>
+            </if>
+            <if test="issueSubject != null and issueSubject != ''">
+                and a.issue_subject like concat(#{issueSubject},'%')
+            </if>
+            <if test="userId !=null and userId != ''">
+                AND a.issue_number like (
+                SELECT
+                concat(replace(LEFT (c.ORG_NO_, 9),'000',''),'%') AS org_no
+                FROM
+                `act_id_user` c
+                WHERE
+                c.id_ = #{userId})
+            </if>
+        </where>
+        <!--<if test="orderString !=null">-->
+        order by a.id desc
+        <!--</if>-->
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selecAttachList" parameterType="string" resultType="java.util.HashMap">
+        SELECT
+        a.id,
+        a.main_issue_id,
+        c.USERNAME_,
+        a.addtime,
+        a.type,
+        a.name,
+        a.size,
+        a.save_path
+        FROM
+        t_attachment a
+        LEFT JOIN t_main_issue b ON a.main_issue_id = b.id
+        LEFT JOIN act_id_user c ON a.add_user_id = c.ID_
+        <where>
+            -- 1=1
+            <!--<if test="processId != null and processId != ''">-->
+            b.process_id = #{processId}
+            <!--</if>-->
+        </where>
+    </select>
+    <select id="selecPtAttachList" parameterType="string" resultType="java.util.HashMap">
+       select  t2.id, t2.main_issue_id,c.USERNAME_, t2.addtime, t2.type,t2.name,t2.size, t2.save_path from (select  t1.* from (
+        select  * from t_issue_dcdb_kh where process_id=#{processId}) t
+        left  join  t_main_issue t1 on  t.issueNum=t1.issue_number
+        )t3 LEFT JOIN t_attachment t2
+        on t2.main_issue_id=t3.id
+         LEFT JOIN act_id_user c ON t2.add_user_id = c.ID_
+    </select>
+    <select id="selecDbAttachList" parameterType="string" resultType="java.util.HashMap">
+        SELECT
+        a.id,
+        a.main_issue_id,
+        c.USERNAME_,
+        a.addtime,
+        a.type,
+        a.name,
+        a.size,
+        a.save_path
+        FROM
+        t_dcdb_attachment a
+        LEFT JOIN t_issue_dcdb_kh b ON a.main_issue_id = b.id
+        LEFT JOIN act_id_user c ON a.add_user_id = c.ID_
+        <where>
+            -- 1=1
+            <!--<if test="processId != null and processId != ''">-->
+            b.process_id = #{processId}
+            <!--</if>-->
+        </where>
+    </select>
+</mapper>

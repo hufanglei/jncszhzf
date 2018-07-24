@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.PowerListMapper">
+
+    <resultMap id="powerListMap" type="com.java.activiti.model.PowerListBean">
+        <result property="id" column="id"/>
+        <result property="powerCode" column="power_code"/>
+        <result property="ssWeibanju" column="ss_weibanju"/>
+        <result property="powerDesc" column="power_desc"/>
+        <result property="execLevel" column="exec_level"/>
+        <result property="limitedWorkdays" column="limited_workdays"/>
+    </resultMap>
+
+    <!--
+    <association property="userTypeBean" column="FK_USER_TYPE_ID"
+        javaType="com.sugon.mssq.model.UserTypeBean" select="userType.selectUserTypeById" />
+     -->
+
+    <select id="selectPowerListByClause" parameterType="HashMap"
+            resultMap="powerListMap">
+        select * from t_sys_power_list
+        <where>
+
+            <if test="paramEqual !=null and paramEqual != ''">
+                and col = #{paramEqual}
+            </if>
+            <if test="paramIN !=null and paramIN != ''">
+                and col in (${paramIN})
+            </if>
+
+            <if test="paramLike !=null and paramLike != ''">
+                and col like '%${paramLike}%'
+            </if>
+            <if test="paramStartStringDate != null and paramStartStringDate != ''">
+                <![CDATA[
+					and col >= #{paramStartStringDate}   
+					 ]]>
+            </if>
+            <if test="paramEndStringDate != null and paramEndStringDate != ''">
+                <![CDATA[
+					and col <= #{paramEndStringDate}
+					 ]]>
+            </if>
+            <if test="paramStartDate !=null and paramStartDate != ''">
+                <![CDATA[
+					and to_char(col,'YYYY-MM-DD') >= #{paramStartDate}
+					 ]]>
+            </if>
+            <if test="paramEndDate !=null and paramEndDate != ''">
+                <![CDATA[
+					and to_char(col,'YYYY-MM-DD') <= #{paramEndDate}
+					 ]]>
+            </if>
+            <if test="paramList != null and paramList != ''">
+                and col in
+                <foreach close=")" collection="paramList" index="index" item="item" open="(" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+        <if test="orderString !=null">
+            order by ${orderString}
+        </if>
+        <if test="begin != null">
+            <if test="pageSize !=null">
+                limit #{begin},#{pageSize}
+            </if>
+        </if>
+    </select>
+    <select id="selectPowerByClause" parameterType="HashMap" resultMap="powerListMap">
+        select * from t_sys_power_list
+        <where>
+            <if test="ssWeibanju !=null and ssWeibanju != ''">
+                and ss_weibanju = #{ssWeibanju}
+            </if>
+        </where>
+        <if test="orderString !=null">
+            order by id desc
+        </if>
+        <if test="page!=null and pageSize!=null">
+            limit #{page},#{pageSize}
+        </if>
+    </select>
+    <select id="selectPowerListByPk" parameterType="int" resultMap="powerListMap">
+		select * from t_sys_power_list where id =#{id}
+	</select>
+    <select id="selectSsWeibanju" resultMap="powerListMap">
+		select DISTINCT t.ss_weibanju from t_sys_power_list t
+	</select>
+
+    <select id="selectPowerListCountByClause" resultType="java.lang.Integer" parameterType="HashMap">
+        select count(*) from t_sys_power_list
+        <where>
+            <if test="ssWeibanju !=null and ssWeibanju != ''">
+                and ss_weibanju = #{ssWeibanju}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertPowerList" parameterType="com.java.activiti.model.PowerListBean">
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+
+
+            select IFNULL(max(id)+1,1) from t_sys_power_list
+        </selectKey>
+        <!--  IF PK IS STRING
+        oracle
+        <selectKey resultType="string" keyProperty="testPk" order="BEFORE">
+             select to_char(nvl(max(to_number(test_pk))+1,1)) from TB_TEST
+        </selectKey>
+
+        postgre
+        <selectKey resultType="string" keyProperty="testPk" order="BEFORE">
+             select to_char(COALESCE(max(to_number(test_pk,'999999999'))+1,1),'999999999') from TB_TEST
+        </selectKey>
+    -->
+        insert into t_sys_power_list(
+        id,power_code,ss_weibanju,power_desc,exec_level,limited_workdays
+        )
+        values(
+        #{id, jdbcType=INTEGER},
+        #{powerCode, jdbcType=VARCHAR},
+        #{ssWeibanju, jdbcType=VARCHAR},
+        #{powerDesc, jdbcType=VARCHAR},
+        #{execLevel, jdbcType=VARCHAR},
+        #{limitedWorkdays, jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deletePowerList" parameterType="int">
+		delete from t_sys_power_list where id = #{id}
+	</delete>
+    <delete id="deletePower" parameterType="String">
+		delete from t_sys_power_list where id = #{id}
+	</delete>
+    <update id="updatePowerList" parameterType="com.java.activiti.model.PowerListBean">
+        update t_sys_power_list
+        <set>
+            <if test="powerCode != null">
+                power_code=#{powerCode, jdbcType=VARCHAR},
+            </if>
+            <if test="ssWeibanju != null">
+                ss_weibanju=#{ssWeibanju, jdbcType=VARCHAR},
+            </if>
+            <if test="powerDesc != null">
+                power_desc=#{powerDesc, jdbcType=VARCHAR},
+            </if>
+            <if test="execLevel != null">
+                exec_level=#{execLevel, jdbcType=VARCHAR},
+            </if>
+
+            limited_workdays=#{limitedWorkdays, jdbcType=INTEGER}
+
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

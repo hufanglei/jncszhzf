@@ -1,0 +1,26 @@
+	*{margin: 0;padding: 0;}
+			html,body{height: 100%;}
+			.inner{width:1050px;margin:0 auto}
+			.top{height:75px;line-height: 75px;background: #fff;}
+			.top .inner span{display: block;float: left;height: 75px;color: #40c6c3;text-shadow: 2px 2px 6px #40c6c3;font-size: 22px;}
+			.top .inner i{font-style: normal;color: #999999;font-size: 20px;width:450px;float:right}
+			.bottom{color:#999;height: 75px;line-height: 75px;text-align: center;font-size: 14px;}
+			section{background-color:#40c6c3;}
+			section .inner{background:url(../images/login-bg.png) center left no-repeat ; height:100%;background-size: 50%;display: flex;align-items: center;justify-content:flex-end}
+			.login{width:450px;float:right;width:410px;background: #f2f7ff;padding: 0 48px;margin-right: 40px;}
+			.login h2{margin: 0;height: 80px;line-height: 80px;font-size: 20px;}
+			section .inner form input{width:100%;height: 38px;line-height: 38px;padding-left: 49px;padding-right:30px !important;border:1px solid #c5c5c5;padding-right: 5px;margin-bottom: 7px;}
+			section .inner form .user{position: relative;}
+			section .inner form .user span{position: absolute;left: 1px;top:1px;font-size: 22px;background-color: #e8ebf0;color:#FFFFFF;width: 40px;text-align: center;height: 36px;}
+			section .inner form .user i{position: absolute;right: 10px;top:6px;font-size: 18px;cursor:pointer}
+			section .inner form .yzm input{width:102px;padding: 0 24px;font-size: 14px;margin-bottom: 0;}
+			.yzBox{display: flex;align-items: center;height: 42px;justify-content: space-between;margin-bottom: 15px;}
+			.yzpic{width:58px;height: 38px;}
+			.again{color:#999;display: block;}
+			.btns{display: flex;justify-content: space-between;}
+			.btns button{width:135px;height: 40px;background-color: #1194fc;color: #FFFFFF;border: none;outline: none;}
+			.localpsw{display: flex;justify-content: space-between;height: 35px;line-height: 35px;color:#333;margin-top: 10px;margin-bottom: 20px;}
+			.localpsw .jzpsw{position: relative;padding-left: 25px;cursor: pointer;}
+			.localpsw .jzpsw span{display: block;position: absolute;top:11px;height: 12px;width: 12px;border:2px solid #ccc;left: 5px;}
+			.localpsw .jzpsw .active{background-color: #40c6c3;}
+			section .inner form .error{color:#d44950;border-color: #d44950;}

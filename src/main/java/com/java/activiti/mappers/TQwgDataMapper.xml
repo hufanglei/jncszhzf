@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.TQwgDataMapper">
+
+	<resultMap id="tQwgDataMap" type="com.java.activiti.model.TQwgDataBean">
+		<result property="id" column="id" />
+		<result property="orderno" column="orderno" />
+		<result property="sourceid" column="sourceid" />
+		<result property="sourceperson" column="sourceperson" />
+		<result property="sourcemobile" column="sourcemobile" />
+		<result property="flowattachfiledubbos" column="flowattachfiledubbos" />
+		<result property="occurlocation" column="occurlocation" />
+		<result property="completedata" column="completedata" />
+		<result property="title" column="title" />
+		<result property="occurdate" column="occurdate" />
+		<result property="content" column="content" />
+		<result property="issuetypeid" column="issuetypeid" />
+		<result property="occurorg" column="occurorg" />
+		<result property="sourcename" column="sourcename" />
+	</resultMap>
+
+	<!-- 
+	<association property="userTypeBean" column="FK_USER_TYPE_ID"
+		javaType="com.sugon.mssq.model.UserTypeBean" select="userType.selectUserTypeById" />
+	 -->
+		 
+	<select id="selectTQwgDataByClause" parameterType="HashMap"
+		resultMap="tQwgDataMap">
+		select  t1.* from  t_qwg_data t1 LEFT JOIN t_qwg_status t2 on  t1.orderNo=t2.orderNo
+		<where>
+
+			<if test="1==1">
+				and t2.status='RECIEVE'  and t2.issuccess='true'
+			</if>
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+			limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectTQwgDataByPk" parameterType="int" resultMap="tQwgDataMap">
+		select * from t_qwg_data where orderno =#{orderno}
+	</select>
+
+	<select id="selectTQwgDataCountByClause" resultType="int" parameterType="HashMap">
+
+		select  count(*) from  t_qwg_data t1 LEFT JOIN t_qwg_status t2 on  t1.orderNo=t2.orderNo
+		<where>
+		<!--	<if test="issueTypeId !=null and issueTypeId != ''">
+				and issueTypeId = #{issueTypeId}
+			</if>-->
+			<if test="1==1">
+				and t2.status='RECIEVE'  and t2.issuccess='true'
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertTQwgData" parameterType="com.java.activiti.model.TQwgDataBean" >
+		<selectKey resultType="int" keyProperty="id" order="BEFORE">
+			 
+			 
+			 select IFNULL(max(id)+1,1) from t_qwg_data</selectKey>
+		<!--  IF PK IS STRING
+		oracle
+		<selectKey resultType="string" keyProperty="testPk" order="BEFORE">
+			 select to_char(nvl(max(to_number(test_pk))+1,1)) from TB_TEST
+		</selectKey>
+		
+		postgre
+		<selectKey resultType="string" keyProperty="testPk" order="BEFORE">
+			 select to_char(COALESCE(max(to_number(test_pk,'999999999'))+1,1),'999999999') from TB_TEST
+		</selectKey>
+	-->
+		insert into t_qwg_data(
+		orderno,sourceid,sourceperson,sourcemobile,flowattachfiledubbos,occurlocation,completedata,title,occurdate,content,issuetypeid,occurorg,sourcename
+		)
+		values( 
+		#{orderno, jdbcType=VARCHAR}, 
+		#{sourceid, jdbcType=VARCHAR}, 
+		#{sourceperson, jdbcType=VARCHAR}, 
+		#{sourcemobile, jdbcType=VARCHAR}, 
+		#{flowattachfiledubbos, jdbcType=VARCHAR}, 
+		#{occurlocation, jdbcType=VARCHAR}, 
+		#{completedata, jdbcType=VARCHAR}, 
+		#{title, jdbcType=VARCHAR}, 
+		#{occurdate, jdbcType=VARCHAR}, 
+		#{content, jdbcType=VARCHAR}, 
+		#{issuetypeid, jdbcType=INTEGER}, 
+		#{occurorg, jdbcType=VARCHAR}, 
+		#{sourcename, jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertTQwgDataBatch" parameterType="java.util.List" >
+		insert into t_qwg_data(
+		orderno,sourceid,sourceperson,sourcemobile,flowattachfiledubbos,occurlocation,completedata,title,occurdate,content,issuetypeid,occurorg,sourcename
+		)
+		values 
+		<foreach collection ="list" item="item" index= "index" separator =",">
+		(
+		#{item.orderno, jdbcType=VARCHAR}, 
+		#{item.sourceid, jdbcType=VARCHAR}, 
+		#{item.sourceperson, jdbcType=VARCHAR}, 
+		#{item.sourcemobile, jdbcType=VARCHAR}, 
+		#{item.flowattachfiledubbos, jdbcType=VARCHAR}, 
+		#{item.occurlocation, jdbcType=VARCHAR}, 
+		#{item.completedata, jdbcType=VARCHAR}, 
+		#{item.title, jdbcType=VARCHAR}, 
+		#{item.occurdate, jdbcType=VARCHAR}, 
+		#{item.content, jdbcType=VARCHAR}, 
+		#{item.issuetypeid, jdbcType=INTEGER}, 
+		#{item.occurorg, jdbcType=VARCHAR}, 
+		#{item.sourcename, jdbcType=VARCHAR}
+		)
+		</foreach >
+	</insert>
+
+	<delete id="deleteTQwgData" parameterType="int">
+		delete from t_qwg_data where orderno = #{orderno}
+	</delete>
+
+	<update id="updateTQwgData" parameterType="com.java.activiti.model.TQwgDataBean">
+		update t_qwg_data 
+		<set>
+		<if test = "sourceid != null">
+		sourceid=#{sourceid, jdbcType=VARCHAR},
+		</if>
+		<if test = "sourceperson != null">
+		sourceperson=#{sourceperson, jdbcType=VARCHAR},
+		</if>
+		<if test = "sourcemobile != null">
+		sourcemobile=#{sourcemobile, jdbcType=VARCHAR},
+		</if>
+		<if test = "flowattachfiledubbos != null">
+		flowattachfiledubbos=#{flowattachfiledubbos, jdbcType=VARCHAR},
+		</if>
+		<if test = "occurlocation != null">
+		occurlocation=#{occurlocation, jdbcType=VARCHAR},
+		</if>
+		<if test = "completedata != null">
+		completedata=#{completedata, jdbcType=VARCHAR},
+		</if>
+		<if test = "title != null">
+		title=#{title, jdbcType=VARCHAR},
+		</if>
+		<if test = "occurdate != null">
+		occurdate=#{occurdate, jdbcType=VARCHAR},
+		</if>
+		<if test = "content != null">
+		content=#{content, jdbcType=VARCHAR},
+		</if>
+		<if test = "issuetypeid != null">
+		issuetypeid=#{issuetypeid, jdbcType=INTEGER},
+		</if>
+		<if test = "occurorg != null">
+		occurorg=#{occurorg, jdbcType=VARCHAR},
+		</if>
+		<if test = "sourcename != null">
+		sourcename=#{sourcename, jdbcType=VARCHAR}
+		</if>
+		</set>
+		where orderno = #{orderno}
+	</update>
+	<select id="selectTQwgDataByOrderNo" parameterType="HashMap"
+			resultMap="tQwgDataMap">
+		select * from t_qwg_data
+		<where>
+			<if test="orderNo !=null and orderNo != ''">
+				and orderNo = #{orderNo}
+			</if>
+			<if test="1==1">
+				and orderNo not in (SELECT orderNo FROM t_qwg_status WHERE status != 'RECIEVE')
+			</if>
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+				limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+</mapper>

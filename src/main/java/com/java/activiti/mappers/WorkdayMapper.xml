@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.WorkdayDao">
+
+	<resultMap id="workdayMap" type="com.java.activiti.model.WorkdayBean">
+		<result property="id" column="id" />
+		<result property="year" column="year" />
+		<result property="workday" column="workday" />
+	</resultMap>
+	
+	<resultMap id="workdayString" type="String">
+		<result property="workday" column="workday" />
+	</resultMap>
+	
+	<select id="selectWorkdayByClause" parameterType="HashMap"
+		resultMap="workdayString">
+		select * from t_sys_workday
+		<where>
+			<if test="year !=null and year != ''">
+				and year = #{year}
+			</if>
+			<if test="paramEqual !=null and paramEqual != ''">
+				and col = #{paramEqual}
+			</if>
+			<if test="paramIN !=null and paramIN != ''">
+				and  col in (${paramIN})
+			</if>
+			
+			<if test="paramLike !=null and paramLike != ''">
+				and col like '%${paramLike}%'
+			</if>
+			<if test="paramStartStringDate != null and paramStartStringDate != ''">
+				<![CDATA[
+					and col >= #{paramStartStringDate}   
+					 ]]>
+			</if>
+			<if test="paramEndStringDate != null and paramEndStringDate != ''">
+					 <![CDATA[
+					and col <= #{paramEndStringDate}
+					 ]]>
+			</if>
+			<if test="paramStartDate !=null and paramStartDate != ''">
+				 <![CDATA[
+					and workday >= #{paramStartDate}
+					 ]]>
+			</if>
+			<if test="paramEndDate !=null and paramEndDate != ''">
+				 <![CDATA[
+					and workday <= #{paramEndDate}
+					 ]]>
+			</if>
+			<if test="paramList != null and paramList.size>0">
+                 and  col in
+                <foreach close=")" collection="paramList" index="index" item="item" open="(" separator="," >
+                     #{item}
+                </foreach>
+            </if>
+				
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+			limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectWorkdayByPk" parameterType="int" resultMap="workdayMap">
+		select * from t_sys_workday where id =#{id}
+	</select>
+
+	<select id="selectWorkdayCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from t_sys_workday
+		<where>
+			
+		</where>
+	</select>
+	<select id="selectWorkdayCountByWorkDay" resultType="int" parameterType="String">
+		select count(*) from t_sys_workday where workday=#{temp}
+	</select>
+
+	<insert id="insertWorkday" parameterType="com.java.activiti.model.WorkdayBean" >
+		<selectKey resultType="int" keyProperty="id" order="BEFORE">
+			 select IFNULL(max(id)+1,1) AS id from t_sys_workday
+		</selectKey>
+		insert into t_sys_workday(
+		id,year,workday)
+		values
+		(
+		#{id, jdbcType=INTEGER},
+		#{year, jdbcType=VARCHAR},
+		#{workday, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<delete id="deleteWorkdayByYear" parameterType="String">
+		delete from t_sys_workday where year = #{year}
+	</delete>
+
+	<delete id="deleteWorkday" parameterType="int">
+		delete from t_sys_workday where id = #{id}
+	</delete>
+
+	<update id="updateWorkday" parameterType="com.java.activiti.model.WorkdayBean">
+		update t_sys_workday 
+		<set>
+		<if test = "year != null">
+		year=#{year, jdbcType=VARCHAR},
+		</if>
+		<if test = "workday != null">
+		workday=#{workday, jdbcType=VARCHAR}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

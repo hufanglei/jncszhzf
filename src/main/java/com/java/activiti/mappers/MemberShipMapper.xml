@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.activiti.dao.MemberShipDao">
+
+    <resultMap type="MemberShip" id="MemberShipResult">
+        <result property="userId" column="USER_ID_"/>
+        <result property="groupId" column="GROUP_ID_"/>
+        <collection property="user" column="USER_ID_"
+                    ofType="com.java.activiti.model.User">
+            <result property="id" column="id_"/>
+            <result property="userName" column="username_"/>
+            <result property="tel" column="tel_"/>
+            <result property="email" column="email_"/>
+            <result property="password" column="pwd_"/>
+            <result property="orgNumber" column="ORG_NO_"/>
+            <result property="userTypeID" column="userTypeID"/>
+        </collection>
+        <collection property="group" column="GROUP_ID_"
+                    ofType="com.java.activiti.model.Group">
+            <result property="groupId" column="gid_"/>
+            <result property="groupName" column="name_"/>
+            <result property="groupTag" column="type_"/>
+        </collection>
+    </resultMap>
+
+    <select id="userLogin" parameterType="Map" resultMap="MemberShipResult">
+		select m.user_id_,m.group_id_,u.ID_,u.USERNAME_,u.TEL_,u.PWD_,u.EMAIL_,u.ORG_NO_,g.ID_ as gid_,g.NAME_,g.TYPE_,u.userTypeID
+		from act_id_membership as m,
+				 act_id_group as g,
+				 act_id_user as u
+		    where m.GROUP_ID_=g.ID_ and 
+				  m.USER_ID_=u.ID_  and 
+				  u.PWD_=#{password} and 
+		      	  u.ID_=#{userName}
+	</select>
+
+    <select id="getMemberShipByClase" parameterType="Map" resultMap="MemberShipResult">
+        select m.user_id_,m.group_id_,u.ID_,u.USERNAME_,u.TEL_,u.PWD_,u.EMAIL_,u.ORG_NO_,g.ID_ as gid_,g.NAME_,g.TYPE_
+        from act_id_membership as m,
+        act_id_group as g,
+        act_id_user as u
+        where m.GROUP_ID_=g.ID_ and
+        m.USER_ID_=u.ID_
+
+        <if test="orgno !=null and orgno != ''">
+            and u.org_no_ like '${orgno}%'
+        </if>
+        limit 1
+    </select>
+
+    <delete id="deleteMemberShipByUserId" parameterType="java.lang.String">
+		delete from act_id_membership
+		where USER_ID_ = #{userId,jdbcType=VARCHAR}
+	</delete>
+
+    <insert id="addMemberShip" parameterType="MemberShip">
+		insert into act_id_membership values(#{user.id},#{group.groupId});
+	</insert>
+
+    <select id="login" parameterType="Map" resultMap="MemberShipResult">
+		SELECT t1.ID_ AS user_id_,t3.id AS group_id_,t1.ID_, t1.USERNAME_,t1.TEL_,t1.PWD_,t1.EMAIL_,t1.ORG_NO_,t3.id AS gid_,t3.group_name AS NAME_,
+		      t4.role_id AS TYPE_,t1.userTypeID
+		FROM act_id_user AS t1
+		JOIN act_group_role t2 ON t1.userTypeID = t2.group_id
+		JOIN act_user_group t3 ON t2.group_id = t3.id
+		JOIN act_role t4 ON t2.role_id = t4.role_id
+		WHERE t1.PWD_=#{password} and t1.ID_=#{userName};
+	</select>
+    <select id="getStreetGroupIdByUserId" parameterType="java.lang.String"   resultType="java.lang.String" >
+        select t3.ID_
+        from act_id_membership t1
+        left join act_id_group t2 on t1.GROUP_ID_ =  t2.ID_ and  t1.USER_ID_ = #{userId}
+        join act_id_group t3 on  t2.PID_= t3.PID_ and t3.TYPE_='2'
+    </select>
+</mapper> 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/decorators">
+
+
+
+	<excludes>
+		<pattern>/page/manage/*</pattern>
+		<pattern>/page/except/*</pattern>
+		<pattern>/page/sub/*</pattern>
+	</excludes>
+
+
+
+<!-- 	<decorator name="minmainFrame" page="minmainframe.jsp">
+	</decorator> -->
+	<decorator name="mainFrame" page="mainframe.jsp">
+
+		<pattern>/page/map/*.jsp</pattern>
+		<pattern>/page/admin/*.jsp</pattern>
+		<pattern>/page/issues/*.jsp</pattern>
+		<pattern>/page/charts/*.jsp</pattern>
+		<pattern>/page/jxkh/*.jsp</pattern>
+		<pattern>/page/logs/*.jsp</pattern>
+		<pattern>/page/gdgx/*.jsp</pattern>
+<!-- 		<pattern>/page/*.html</pattern> -->
+	</decorator>
+
+
+
+
+</decorators>

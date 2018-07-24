@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.activiti.dao.IssueDealMapper" >
+  <resultMap id="BaseResultMap" type="com.java.activiti.model.IssueDeal" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="act_comment_id" property="actCommentId" jdbcType="VARCHAR" />
+    <result column="deal_way" property="dealWay" jdbcType="VARCHAR" />
+    <result column="process_id" property="processId" jdbcType="VARCHAR" />
+    <result column="issue_number" property="issueNumber" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, act_comment_id, deal_way, process_id, issue_number, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from issue_deal
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from issue_deal
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.java.activiti.model.IssueDeal" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into issue_deal (act_comment_id, deal_way, process_id, 
+      issue_number, create_time)
+    values (#{actCommentId,jdbcType=VARCHAR}, #{dealWay,jdbcType=VARCHAR}, #{processId,jdbcType=VARCHAR}, 
+      #{issueNumber,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.java.activiti.model.IssueDeal" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into issue_deal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actCommentId != null" >
+        act_comment_id,
+      </if>
+      <if test="dealWay != null" >
+        deal_way,
+      </if>
+      <if test="processId != null" >
+        process_id,
+      </if>
+      <if test="issueNumber != null" >
+        issue_number,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actCommentId != null" >
+        #{actCommentId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealWay != null" >
+        #{dealWay,jdbcType=VARCHAR},
+      </if>
+      <if test="processId != null" >
+        #{processId,jdbcType=VARCHAR},
+      </if>
+      <if test="issueNumber != null" >
+        #{issueNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.java.activiti.model.IssueDeal" >
+    update issue_deal
+    <set >
+      <if test="actCommentId != null" >
+        act_comment_id = #{actCommentId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealWay != null" >
+        deal_way = #{dealWay,jdbcType=VARCHAR},
+      </if>
+      <if test="processId != null" >
+        process_id = #{processId,jdbcType=VARCHAR},
+      </if>
+      <if test="issueNumber != null" >
+        issue_number = #{issueNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.java.activiti.model.IssueDeal" >
+    update issue_deal
+    set act_comment_id = #{actCommentId,jdbcType=VARCHAR},
+      deal_way = #{dealWay,jdbcType=VARCHAR},
+      process_id = #{processId,jdbcType=VARCHAR},
+      issue_number = #{issueNumber,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

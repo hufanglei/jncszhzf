@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.activiti.dao.TissueLbbmMapper" >
+  <resultMap id="BaseResultMap" type="com.java.activiti.model.TissueLbbmBean" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="issue_number" property="issueNumber" jdbcType="VARCHAR" />
+    <result column="issue_exec" property="issueExec" jdbcType="VARCHAR" />
+    <result column="exec_type" property="execType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, issue_number, issue_exec, exec_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_issue_lbbm
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_issue_lbbm
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.java.activiti.model.TissueLbbmBean" >
+    insert into t_issue_lbbm (id, issue_number, issue_exec, 
+      exec_type)
+    values (#{id,jdbcType=INTEGER}, #{issueNumber,jdbcType=VARCHAR}, #{issueExec,jdbcType=VARCHAR}, 
+      #{execType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.java.activiti.model.TissueLbbmBean" >
+    insert into t_issue_lbbm
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="issueNumber != null" >
+        issue_number,
+      </if>
+      <if test="issueExec != null" >
+        issue_exec,
+      </if>
+      <if test="execType != null" >
+        exec_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="issueNumber != null" >
+        #{issueNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="issueExec != null" >
+        #{issueExec,jdbcType=VARCHAR},
+      </if>
+      <if test="execType != null" >
+        #{execType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.java.activiti.model.TissueLbbmBean" >
+    update t_issue_lbbm
+    <set >
+      <if test="issueNumber != null" >
+        issue_number = #{issueNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="issueExec != null" >
+        issue_exec = #{issueExec,jdbcType=VARCHAR},
+      </if>
+      <if test="execType != null" >
+        exec_type = #{execType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.java.activiti.model.TissueLbbmBean" >
+    update t_issue_lbbm
+    set issue_number = #{issueNumber,jdbcType=VARCHAR},
+      issue_exec = #{issueExec,jdbcType=VARCHAR},
+      exec_type = #{execType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

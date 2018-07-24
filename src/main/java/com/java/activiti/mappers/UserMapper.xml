@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.activiti.dao.UserDao">
+	<resultMap type="User" id="UserResult">
+		<result property="id" column="id_" jdbcType="VARCHAR"/>
+		<result property="userName" column="username_" jdbcType="VARCHAR"/>
+		<result property="tel" column="tel_" jdbcType="VARCHAR"/>
+		<result property="email" column="email_" jdbcType="VARCHAR"/>
+		<result property="password" column="pwd_" jdbcType="VARCHAR"/>
+		<result property="orgNumber" column="org_no_" jdbcType="VARCHAR"/>
+		<result property="userTypeID" column="userTypeID" jdbcType="VARCHAR"/>
+	</resultMap>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="UserResult">
+		select * from act_id_user where id_=#{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from act_id_user
+		where ID_ = #{id,jdbcType=VARCHAR}
+	</delete>
+	<update id="updateByPrimaryKeySelective" parameterType="com.java.activiti.model.User">
+		update act_id_user
+		<set>
+			<if test="userName!=null and userName!='' ">
+				username_=#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="tel!=null and tel!='' ">
+				tel_=#{tel,jdbcType=VARCHAR},
+			</if>
+			<if test="email!=null and email!='' ">
+				email_=#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="password!=null and password!='' ">
+				pwd_=#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="orgNumber!=null and orgNumber!='' ">
+				org_no_=#{orgNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="userTypeID != null">
+				userTypeID=#{userTypeID,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id_=#{id,jdbcType=VARCHAR}
+	</update>
+	<insert id="addUser" parameterType="com.java.activiti.model.User">
+		insert into act_id_user
+		values (#{id,jdbcType=VARCHAR},
+		null,
+		#{userName,jdbcType=VARCHAR},
+		#{tel,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		null,
+		#{orgNumber,jdbcType=VARCHAR},
+		#{userTypeID,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="selectUsersTable" parameterType="Map" resultMap="UserResult">
+		SELECT t1.* FROM act_id_user t1
+		JOIN act_id_membership t2 ON t1.ID_=t2.USER_ID_
+		JOIN act_id_group t3 ON t3.ID_=t2.GROUP_ID_
+		<where>
+			<if test="groupPid!=null and groupPid!='' ">
+				and t3.PID_ = #{groupPid}
+			</if>
+			<if test="groupId!=null and groupId!='' ">
+				and t2.GROUP_ID_ = #{groupId}
+			</if>
+		</where>
+		<if test="pageIndex!=null and pageSize!=null">
+			limit #{pageIndex},#{pageSize}
+		</if>
+	</select>
+
+	<select id="selectUsersTableCount" parameterType="Map" resultType="int">
+		select count(1) FROM act_id_user t1
+		JOIN act_id_membership t2 ON t1.ID_=t2.USER_ID_
+		JOIN act_id_group t3 ON t3.ID_=t2.GROUP_ID_
+		<where>
+			<if test="userId!=null and userId!='' ">
+				and t1.ID_ = #{userId}
+			</if>
+			<if test="groupPid!=null and groupPid!='' ">
+				and t3.PID_ = #{groupPid}
+			</if>
+			<if test="groupId!=null and groupId!='' ">
+				and t2.GROUP_ID_ = #{groupId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getUsersByOrgNumber" parameterType="Map" resultMap="UserResult">
+		select * from act_id_user
+		<where>
+			<if test="orgNumber!=null and orgNumber !='' ">
+				 and org_no_ like '%${orgNumber}%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectUserByClause" parameterType="Map" resultMap="UserResult">
+		select * from act_id_user
+		<where>
+			<if test="orgNumber!=null and orgNumber !=''">
+				 and left(org_no_,LENGTH(#{orgNumber})) = #{orgNumber}
+			</if>
+			<if test="userTypeID !=null and userTypeID != ''">
+				and userTypeID = #{userTypeID}
+			</if>
+		</where>
+	</select>
+
+	<delete id="deleteUser" parameterType="java.util.List">
+		delete from act_id_user where id_ in
+		<foreach collection="list" item="id" index="index" open="(" separator="," close=")">
+           		 #{id}
+       	</foreach>
+	</delete>
+
+	<select id="userDTOPage" parameterType="Map" resultType="com.java.activiti.model.dto.UserDTO">
+		SELECT u.ID_ AS id,u.USERNAME_ AS userName,u.TEL_ AS tel,u.EMAIL_ AS email,u.userTypeID AS groupId,ug.group_name AS groupName,u.ORG_NO_ AS
+		orgNumber
+		FROM act_id_user AS u JOIN act_user_group AS ug ON u.userTypeID = ug.id
+		<where>
+			<if test="id!=null and id!='' ">
+				and u.ID_ like #{id}
+			</if>
+			<if test="group_type!=null and group_type!='' ">
+				and u.userTypeID = #{group_type}
+			</if>
+		</where>
+		<if test="pageIndex!=null and pageSize!=null">
+			limit #{pageIndex},#{pageSize}
+		</if>
+	</select>
+	<select id="selectLoginDTO" resultType="com.java.activiti.controller.login.dto.LoginDTO" parameterType="map">
+		SELECT t1.ID_ AS userId,t1.USERNAME_ AS userName,t1.TEL_ AS tel,t1.PWD_ AS pwd,t1.EMAIL_ AS email,t1.userTypeID,t3.group_name AS groupName,t4.role_id AS roleId,t4.role_name AS roleName
+		FROM act_id_user AS t1
+		JOIN act_group_role t2 ON t1.userTypeID = t2.group_id
+		JOIN act_user_group t3 ON t2.group_id = t3.group_id
+		JOIN act_role t4 ON t2.role_id = t4.role_id
+		WHERE t1.PWD_=#{password} and t1.ID_=#{userName};
+	</select>
+
+	<select id="selectRoleId" parameterType="java.lang.String" resultType="map">
+		select * from act_id_user t1
+		JOIN act_group_role t2 ON t1.userTypeID=t2.group_id
+		WHERE t1.ID_= #{userId,jdbcType=INTEGER}
+	</select>
+	<select id="selectGroupTreeParam" parameterType="java.lang.String" resultType="map">
+		SELECT t3.GID_ AS groupTypeId,t3.PID_ AS groupPid
+		FROM act_id_user t1
+		JOIN act_id_membership t2 ON t1.ID_ = t2.USER_ID_
+		JOIN act_id_group t3 ON t3.ID_=t2.GROUP_ID_
+		WHERE t1.ID_= #{userId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectUserByMenberShip"  parameterType="map" resultMap="UserResult">
+		<!--select * from act_id_user
+		<where>
+			<if test="orgNumber!=null and orgNumber !=''">
+				and left(org_no_,LENGTH(#{orgNumber})) = #{orgNumber}
+			</if>
+			<if test="userTypeID !=null and userTypeID != ''">
+				and userTypeID = #{userTypeID}
+			</if>
+		</where>-->
+
+
+		SELECT a.* FROM
+		act_id_user a,
+		act_id_membership b,
+		act_id_group c,
+		act_id_group d,
+		act_id_membership e
+		<where>
+		a.ID_ = b.USER_ID_
+		AND b.GROUP_ID_ = c.ID_
+		AND c.type_ = #{userTypeID}
+		AND c.pid_ = d.pid_
+		AND d.ID_ = e.GROUP_ID_
+		AND e.USER_ID_ = #{userID}
+		</where>
+	</select>
+	<select id="selectUserByGroupIds" resultMap="UserResult">
+		SELECT a.* FROM
+		act_id_user a,
+		act_id_membership b
+		<where>
+			a.ID_ = b.USER_ID_
+			and b.group_id_ in
+			<foreach collection="list" item="id" index="index" open="(" separator="," close=")">
+				#{id}
+			</foreach>
+		</where>
+
+
+	</select>
+</mapper>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.TraceMapper">
+
+	<resultMap id="traceMap" type="com.java.activiti.model.TraceBean">
+		<result property="id" column="id" />
+		<result property="userId" column="uid" />
+		<result property="x" column="x" />
+		<result property="y" column="y" />
+		<result property="curTime" column="curtime" />
+	</resultMap>
+
+	<!-- 
+	<association property="userTypeBean" column="FK_USER_TYPE_ID"
+		javaType="com.sugon.mssq.model.UserTypeBean" select="userType.selectUserTypeById" />
+	 -->
+		 
+	<select id="selectTraceByClause" parameterType="HashMap" resultMap="traceMap">
+		select * from t_sys_trace
+		<where>
+			<if test="userId !=null and userId != ''">
+				and uid = #{userId}
+			</if>
+			<if test="startDay != null and startDay != ''">
+				<![CDATA[
+					and curtime >= #{startDay}
+					 ]]>
+			</if>
+			<if test="endDay != null and endDay != ''">
+					 <![CDATA[
+					and curtime <= #{endDay}
+					 ]]>
+			</if>
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+			limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectTraceByPk" parameterType="int" resultMap="traceMap">
+		select * from t_sys_trace where id =#{id}
+	</select>
+
+	<select id="selectTraceCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from t_sys_trace
+		<where>
+			
+		</where>
+	</select>
+	<select id="selectTraceByUser" resultType="java.util.HashMap">
+		SELECT
+			b.username_ as username,a.x as x,a.y as y,a.curtime as curtime
+		FROM
+			t_sys_trace a,act_id_user b
+		<where>
+			a.uid = b.id_
+			and uid in
+			<foreach collection="users" item="item" index="index" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</where>
+        group by USERNAME_
+		ORDER BY a.curtime desc
+
+
+	</select>
+
+	<insert id="insertTrace" parameterType="com.java.activiti.model.TraceBean" >
+		<selectKey resultType="int" keyProperty="id" order="BEFORE">
+			 
+			 
+			 select IFNULL(max(id)+1,1) from t_sys_trace</selectKey>
+		<!--  IF PK IS STRING
+		oracle
+		<selectKey resultType="string" keyProperty="testPk" order="BEFORE">
+			 select to_char(nvl(max(to_number(test_pk))+1,1)) from TB_TEST
+		</selectKey>
+		
+		postgre
+		<selectKey resultType="string" keyProperty="testPk" order="BEFORE">
+			 select to_char(COALESCE(max(to_number(test_pk,'999999999'))+1,1),'999999999') from TB_TEST
+		</selectKey>
+	-->
+		insert into t_sys_trace(
+		id,uid,x,y,curtime
+		)
+		values( 
+		#{id, jdbcType=INTEGER}, 
+		#{userId, jdbcType=VARCHAR},
+		#{x, jdbcType=DOUBLE}, 
+		#{y, jdbcType=DOUBLE}, 
+		#{curTime, jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="deleteTrace" parameterType="int">
+		delete from t_sys_trace where id = #{id}
+	</delete>
+
+	<update id="updateTrace" parameterType="com.java.activiti.model.TraceBean">
+		update t_sys_trace 
+		<set>
+		<if test = "uid != null">
+		uid=#{userId, jdbcType=VARCHAR},
+		</if>
+		<if test = "x != null">
+		x=#{x, jdbcType=DOUBLE},
+		</if>
+		<if test = "y != null">
+		y=#{y, jdbcType=DOUBLE},
+		</if>
+		<if test = "curtime != null">
+		curtime=#{curTime, jdbcType=VARCHAR}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.activiti.dao.TissueRadioSetKhMapper" >
+  <resultMap id="BaseResultMap" type="com.java.activiti.model.TissueRadioSetKhBean" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="avg12345Num" property="avg12345num" jdbcType="DOUBLE" />
+    <result column="coefficient" property="coefficient" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, avg12345Num, coefficient
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_issue_radio_set_kh
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_issue_radio_set_kh
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.java.activiti.model.TissueRadioSetKhBean" >
+    insert into t_issue_radio_set_kh (id, avg12345Num, coefficient
+      )
+    values (#{id,jdbcType=INTEGER}, #{avg12345num,jdbcType=DOUBLE}, #{coefficient,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.java.activiti.model.TissueRadioSetKhBean" >
+    insert into t_issue_radio_set_kh
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="avg12345num != null" >
+        avg12345Num,
+      </if>
+      <if test="coefficient != null" >
+        coefficient,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="avg12345num != null" >
+        #{avg12345num,jdbcType=DOUBLE},
+      </if>
+      <if test="coefficient != null" >
+        #{coefficient,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.java.activiti.model.TissueRadioSetKhBean" >
+    update t_issue_radio_set_kh
+    <set >
+      <if test="avg12345num != null" >
+        avg12345Num = #{avg12345num,jdbcType=DOUBLE},
+      </if>
+      <if test="coefficient != null" >
+        coefficient = #{coefficient,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.java.activiti.model.TissueRadioSetKhBean" >
+    update t_issue_radio_set_kh
+    set avg12345Num = #{avg12345num,jdbcType=DOUBLE},
+      coefficient = #{coefficient,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

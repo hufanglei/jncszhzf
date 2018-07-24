@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.TAttachmentDao">
+
+	<resultMap id="tAttachmentMap" type="com.java.activiti.model.TAttachmentBean">
+		<result property="id" column="id" />
+		<result property="mainIssueId" column="main_issue_id" />
+		<result property="addUserId" column="add_user_id" />
+		<result property="type" column="type" />
+		<result property="name" column="name" />
+		<result property="size" column="size" />
+		<result property="savePath" column="save_path" />
+		<result property="addtime" column="addtime" />
+	</resultMap>
+	
+	<select id="selectTAttachmentByClause" parameterType="HashMap"
+		resultMap="tAttachmentMap">
+		select * from t_attachment
+		<where>
+		
+			<if test="paramEqual !=null and paramEqual != ''">
+				and col = #{paramEqual}
+			</if>
+			<if test="paramIN !=null and paramIN != ''">
+				and  col in (${paramIN})
+			</if>
+			
+			<if test="paramLike !=null and paramLike != ''">
+				and col like '%${paramLike}%'
+			</if>
+			<if test="paramStartStringDate != null and paramStartStringDate != ''">
+				<![CDATA[
+					and col >= #{paramStartStringDate}   
+					 ]]>
+			</if>
+			<if test="paramEndStringDate != null and paramEndStringDate != ''">
+					 <![CDATA[
+					and col <= #{paramEndStringDate}
+					 ]]>
+			</if>
+			<if test="paramStartDate !=null and paramStartDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') >= #{paramStartDate}
+					 ]]>
+			</if>
+			<if test="paramEndDate !=null and paramEndDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') <= #{paramEndDate}
+					 ]]>
+			</if>
+			<if test="paramList != null and paramList.size>0">
+                 and  col in
+                <foreach close=")" collection="paramList" index="index" item="item" open="(" separator="," >
+                     #{item}
+                </foreach>
+            </if>
+				
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+			limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectTAttachmentByPk" parameterType="int" resultMap="tAttachmentMap">
+		select * from t_attachment where id =#{id}
+	</select>
+	
+	<select id="selectTAttachmentByMainIssueId" parameterType="HashMap" resultMap="tAttachmentMap">
+		select * from t_attachment where main_issue_id =#{mainIssueId} and type = #{type} 
+	</select>
+
+	<select id="selectTAttachmentCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from t_attachment
+		<where>
+			
+		</where>
+	</select>
+
+	<insert id="insertTAttachment" parameterType="com.java.activiti.model.TAttachmentBean" >
+		<selectKey resultType="int" keyProperty="id" order="BEFORE">
+			 select IFNULL(max(id)+1,1) AS id from t_attachment
+		</selectKey>
+		insert into t_attachment(
+		id,main_issue_id,add_user_id,type,name,size,save_path,addtime)
+		values
+		(
+		#{id, jdbcType=INTEGER},
+		#{mainIssueId, jdbcType=INTEGER},
+		#{addUserId, jdbcType=INTEGER},
+		#{type, jdbcType=INTEGER},
+		#{name, jdbcType=VARCHAR},
+		#{size, jdbcType=VARCHAR},
+		#{savePath, jdbcType=VARCHAR},
+		#{addtime, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<delete id="deleteTAttachment" parameterType="int">
+		delete from t_attachment where id = #{id}
+	</delete>
+
+	<update id="updateTAttachment" parameterType="com.java.activiti.model.TAttachmentBean">
+		update t_attachment 
+		<set>
+		<if test = "mainIssueId != null">
+		main_issue_id=#{mainIssueId, jdbcType=INTEGER},
+		</if>
+		<if test = "addUserId != null">
+		add_user_id=#{addUserId, jdbcType=INTEGER},
+		</if>
+		<if test = "type != null">
+		type=#{type, jdbcType=INTEGER},
+		</if>
+		<if test = "name != null">
+		name=#{name, jdbcType=VARCHAR},
+		</if>
+		<if test = "size != null">
+		size=#{size, jdbcType=VARCHAR},
+		</if>
+		<if test = "savePath != null">
+		save_path=#{savePath, jdbcType=VARCHAR},
+		</if>
+		<if test = "addtime != null">
+		addtime=#{addtime, jdbcType=VARCHAR}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteAttachmentByMainIssueId" parameterType="int">
+		delete from t_attachment where main_issue_id = #{id}
+	</delete>
+</mapper>

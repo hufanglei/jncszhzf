@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.activiti.dao.TissueDcdbKhMapper" >
+  <resultMap id="BaseResultMap" type="com.java.activiti.model.TissueDcdbKhBean" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dcdbNum" property="dcdbnum" jdbcType="VARCHAR" />
+    <result column="issueNum" property="issuenum" jdbcType="VARCHAR" />
+    <result column="process_id" property="processId" jdbcType="VARCHAR" />
+    <result column="source_id" property="sourceId" jdbcType="VARCHAR" />
+    <result column="qhzd_name" property="qhzdName" jdbcType="VARCHAR" />
+    <result column="qhzd_id" property="qhzdId" jdbcType="VARCHAR" />
+    <result column="type_id" property="typeId" jdbcType="VARCHAR" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="descript" property="descript" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+    <result column="info" property="info" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="khyf" property="khyf" jdbcType="VARCHAR" />
+    <result column="source_name" property="sourceName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="status_name" property="statusName" jdbcType="VARCHAR" />
+    <result column="case_type" property="caseType" jdbcType="VARCHAR" />
+    <result column="time_limit" property="timeLimit" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="VARCHAR" />
+    <result column="total_time" property="totalTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+    <result column="add_userid" property="addUserid" jdbcType="VARCHAR" />
+    <result column="evaluation_status" property="evaluationStatus" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="tDbMainIssueMap" type="com.java.activiti.model.dto.TMainIssueDTO">
+    <result property="id" column="id"/>
+    <result property="issueNumber" column="issue_number"/>
+    <result property="addUserTel" column="add_user_tel"/>
+    <result property="addUserid" column="add_userid"/>
+    <result property="addTime" column="add_time"/>
+    <result property="isMultiExector" column="is_multi_exector"/>
+    <result property="issueExecDept" column="issue_exec_dept"/>
+    <result property="issueStreet" column="issue_exec_street"/>
+    <result property="belongWeibanjuId" column="belong_weibanju_id"/>
+    <result property="issueTime" column="issue_time"/>
+    <result property="issueSource" column="issue_source"/>
+    <result property="issueType" column="issue_type"/>
+    <result property="issueSubject" column="issue_subject"/>
+    <result property="issueDesc" column="issue_desc"/>
+    <result property="requestorType" column="requestor_type"/>
+    <result property="refCompanyName" column="ref_company_name"/>
+    <result property="orgId" column="org_id"/>
+    <result property="requestorName" column="requestor_name"/>
+    <result property="requestorTel" column="requestor_tel"/>
+    <result property="requestorIdcard" column="requestor_idcard"/>
+    <result property="requestorSex" column="requestor_sex"/>
+    <result property="requestorAge" column="requestor_age"/>
+    <result property="requestorAddress" column="requestor_address"/>
+    <result property="hasModLimit" column="has_mod_limit"/>
+    <result property="timeLimit" column="time_limit"/>
+    <result property="emrgencyLevel" column="emrgency_level"/>
+    <result property="comment" column="comment"/>
+    <result property="endTime" column="end_time"/>
+    <result property="x" column="x"/>
+    <result property="y" column="y"/>
+    <result property="addrDesc" column="addr_desc"/>
+    <result property="status" column="status"/>
+    <result property="evaluationStatus" column="evaluation_status"/>
+    <result property="evaluationLevel" column="evaluation_level"/>
+    <result property="d1" column="d1"/>
+    <result property="processId" column="process_id"/>
+    <result property="isArchived" column="is_archived"/>
+    <result property="whoReported" column="who_reported"/>
+    <result property="isOpen" column="is_open"/>
+    <result property="dealWay" column="deal_way"/>
+    <result property="isPassDistrictcenter" column="is_pass_districtcenter"/>
+    <result property="caseType" column="case_type"/>
+    <result property="dbStatus" column="db_status"/>
+    <result property="dbId" column="db_id"/>
+
+    <result property="sourceId" column="source_id"/>
+    <result property="dcdbnum" column="dcdbNum"/>
+    <result property="qhzdName" column="qhzd_name"/>
+    <result property="descript" column="descript"/>
+
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, dcdbNum, issueNum, process_id, source_id, qhzd_name, qhzd_id, type_id, type_name, 
+    descript, score, info, create_time, khyf, source_name, status, status_name,case_type,
+    time_limit,start_time,total_time,end_time,add_userid,evaluation_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_issue_dcdb_kh
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_issue_dcdb_kh
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.java.activiti.model.TissueDcdbKhBean" useGeneratedKeys="true" keyProperty="id">
+    insert into t_issue_dcdb_kh (dcdbNum, issueNum,
+      process_id, source_id, qhzd_name, 
+      qhzd_id, type_id, type_name, 
+      descript, score, info, 
+      create_time, khyf, source_name, 
+      status, status_name)
+    values (#{dcdbnum,jdbcType=VARCHAR}, #{issuenum,jdbcType=VARCHAR},
+      #{processId,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, #{qhzdName,jdbcType=VARCHAR}, 
+      #{qhzdId,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, 
+      #{descript,jdbcType=VARCHAR}, #{score,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{khyf,jdbcType=VARCHAR}, #{sourceName,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{statusName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.java.activiti.model.TissueDcdbKhBean" >
+    <selectKey resultType="int" keyProperty="id" order="BEFORE">
+      select IFNULL(max(id)+1,1) AS id from t_issue_dcdb_kh
+    </selectKey>
+    insert into t_issue_dcdb_kh
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="dcdbnum != null" >
+        dcdbNum,
+      </if>
+      <if test="issuenum != null" >
+        issueNum,
+      </if>
+      <if test="processId != null" >
+        process_id,
+      </if>
+      <if test="sourceId != null" >
+        source_id,
+      </if>
+      <if test="qhzdName != null" >
+        qhzd_name,
+      </if>
+      <if test="qhzdId != null" >
+        qhzd_id,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="typeName != null" >
+        type_name,
+      </if>
+      <if test="descript != null" >
+        descript,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="info != null" >
+        info,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="khyf != null" >
+        khyf,
+      </if>
+      <if test="sourceName != null" >
+        source_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="statusName != null" >
+        status_name,
+      </if>
+      <if test="addUserid != null" >
+        add_userid,
+      </if>
+      <if test="evaluationStatus != null" >
+        evaluation_status
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dcdbnum != null" >
+        #{dcdbnum,jdbcType=VARCHAR},
+      </if>
+      <if test="issuenum != null" >
+        #{issuenum,jdbcType=VARCHAR},
+      </if>
+      <if test="processId != null" >
+        #{processId,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceId != null" >
+        #{sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdName != null" >
+        #{qhzdName,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdId != null" >
+        #{qhzdId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="descript != null" >
+        #{descript,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null" >
+        #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="khyf != null" >
+        #{khyf,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceName != null" >
+        #{sourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="statusName != null" >
+        #{statusName,jdbcType=VARCHAR},
+      </if>
+      <if test="addUserid != null" >
+        #{addUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluationStatus != null" >
+        #{evaluationStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.java.activiti.model.TissueDcdbKhBean" >
+    update t_issue_dcdb_kh
+    <set >
+      <if test="dcdbnum != null" >
+        dcdbNum = #{dcdbnum,jdbcType=VARCHAR},
+      </if>
+      <if test="issuenum != null" >
+        issueNum = #{issuenum,jdbcType=VARCHAR},
+      </if>
+      <if test="processId != null" >
+        process_id = #{processId,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceId != null" >
+        source_id = #{sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdName != null" >
+        qhzd_name = #{qhzdName,jdbcType=VARCHAR},
+      </if>
+      <if test="qhzdId != null" >
+        qhzd_id = #{qhzdId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null" >
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="descript != null" >
+        descript = #{descript,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null" >
+        info = #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="khyf != null" >
+        khyf = #{khyf,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceName != null" >
+        source_name = #{sourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="statusName != null" >
+        status_name = #{statusName,jdbcType=VARCHAR},
+      </if>
+      <if test="timeLimit != null" >
+        time_limit = #{timeLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="totalTime != null" >
+        total_time  = #{totalTime,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluationStatus != null" >
+        evaluation_status  = #{evaluationStatus,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.java.activiti.model.TissueDcdbKhBean" >
+    update t_issue_dcdb_kh
+    set dcdbNum = #{dcdbnum,jdbcType=VARCHAR},
+      issueNum = #{issuenum,jdbcType=VARCHAR},
+      process_id = #{processId,jdbcType=VARCHAR},
+      source_id = #{sourceId,jdbcType=VARCHAR},
+      qhzd_name = #{qhzdName,jdbcType=VARCHAR},
+      qhzd_id = #{qhzdId,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=VARCHAR},
+      type_name = #{typeName,jdbcType=VARCHAR},
+      descript = #{descript,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR},
+      info = #{info,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      khyf = #{khyf,jdbcType=VARCHAR},
+      source_name = #{sourceName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      status_name = #{statusName,jdbcType=VARCHAR},
+      add_userid = #{addUserid,jdbcType=VARCHAR},
+      evaluation_status = #{evaluationStatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectListPage" parameterType="HashMap"
+            resultMap="BaseResultMap">
+      select  d.id,d.dcdbNum, d.issueNum, d.process_id, d.source_id, d.qhzd_name, d.qhzd_id, d.type_id, d.type_name, d.descript,d.score,
+      d.info, d.create_time, d.khyf,d.source_name, t2.dmms as status, d.status_name,  d.case_type, d.start_time,  d.total_time, d.time_limit,d.end_time,d.add_userid,d.evaluation_status
+      from  t_issue_dcdb_kh d left join (select * from t_sys_zd t1 where  t1.dmmc='dbajstatus')t2   on d.status=t2.dmbh
+      <where>
+            <if test="qhzdName!=null and qhzdName!='' ">
+                and qhzd_name like '%${qhzdName}%'
+            </if>
+            <if test="khyf!=null and khyf!='' ">
+                and khyf = #{khyf}
+            </if>
+        </where>
+        <if test="orderString !=null">
+            order by ${orderString}
+        </if>
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+
+
+    <select id="selectCount" resultType="int" parameterType="HashMap">
+        select count(1) from t_issue_dcdb_kh
+        <where>
+            <if test="qhzdName!=null and qhzdName!='' ">
+                and qhzd_name like '%${qhzdName}%'
+            </if>
+            <if test="khyf!=null and khyf!='' ">
+                and khyf = #{khyf}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCountByDate" resultType="int" parameterType="HashMap">
+        select count(1) from t_issue_dcdb_kh
+        <where>
+            <if test="code!=null and code!='' ">
+                and dcdbNum like '${code}%'
+            </if>
+        </where>
+    </select>
+
+  <select id="selectTMDbIssueByProcessId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select * from t_issue_dcdb_kh where process_id = = #{processId}
+</select>
+
+  <select id="selectKeyByQhzd" parameterType="java.lang.String"   resultType="java.lang.String">
+    SELECT t.type_  FROM act_id_group t where t.id_=#{qhzdId}
+  </select>
+  <select id="queryCaseNum" resultType="java.lang.Integer">
+    SELECT count(id) FROM `t_issue_dcdb_kh`
+    <where>
+      <if test="caseType!=null and caseType !=''">
+        and dcdbNum like '${caseType}%'
+      </if>
+      <if test="nowDate!=null and nowDate !=''">
+        and create_time like '${nowDate}%'
+      </if>
+    </where>
+  </select>
+
+
+  <select id="selectTMainIssueByProcessId" resultType="java.lang.String" resultMap="tDbMainIssueMap">
+     select  q.dmms AS issue_source,m.addr_desc,m.add_time,m.add_userid,m.add_user_tel,
+    m.belong_weibanju_id,m.case_type,m.`comment`,m.d1,m.deal_way,m.emrgency_level,m.end_time,
+    m.evaluation_status,m.has_mod_limit,m.id,m.issue_number,m.issue_desc,m.issue_exec_dept,
+	m.issue_exec_street,m.issue_time,m.issue_type,m.is_archived,m.is_multi_exector,
+	m.is_pass_districtcenter,m.org_id,m.process_id,m.ref_company_name,m.requestor_address,
+    m.requestor_age,m.requestor_idcard,m.requestor_name,m.requestor_sex,m.requestor_tel,
+	m.requestor_type,m.`status`,m.time_limit,m.who_reported,m.x,m.y,
+	c. NAME AS issue_subject,db.STATUS AS db_status,db.id AS db_id,db.qhzd_name,db.source_id,db.dcdbNum,db.descript,i.deal_way as is_open
+FROM
+	t_issue_dcdb_kh db
+  LEFT JOIN t_main_issue m ON db.issueNum = m.issue_number
+  LEFT JOIN t_sys_sxgkzd c ON m.issue_subject = c.id
+  LEFT JOIN  t_sys_zd q ON q.id=m.issue_source
+	LEFT JOIN  (select  * from db_issue_deal where task_id =0) i on db.process_id=i.process_id
+  where db.process_id =#{processId}
+  </select>
+  <select id="selectIssueNum" parameterType="java.lang.String" resultType="int" >
+     select COUNT(1)count from t_main_issue t  where t.`status`='16' and  t.issue_number=#{issueNum}
+  </select>
+  <select id="selectDbkh" parameterType="hashmap" resultMap="BaseResultMap" >
+      select t1.id_,t1.name_,t2.c,DATE_FORMAT(t2.create_time,'%Y-%m')yf from
+(SELECT id_, NAME_ FROM act_id_group WHERE TYPE_ IN ('2', '5')
+AND PID_ IS NULL ORDER BY TYPE_ )t1 left  join (
+SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)c,d.source_id,d.source_name,d.create_time
+FROM `t_issue_dcdb_kh` d  where d.status='9' group BY source_id,qhzd_id)t2 on t1.id_=t2.qhzd_id
+and t2.source_id=#{sourceId}    and t2.create_time like'${khyf}'
+  </select>
+  <select id="countXcjzByMonth" resultType="int" parameterType="HashMap">
+    select count(*) from t_issue_dcdb_kh d where d.source_id='巡查机制'
+  </select>
+  <select id="selectXcjzByMonth" resultMap="BaseResultMap" parameterType="HashMap">
+    select * from t_issue_dcdb_kh d where d.source_id='巡查机制'
+  </select>
+
+  <select id="selectGdDcdbKhCountByGroupId" resultType="int" parameterType="HashMap">
+    select count(1) from t_issue_dcdb_kh d
+    <where>
+      and   d.`status`='9'
+      <if test="groupId!=null and groupId!='' ">
+        and d.qhzd_id=#{groupId}
+      </if>
+      <if test="caseType!=null and caseType!='' ">
+        and d.source_id like '%${caseType}%'
+      </if>
+      <if test="createTime!=null and createTime!='' ">
+        <![CDATA[
+				and d.create_time >= #{createTime}
+				]]>
+      </if>
+      <if test="endTime!=null and endTime!='' ">
+        <![CDATA[
+				and d.create_time <= #{endTime}
+				]]>
+      </if>
+    </where>
+  </select>
+  <select id="selectGdDcdbKhByGroupId" parameterType="HashMap"
+          resultMap="BaseResultMap">
+    select  d.id,d.dcdbNum, d.issueNum, d.process_id, d.source_id, d.qhzd_name, d.qhzd_id, d.type_id, d.type_name, d.descript,d.score,
+   d.start_time,d.source_name, d.status, d.status_name,  d.case_type,DATE_FORMAT(d.create_time,'%Y-%m-%d') as khyf,  d.total_time, d.time_limit,
+    d.end_time,d.add_userid,d.evaluation_status,i.deal_way as info
+    from  t_issue_dcdb_kh d
+    left join  (select  * from db_issue_deal where task_id =0) i on d.process_id=i.process_id
+    <where>
+      and   d.`status`='9'
+      <if test="groupId!=null and groupId!='' ">
+          and d.qhzd_id=#{groupId}
+      </if>
+        <if test="caseType!=null and caseType!='' ">
+        and d.source_id like '%${caseType}%'
+      </if>
+        <if test="createTime!=null and createTime!='' ">
+            <![CDATA[
+				and d.create_time >= #{createTime}
+				]]>
+        </if>
+        <if test="endTime!=null and endTime!='' ">
+            <![CDATA[
+				and d.create_time <= #{endTime}
+				]]>
+        </if>
+    </where>
+    order by d.create_time desc
+    <if test="pageIndex!=null and pageSize!=null">
+      limit #{pageIndex},#{pageSize}
+    </if>
+  </select>
+
+  <select id="getDbIssueByProcess" parameterType="java.lang.String" resultMap="BaseResultMap">
+       select d.id,d.dcdbNum, d.issueNum, d.process_id, d.source_id, d.qhzd_name, d.qhzd_id, d.type_id, d.type_name, d.descript,d.score,
+      d.create_time, d.khyf, d.status_name,  d.case_type, d.start_time,
+ d.total_time, d.time_limit,d.end_time,d.add_userid,d.evaluation_status,i.deal_way as info,
+	c. NAME AS source_name from (select * from t_issue_dcdb_kh where   process_id = #{processId}) d
+  LEFT JOIN t_main_issue m ON d.issueNum = m.issue_number
+  LEFT JOIN t_sys_sxgkzd c ON m.issue_subject = c.id
+  left join  (select  * from db_issue_deal where task_id =0) i on d.process_id=i.process_id
+  </select>
+  <select id="getUserId" parameterType="String" resultType="string">
+    select t.add_userid from t_issue_dcdb_kh t  where t.process_id=#{taskId}
+  </select>
+  <select id="selectProcessId" resultType="java.util.HashMap" parameterType="string">
+    SELECT
+        DISTINCT IFNULL(c.TASK_ID_,0) as TASK_ID_,
+            t.dcdbNum,
+        b.PROC_INST_ID_
+        FROM
+            (
+                SELECT
+                    *
+                FROM
+                    t_issue_dcdb_kh
+                WHERE
+                   dcdbNum = #{dcdbnum}
+            ) t
+        left JOIN `act_hi_taskinst` b on b.PROC_INST_ID_=t.process_id
+        LEFT JOIN  `act_hi_comment` c on c.PROC_INST_ID_=t.process_id
+  </select>
+  <select id="selectffts" parameterType="map" resultMap="BaseResultMap">
+  select   t.id, t.dcdbNum, t.issueNum, t.process_id, t.source_id, t.qhzd_name, t.qhzd_id, t.type_id, t.type_name,
+    t.descript, t.score, t.info, t.khyf, t.source_name, t.status, t.status_name,t.case_type,
+    t.time_limit,t.start_time,t.total_time,t.end_time,g.name_ as add_userid,t.evaluation_status,DATE_FORMAT(t.create_time,'%Y-%m-%d')as create_time
+    from (select * from `t_issue_dcdb_kh` where    `status`='9' and source_id=#{sourceId}   and  khyf like '%${khyf}%' and qhzd_id=#{jgmc})t
+ left join  (select * from  act_id_group g where g.pid_ is  null) g on  t.qhzd_id=g.id_
+ order by start_time desc
+    <if test="pageIndex!=null and pageSize!=null">
+      limit #{pageIndex},#{pageSize}
+    </if>
+   </select>
+
+    <select id="selectfftsJsgs" parameterType="map" resultMap="BaseResultMap">
+  SELECT d.qhzd_id,d.qhzd_name,IFNULL(sum(d.score),0)as score,d.source_id,d.source_name
+        FROM (select  * from `t_issue_dcdb_kh` where khyf like '%${khyf}%'  and source_id=#{sourceId}  and  qhzd_id=#{jgmc}) d
+        group  by d.qhzd_id,d.source_id
+  </select>
+
+    <select id="refreshZcDcdbDetails" parameterType="map" resultMap="BaseResultMap">
+    select   t.id, t.dcdbNum, t.issueNum, t.process_id, t.source_id, t.qhzd_name, t.qhzd_id, t.type_id, t.type_name,
+    t.descript, t.score, t.info, t.khyf, t.source_name, t.status, t.status_name,t.case_type,
+    t.time_limit,t.start_time,t.total_time,t.end_time,g.name_ as add_userid,t.evaluation_status,DATE_FORMAT(t.create_time,'%Y-%m-%d')as create_time
+    from (select * from `t_issue_dcdb_kh`
+    where
+          `status`='9'
+            and source_id=#{sourceId}
+            and  khyf like '%${khyf}%'
+            and qhzd_id=#{jgmc}
+            and score=0)t
+ left join  (select * from  act_id_group g where g.pid_ is  null) g on  t.qhzd_id=g.id_
+      <if test="pageIndex!=null and pageSize!=null">
+        limit #{pageIndex},#{pageSize}
+      </if>
+  </select>
+    <select id="refreshDcdbDetails" parameterType="map" resultMap="BaseResultMap">
+    select   t.id, t.dcdbNum, t.issueNum, t.process_id, t.source_id, t.qhzd_name, t.qhzd_id, t.type_id, t.type_name,
+    t.descript, t.score, t.info, t.khyf, t.source_name, t.status, t.status_name,t.case_type,
+    t.time_limit,t.start_time,t.total_time,t.end_time,g.name_ as add_userid,t.evaluation_status,DATE_FORMAT(t.create_time,'%Y-%m-%d')as create_time
+    from (select * from `t_issue_dcdb_kh`
+      where
+        `status`='9'
+      and source_id=#{sourceId}
+      and  khyf like '%${khyf}%'
+      and qhzd_id=#{jgmc}
+      and score  !=0)t
+ left join  (select * from  act_id_group g where g.pid_ is  null) g on  t.qhzd_id=g.id_
+      <if test="pageIndex!=null and pageSize!=null">
+        limit #{pageIndex},#{pageSize}
+      </if>
+  </select>
+  <select id="selectCountFfts" parameterType="map" resultType="java.lang.Integer">
+ select   count(t.id)as counts
+    from (select * from `t_issue_dcdb_kh` where    `status`='9' and source_id=#{sourceId}  and  khyf like  '%${khyf}%' and qhzd_id=#{jgmc})t
+ left join  (select * from  act_id_group g where g.pid_ is  null) g on  t.qhzd_id=g.id_
+    </select>
+  <select id="selectCountZcFfts" parameterType="map" resultType="java.lang.Integer">
+   select   count(t.id) as countse
+    from (select * from `t_issue_dcdb_kh`
+    where
+          `status`='9'
+            and source_id=#{sourceId}
+            and  khyf like  '%${khyf}%'
+            and qhzd_id=#{jgmc}
+            and score=0)t
+ left join  (select * from  act_id_group g where g.pid_ is  null) g on  t.qhzd_id=g.id_
+    </select>
+  <select id="selectCountKfFfts" parameterType="map" resultType="java.lang.Integer">
+   select   count(t.id) as countse
+     from (select * from `t_issue_dcdb_kh`
+      where
+        `status`='9'
+      and source_id=#{sourceId}
+      and  khyf like '%${khyf}%'
+      and qhzd_id=#{jgmc}
+      and score  !=0)t
+ left join  (select * from  act_id_group g where g.pid_ is  null) g on  t.qhzd_id=g.id_
+    </select>
+
+</mapper>

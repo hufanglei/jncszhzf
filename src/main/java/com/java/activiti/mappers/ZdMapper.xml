@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.ZdDao">
+
+	<resultMap id="zdMap" type="com.java.activiti.model.ZdBean">
+		<result property="id" column="id" />
+		<result property="dmmc" column="dmmc" />
+		<result property="dmbh" column="dmbh" />
+		<result property="sssjbh" column="sssjbh" />
+		<result property="dmms" column="dmms" />
+		<result property="dmorder" column="dmorder" />
+		<result property="description" column="description" />
+	</resultMap>
+	
+	<select id="selectZdxxByZdmc" resultMap="zdMap" parameterType="HashMap">
+			select * from t_sys_zd
+		<where>
+			<if test="dmmc != '' and dmmc != null">
+				and	dmmc = #{dmmc}
+			</if>
+			<if test="dmbh != '' and dmbh != null">
+				and	dmbh = #{dmbh}
+			</if>
+		</where>	
+			order by dmorder asc
+	</select>
+
+	<select id="selectZdByClause" parameterType="map" resultMap="zdMap">
+		select * from t_sys_zd
+		<where>
+			<if test="dmmc !=null and dmmc != ''">
+				and dmmc = #{dmmc}
+			</if>
+			<if test="dmbh !=null and dmbh != ''">
+				and dmbh = #{dmbh}
+			</if>
+		</where>
+		<if test="orderString !=null and orderString != ''">
+			<choose>
+				<when test="sortDirection != null and sortDirection != ''">
+					order by ${orderString} ${sortDirection}
+				</when>
+				<otherwise>
+					order by ${orderString}
+				</otherwise>
+			</choose>
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+				limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectZdByPk" parameterType="int" resultMap="zdMap">
+		select * from t_sys_zd where id =#{id}
+	</select>
+
+	<select id="selectZdCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from t_sys_zd
+	</select>
+
+	<!--查询数据字典信息-->
+	<select id="listDictionary" resultType="com.java.activiti.model.ZdBean" parameterType="HashMap">
+		SELECT * from t_sys_zd
+		<where>
+			<if test="dmmc !=null and dmmc !=''">
+				dmmc=#{dmmc}
+			</if>
+		</where>
+	</select>
+	<!--查询数据字典信息-->
+	<select id="getDictionary" parameterType="String" resultType="java.util.HashMap">
+		SELECT * from t_sys_zd where dmmc=#{dmmc}
+
+	</select>
+
+	<select id="selectZdByMcandBh" resultType="com.java.activiti.model.ZdBean">
+		select * from t_sys_zd
+		<where>
+			<if test="dmmc !=null and dmmc != ''">
+				and dmmc = #{dmmc}
+			</if>
+			<if test="dmbhs != null and dmbhs.size>0">
+				and  dmbh in
+				<foreach close=")" collection="dmbhs" index="index" item="item" open="(" separator="," >
+					#{item}
+				</foreach>
+			</if>
+		</where>
+		order by dmbh
+	</select>
+
+	<insert id="insertZd" parameterType="com.java.activiti.model.ZdBean" >
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			 select IFNULL(max(id),1) AS id from t_sys_zd
+		</selectKey>
+		insert into t_sys_zd(
+		dmmc,dmbh,sssjbh,dmms,dmorder,description)
+		values
+		(
+		#{dmmc, jdbcType=VARCHAR},
+		#{dmbh, jdbcType=VARCHAR},
+		#{sssjbh, jdbcType=VARCHAR},
+		#{dmms, jdbcType=VARCHAR},
+		#{dmorder, jdbcType=INTEGER},
+		#{description, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<delete id="deleteZd" parameterType="int">
+		delete from t_sys_zd where id = #{id}
+	</delete>
+
+	<update id="updateZd" parameterType="com.java.activiti.model.ZdBean">
+		update t_sys_zd 
+		<set>
+		<if test = "dmmc != null">
+		dmmc=#{dmmc, jdbcType=VARCHAR},
+		</if>
+		<if test = "dmbh != null">
+		dmbh=#{dmbh, jdbcType=VARCHAR},
+		</if>
+		<if test = "sssjbh != null">
+		sssjbh=#{sssjbh, jdbcType=VARCHAR},
+		</if>
+		<if test = "dmms != null">
+		dmms=#{dmms, jdbcType=VARCHAR},
+		</if>
+		<if test = "dmorder != null">
+		dmorder=#{dmorder, jdbcType=INTEGER},
+		</if>
+		<if test = "description != null">
+		description=#{description, jdbcType=VARCHAR}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

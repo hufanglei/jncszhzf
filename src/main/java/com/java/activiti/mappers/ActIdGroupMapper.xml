@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.ActIdGroupMapper">
+
+	<resultMap id="actIdGroupMap" type="com.java.activiti.model.ActIdGroupBean">
+		<result property="id" column="id_" />
+		<result property="rev" column="rev_" />
+		<result property="name" column="name_" />
+		<result property="type" column="type_" />
+	</resultMap>
+
+	<!-- 
+	<association property="userTypeBean" column="FK_USER_TYPE_ID"
+		javaType="com.sugon.mssq.model.UserTypeBean" select="userType.selectUserTypeById" />
+	 -->
+		 
+	<select id="selectActIdGroupByClause" parameterType="HashMap"
+		resultMap="actIdGroupMap">
+		select * from act_id_group
+		<where>
+		
+			<if test="paramEqual !=null and paramEqual != ''">
+				and col = #{paramEqual}
+			</if>
+			<if test="paramIN !=null and paramIN != ''">
+				and  col in (${paramIN})
+			</if>
+			
+			<if test="paramLike !=null and paramLike != ''">
+				and col like '%${paramLike}%'
+			</if>
+			<if test="paramStartStringDate != null and paramStartStringDate != ''">
+				<![CDATA[
+					and col >= #{paramStartStringDate}   
+					 ]]>
+			</if>
+			<if test="paramEndStringDate != null and paramEndStringDate != ''">
+					 <![CDATA[
+					and col <= #{paramEndStringDate}
+					 ]]>
+			</if>
+			<if test="paramStartDate !=null and paramStartDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') >= #{paramStartDate}
+					 ]]>
+			</if>
+			<if test="paramEndDate !=null and paramEndDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') <= #{paramEndDate}
+					 ]]>
+			</if>
+			<if test="paramList != null and paramList.size>0">
+                 and  col in
+                <foreach close=")" collection="paramList" index="index" item="item" open="(" separator="," >
+                     #{item}
+                </foreach>
+            </if>
+				
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+			limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectActIdGroupByPk" parameterType="int" resultMap="actIdGroupMap">
+		select * from act_id_group where id_ =#{id}
+	</select>
+
+	<select id="selectActIdGroupCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from act_id_group
+		<where>
+			
+		</where>
+	</select>
+
+	<insert id="insertActIdGroup" parameterType="com.java.activiti.model.ActIdGroupBean" >
+	<!-- 
+		<selectKey resultType="java.lang.Integer"  keyProperty="id" order="AFTER">
+			 select    LAST_INSERT_ID()  AS id_ 
+		</selectKey>
+		 -->
+		insert into act_id_group(
+		id_,
+		rev_,name_,type_)
+		values
+		(
+		#{id, jdbcType=VARCHAR},
+		#{rev, jdbcType=INTEGER},
+		#{name, jdbcType=VARCHAR},
+		#{type, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<delete id="deleteActIdGroup" parameterType="int">
+		delete from act_id_group where id_ = #{id}
+	</delete>
+
+	<update id="updateActIdGroup" parameterType="com.java.activiti.model.ActIdGroupBean">
+		update act_id_group 
+		<set>
+		<if test = "id != null">
+		id_=#{id, jdbcType=VARCHAR},
+		</if>
+		<if test = "rev != null">
+		rev_=#{rev, jdbcType=INTEGER},
+		</if>
+		<if test = "name != null">
+		name_=#{name, jdbcType=VARCHAR},
+		</if>
+		<if test = "type != null">
+		type_=#{type, jdbcType=VARCHAR}
+		</if>
+		</set>
+		where id_ = #{id}
+	</update>
+
+	<select id="listGroupInfo" resultMap="actIdGroupMap">
+		select * from act_id_group
+		<where>
+			<if test="groupPid !=null and groupPid !='' ">
+			and	type_ in (${groupPid})
+			</if>
+			<if test="1==1">
+				and	pid_ is  NULL
+			</if>
+		</where>
+        order by  type_
+	</select>
+
+	<select id="listGroupInfoMenu" resultMap="actIdGroupMap">
+		select * from act_id_group
+		<where>
+			<if test="groupPid !=null and groupPid !='' ">
+				and	type_ in (${groupPid})
+			</if>
+			<if test="1==1">
+				and	pid_ is not NULL
+			</if>
+		</where>
+		order by  type_
+	</select>
+	<select id="listGroupMenuInfo" resultMap="actIdGroupMap">
+		select * from act_id_group
+		<where>
+			<if test="groupPid !=null and groupPid !='' ">
+				and	type_ in (${groupPid})
+			</if>
+			<if test="1==1">
+				and	pid_ is  NULL
+			</if>
+		</where>
+		order by  type_
+	</select>
+	<select id="listGroupMenu" resultMap="actIdGroupMap">
+		select * from act_id_group
+		<where>
+			<if test="groupPid !=null and groupPid !='' ">
+				and	type_ in (${groupPid})
+			</if>
+			<if test="1==1">
+				and	pid_ is  NULL
+			</if>
+		</where>
+		order by  type_
+	</select>
+</mapper>

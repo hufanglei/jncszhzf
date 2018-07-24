@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.UserGroupMapper">
+
+	<resultMap id="userGroupMap" type="com.java.activiti.model.UserGroupBean">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id_" />
+		<result property="groupId" column="group_id_" />
+	</resultMap>
+
+	<!-- 
+	<association property="userTypeBean" column="FK_USER_TYPE_ID"
+		javaType="com.sugon.mssq.model.UserTypeBean" select="userType.selectUserTypeById" />
+	 -->
+		 
+	<select id="selectUserGroupByClause" parameterType="HashMap"
+		resultMap="userGroupMap">
+		select * from act_id_membership
+		<where>
+		
+			<if test="user_id !=null and user_id != ''">
+				and user_id_ = #{user_id}
+			</if>
+			<if test="paramIN !=null and paramIN != ''">
+				and  col in (${paramIN})
+			</if>
+			
+			<if test="paramLike !=null and paramLike != ''">
+				and col like '%${paramLike}%'
+			</if>
+			<if test="paramStartStringDate != null and paramStartStringDate != ''">
+				<![CDATA[
+					and col >= #{paramStartStringDate}   
+					 ]]>
+			</if>
+			<if test="paramEndStringDate != null and paramEndStringDate != ''">
+					 <![CDATA[
+					and col <= #{paramEndStringDate}
+					 ]]>
+			</if>
+			<if test="paramStartDate !=null and paramStartDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') >= #{paramStartDate}
+					 ]]>
+			</if>
+			<if test="paramEndDate !=null and paramEndDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') <= #{paramEndDate}
+					 ]]>
+			</if>
+			<if test="paramList != null and paramList.size>0">
+                 and  col in
+                <foreach close=")" collection="paramList" index="index" item="item" open="(" separator="," >
+                     #{item}
+                </foreach>
+            </if>
+				
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+			limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+<!-- 
+	<select id="selectUserGroupByPk" parameterType="int" resultMap="userGroupMap">
+		select * from act_id_membership where id =#{id}
+	</select>
+ -->
+	<select id="selectUserGroupCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from act_id_membership
+		<where>
+			<if test="user_id !=null and user_id != ''">
+				and user_id_ = #{user_id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertUserGroup" parameterType="com.java.activiti.model.UserGroupBean" >
+		<selectKey resultType="java.lang.Integer"  keyProperty="id" order="AFTER">
+			 
+			 
+			 select    LAST_INSERT_ID()  AS id 
+		</selectKey>
+		insert into act_id_membership(
+		user_id_,group_id_)
+		values
+		(
+		#{userId, jdbcType=VARCHAR},
+		#{groupId, jdbcType=VARCHAR}
+		)
+	</insert>
+<!-- 
+	<delete id="deleteUserGroup" parameterType="int">
+		delete from act_id_membership where id = #{id}
+	</delete>
+ -->	
+	<delete id="deleteUserGroupByUserID" parameterType="String">
+		delete from act_id_membership where user_id_ = #{user_id}
+	</delete>
+
+	<update id="updateUserGroup" parameterType="com.java.activiti.model.UserGroupBean">
+		update act_id_membership 
+		<set>
+		<if test = "userId != null">
+		user_id_=#{userId, jdbcType=VARCHAR},
+		</if>
+		<if test = "groupId != null">
+		group_id_=#{groupId, jdbcType=VARCHAR}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

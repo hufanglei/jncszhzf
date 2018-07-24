@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.TQwgWbjMapper">
+
+	<resultMap id="tQwgWbjMap" type="com.java.activiti.model.TQwgWbjBean">
+		<result property="wbjid" column="wbjid" />
+		<result property="wbjName" column="wbj_name" />
+	</resultMap>
+
+	<!-- 
+	<association property="userTypeBean" column="FK_USER_TYPE_ID"
+		javaType="com.sugon.mssq.model.UserTypeBean" select="userType.selectUserTypeById" />
+	 -->
+		 
+	<select id="selectTQwgWbjByClause" parameterType="HashMap"
+		resultMap="tQwgWbjMap">
+		select * from t_qwg_wbj
+		<where>
+		
+			<if test="paramEqual !=null and paramEqual != ''">
+				and col = #{paramEqual}
+			</if>
+			<if test="paramIN !=null and paramIN != ''">
+				and  col in (${paramIN})
+			</if>
+			
+			<if test="paramLike !=null and paramLike != ''">
+				and col like '%${paramLike}%'
+			</if>
+			<if test="paramStartStringDate != null and paramStartStringDate != ''">
+				<![CDATA[
+					and col >= #{paramStartStringDate}   
+					 ]]>
+			</if>
+			<if test="paramEndStringDate != null and paramEndStringDate != ''">
+					 <![CDATA[
+					and col <= #{paramEndStringDate}
+					 ]]>
+			</if>
+			<if test="paramStartDate !=null and paramStartDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') >= #{paramStartDate}
+					 ]]>
+			</if>
+			<if test="paramEndDate !=null and paramEndDate != ''">
+				 <![CDATA[
+					and to_char(col,'YYYY-MM-DD') <= #{paramEndDate}
+					 ]]>
+			</if>
+			<if test="paramList != null and paramList.size>0">
+                 and  col in
+                <foreach close=")" collection="paramList" index="index" item="item" open="(" separator="," >
+                     #{item}
+                </foreach>
+            </if>
+				
+		</where>
+		<if test="orderString !=null">
+			order by ${orderString}
+		</if>
+		<if test="begin != null">
+			<if test="pageSize !=null">
+			limit #{begin},#{pageSize}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectTQwgWbjByPk" parameterType="int" resultMap="tQwgWbjMap">
+		select * from t_qwg_wbj where wbjid =#{wbjid}
+	</select>
+
+	<select id="selectTQwgWbjCountByClause" resultType="int" parameterType="HashMap">
+		select count(*) from t_qwg_wbj
+		<where>
+			
+		</where>
+	</select>
+
+	<insert id="insertTQwgWbj" parameterType="com.java.activiti.model.TQwgWbjBean" >
+		<selectKey resultType="int" keyProperty="wbjid" order="BEFORE">
+			 
+			 
+			 select IFNULL(max(wbjid)+1,1) from t_qwg_wbj</selectKey>
+		<!--  IF PK IS STRING
+		oracle
+		<selectKey resultType="string" keyProperty="testPk" order="BEFORE">
+			 select to_char(nvl(max(to_number(test_pk))+1,1)) from TB_TEST
+		</selectKey>
+		
+		postgre
+		<selectKey resultType="string" keyProperty="testPk" order="BEFORE">
+			 select to_char(COALESCE(max(to_number(test_pk,'999999999'))+1,1),'999999999') from TB_TEST
+		</selectKey>
+	-->
+		insert into t_qwg_wbj(
+		wbjid,wbj_name
+		)
+		values( 
+		#{wbjid, jdbcType=INTEGER}, 
+		#{wbjName, jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="deleteTQwgWbj" parameterType="int">
+		delete from t_qwg_wbj where wbjid = #{wbjid}
+	</delete>
+
+	<update id="updateTQwgWbj" parameterType="com.java.activiti.model.TQwgWbjBean">
+		update t_qwg_wbj 
+		<set>
+		<if test = "wbjName != null">
+		wbj_name=#{wbjName, jdbcType=VARCHAR}
+		</if>
+		</set>
+		where wbjid = #{wbjid}
+	</update>
+
+</mapper>

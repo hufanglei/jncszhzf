@@ -1,0 +1,82 @@
+@CHARSET "UTF-8";
+
+.filter {
+	height: 50px;
+	background-color: #eff0f4;
+	line-height: 50px;
+	padding-left: 20px;
+}
+
+.bs_date {
+	display: flex;
+	float: left;
+	margin-right: 7px;
+}
+
+.bs_date .input-group {
+	width: 120px;
+	height: 30px;
+	line-height: 30px;
+	margin-top: 11px;
+}
+
+.bs_date label {
+	margin-bottom: 0;
+}
+
+.bs_date .form-control {
+	height: 28px;
+	background: #fff;
+}
+
+.bs_date .input-group-addon {
+	height: 28px;
+	padding: 0;
+	border: none;
+	padding-left: 7px;
+}
+
+.bs_date .control-label {
+	padding-right: 7px;
+	font-weight: normal;
+}
+
+.filter .form-group {
+	float: left;
+}
+
+.filter .form-group select {
+	height: 28px;
+	padding: 0;
+	line-height: 28px;
+	margin-top: 11px;
+}
+
+.filter .select {
+	margin-right: 9px;
+}
+
+.filter .first {
+	margin-left: 8px;
+}
+
+.filter button {
+	width: 100px;
+	height: 32px;
+	line-height: 32px;
+	text-align: center;
+	color: #fff;
+	margin-right: 30px;
+	margin-top: 10px;
+	border: none;
+	background-color: #19a8ec;
+	float: right
+}
+
+.filter .form-group {
+	margin-bottom: 0;
+}
+
+#container, #container * {
+	box-sizing: content-box !important;
+}

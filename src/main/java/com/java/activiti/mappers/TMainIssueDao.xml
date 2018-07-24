@@ -1,0 +1,1278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java.activiti.dao.TMainIssueDao">
+
+    <resultMap id="tMainIssueMap" type="com.java.activiti.model.TMainIssueBean">
+        <result property="id" column="id"/>
+        <result property="issueNumber" column="issue_number"/>
+        <result property="addUserTel" column="add_user_tel"/>
+        <result property="addUserid" column="add_userid"/>
+        <result property="addTime" column="add_time"/>
+        <result property="isMultiExector" column="is_multi_exector"/>
+        <result property="issueExecDept" column="issue_exec_dept"/>
+        <result property="issueStreet" column="issue_exec_street"/>
+        <result property="belongWeibanjuId" column="belong_weibanju_id"/>
+        <result property="issueTime" column="issue_time"/>
+        <result property="issueSource" column="issue_source"/>
+        <result property="issueType" column="issue_type"/>
+        <result property="issueSubject" column="issue_subject"/>
+        <result property="issueDesc" column="issue_desc"/>
+        <result property="requestorType" column="requestor_type"/>
+        <result property="refCompanyName" column="ref_company_name"/>
+        <result property="orgId" column="org_id"/>
+        <result property="requestorName" column="requestor_name"/>
+        <result property="requestorTel" column="requestor_tel"/>
+        <result property="requestorIdcard" column="requestor_idcard"/>
+        <result property="requestorSex" column="requestor_sex"/>
+        <result property="requestorAge" column="requestor_age"/>
+        <result property="requestorAddress" column="requestor_address"/>
+        <result property="hasModLimit" column="has_mod_limit"/>
+        <result property="timeLimit" column="time_limit"/>
+        <result property="emrgencyLevel" column="emrgency_level"/>
+        <result property="comment" column="comment"/>
+        <result property="endTime" column="end_time"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+        <result property="addrDesc" column="addr_desc"/>
+        <result property="status" column="status"/>
+        <result property="evaluationStatus" column="evaluation_status"/>
+        <result property="evaluationLevel" column="evaluation_level"/>
+        <result property="d1" column="d1"/>
+        <result property="processId" column="process_id"/>
+        <result property="isArchived" column="is_archived"/>
+        <result property="whoReported" column="who_reported"/>
+        <result property="isOpen" column="is_open"/>
+        <result property="dealWay" column="deal_way"/>
+        <result property="isPassDistrictcenter" column="is_pass_districtcenter"/>
+        <result property="caseType" column="case_type"/>
+        <result property="startTime" column="start_time"/>
+        <result property="totalTime" column="total_time"/>
+
+        <result property="zxczType" column="zxcz_type	"/>
+        <result property="actualTime" column="actual_time"/>
+    </resultMap>
+
+    <resultMap id="statusCountMap" type="java.util.HashMap">
+        <result property="count" column="status_count"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <resultMap id="issueMap" type="java.util.HashMap">
+        <result property="pid" column="id_"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+    </resultMap>
+
+    <select id="selectTMainIssueByClause" resultMap="tMainIssueMap">
+        SELECT a.* FROM t_main_issue a LEFT JOIN act_ru_identitylink b ON a.process_id = b.PROC_INST_ID_
+        <where>
+            <if test="status!=null and status!='' ">
+                and a.status = #{status}
+            </if>
+            <if test="gis !=null and gis != ''">
+                and x!="" and y!=""
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and add_time <= #{endTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and add_time <= #{endTime}
+				]]>
+            </if>
+
+        </where>
+        order by a.add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+
+    <select id="selectTMainIssueAjgz" resultMap="tMainIssueMap">
+        SELECT a.id,issue_number,c.name issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,is_open FROM t_main_issue a
+        inner JOIN act_hi_identitylink b ON a.process_id = b.PROC_INST_ID_
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject=c.id
+        <where>
+            b.`USER_ID_` = #{userId}
+            and b.TYPE_ = 'participant'
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and add_time <= #{endTime}
+				]]>
+            </if>
+        </where>
+        order by a.add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+
+    <select id="selectTMainIssueByPk" parameterType="int" resultMap="tMainIssueMap">
+		select * from t_main_issue where id =#{id}
+	</select>
+
+    <select id="selectTMainIssueByIssueNumber" parameterType="String" resultMap="tMainIssueMap">
+        select * from t_main_issue where issue_number =#{issueNumber}
+    </select>
+
+    <select id="selectTMainIssueStatusCount" resultMap="statusCountMap">
+        select count(*) as status_count, status from t_main_issue
+        <where>
+            <if test="gis !=null and gis != ''">
+                and x!="" and y!=""
+            </if>
+        </where>
+        group by status
+    </select>
+
+    <select id="selectLightStatusCount" resultType="int" parameterType="HashMap">
+        select count(1) from t_main_issue
+        <where>
+            <if test="d1!=null and d1!='' ">
+                and d1 = #{d1}
+            </if>
+            <if test="d2!=null and d2!='' ">
+                and d2 = #{d2}
+            </if>
+            <if test="d3!=null and d3!='' ">
+                and d3 = #{d3}
+            </if>
+            <if test="d4!=null and d4!='' ">
+                and d4 = #{d4}
+            </if>
+            <if test="d5!=null and d5!='' ">
+                and d5 = #{d5}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTMainIssueByProcessId" parameterType="String" resultMap="tMainIssueMap">
+		select a.id,q.dmms AS issue_source,a.issue_number,c.name issue_subject,a.process_id,`status`,who_reported,i.deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,is_open from t_main_issue a
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject=c.id
+        LEFT JOIN t_sys_zd q ON q.id  = a.issue_source
+        left join (select  * from issue_deal where act_comment_id =0 ) i on i.process_id=a.process_id
+        where  a.process_id =#{processId}
+	</select>
+    <select id="selectIssueByProcessId" parameterType="String" resultMap="tMainIssueMap">
+		select a.id,q.dmms AS issue_source,a.issue_number,c.name issue_subject,a.process_id,`status`,who_reported,i.deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,is_open from t_main_issue a
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject=c.id
+        LEFT JOIN t_sys_zd q ON q.id  = a.issue_source
+        left join (select  * from issue_deal where  deal_way='已上报' ) i on i.process_id=a.process_id
+        where  a.process_id =#{processId}
+	</select>
+
+    <select id="selectUnFinishedIssue" resultMap="tMainIssueMap">
+		select * from t_main_issue where status != 8 and status != 1 and status != 10 and status != 11
+	</select>
+
+    <select id="selectIssuePage" parameterType="Map" resultMap="tMainIssueMap">
+        select * from t_main_issue
+        <where>
+            <if test="userId!=null and userId!='' ">
+                and add_userid = #{userId}
+            </if>
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="issueSubject!=null and issueSubject!='' ">
+                and issue_subject like '%${issueSubject}%'
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and add_time <= #{endTime}
+				]]>
+            </if>
+            <if test="weibanju!=null and weibanju!='' ">
+                and belong_weibanju_id = #{weibanju}
+            </if>
+            <if test="issueNumberLike!=null and issueNumberLike!='' ">
+                and issue_number like '${issueNumberLike}%'
+            </if>
+        </where>
+        order by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+
+    <select id="selectTMainIssueCountByClause" resultType="int">
+        SELECT COUNT(1) FROM t_main_issue a inner JOIN act_ru_identitylink b ON a.process_id = b.PROC_INST_ID_
+        <where>
+            b.`USER_ID_` = #{userId}
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and add_time <= #{endTime}
+				]]>
+            </if>
+        </where>
+    </select>
+    <select id="selectTMainIssueCountAjgz" resultType="int">
+        SELECT COUNT(1) FROM t_main_issue a inner JOIN act_hi_identitylink b ON a.process_id = b.PROC_INST_ID_
+        <where>
+            b.`USER_ID_` = #{userId}
+            and b.TYPE_ = 'participant'
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="createTime!=null and createTime!='' ">
+                <![CDATA[
+				and add_time >= #{createTime}
+				]]>
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                <![CDATA[
+				and add_time <= #{endTime}
+				]]>
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertTMainIssue" parameterType="com.java.activiti.model.TMainIssueBean">
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select IFNULL(max(id)+1,1) AS id from t_main_issue
+        </selectKey>
+        insert into t_main_issue(
+        id,issue_number,add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_dept,issue_exec_street,
+        belong_weibanju_id,issue_time,issue_source,issue_type,issue_subject,issue_desc,requestor_type,ref_company_name
+        ,org_id,requestor_name,requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit
+        ,time_limit,emrgency_level,comment,end_time,x,y,addr_desc,status,evaluation_status,evaluation_level,d1
+        ,process_id,is_archived,who_reported,is_open,deal_way,is_pass_districtcenter,case_type,start_time,total_time,
+        zxcz_type,actual_time
+        )
+        values(
+        #{id, jdbcType=INTEGER},
+        #{issueNumber, jdbcType=VARCHAR},
+        #{addUserTel, jdbcType=VARCHAR},
+        #{addUserid, jdbcType=VARCHAR},
+        #{addTime, jdbcType=VARCHAR},
+        #{isMultiExector, jdbcType=VARCHAR},
+        #{issueExecDept, jdbcType=VARCHAR},
+        #{issueStreet, jdbcType=VARCHAR},
+        #{belongWeibanjuId, jdbcType=VARCHAR},
+        #{issueTime, jdbcType=VARCHAR},
+        #{issueSource, jdbcType=VARCHAR},
+        #{issueType, jdbcType=VARCHAR},
+        #{issueSubject, jdbcType=VARCHAR},
+        #{issueDesc, jdbcType=VARCHAR},
+        #{requestorType, jdbcType=VARCHAR},
+        #{refCompanyName, jdbcType=VARCHAR},
+        #{orgId, jdbcType=VARCHAR},
+        #{requestorName, jdbcType=VARCHAR},
+        #{requestorTel, jdbcType=VARCHAR},
+        #{requestorIdcard, jdbcType=VARCHAR},
+        #{requestorSex, jdbcType=VARCHAR},
+        #{requestorAge, jdbcType=INTEGER},
+        #{requestorAddress, jdbcType=VARCHAR},
+        #{hasModLimit, jdbcType=VARCHAR},
+        #{timeLimit, jdbcType=VARCHAR},
+        #{emrgencyLevel, jdbcType=VARCHAR},
+        #{comment, jdbcType=VARCHAR},
+        #{endTime, jdbcType=VARCHAR},
+        #{x, jdbcType=VARCHAR},
+        #{y, jdbcType=VARCHAR},
+        #{addrDesc, jdbcType=VARCHAR},
+        #{status, jdbcType=VARCHAR},
+        #{evaluationStatus, jdbcType=VARCHAR},
+        #{evaluationLevel, jdbcType=INTEGER},
+        #{d1, jdbcType=VARCHAR},
+        #{processId, jdbcType=VARCHAR},
+        #{isArchived, jdbcType=VARCHAR},
+        #{whoReported, jdbcType=VARCHAR},
+        #{isOpen, jdbcType=VARCHAR},
+        #{dealWay, jdbcType=VARCHAR},
+        #{isPassDistrictcenter, jdbcType=VARCHAR},
+        #{caseType, jdbcType=VARCHAR},
+        #{startTime, jdbcType=VARCHAR},
+        #{totalTime, jdbcType=VARCHAR},
+        #{zxczType, jdbcType=VARCHAR},
+        #{actualTime, jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteTMainIssue" parameterType="int">
+		delete from t_main_issue where id = #{id}
+	</delete>
+
+    <update id="updateTMainIssue" parameterType="com.java.activiti.model.TMainIssueBean">
+        update t_main_issue
+        <set>
+            <if test="issueNumber != null">
+                issue_number=#{issueNumber, jdbcType=VARCHAR},
+            </if>
+            <if test="addUserTel != null">
+                add_user_tel=#{addUserTel, jdbcType=VARCHAR},
+            </if>
+            <if test="addUserid != null">
+                add_userid=#{addUserid, jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                add_time=#{addTime, jdbcType=VARCHAR},
+            </if>
+            <if test="isMultiExector != null">
+                is_multi_exector=#{isMultiExector, jdbcType=VARCHAR},
+            </if>
+            <if test="issueExecDept != null">
+                issue_exec_dept=#{issueExecDept, jdbcType=VARCHAR},
+            </if>
+            <if test="issueStreet != null">
+                issue_exec_street=#{issueStreet, jdbcType=VARCHAR},
+            </if>
+            <if test="belongWeibanjuId != null">
+                belong_weibanju_id=#{belongWeibanjuId, jdbcType=VARCHAR},
+            </if>
+            <if test="issueTime != null">
+                issue_time=#{issueTime, jdbcType=VARCHAR},
+            </if>
+            <if test="issueSource != null">
+                issue_source=#{issueSource, jdbcType=VARCHAR},
+            </if>
+            <if test="issueType != null">
+                issue_type=#{issueType, jdbcType=VARCHAR},
+            </if>
+            <if test="issueSubject != null">
+                issue_subject=#{issueSubject, jdbcType=VARCHAR},
+            </if>
+            <if test="issueDesc != null">
+                issue_desc=#{issueDesc, jdbcType=VARCHAR},
+            </if>
+            <if test="requestorType != null">
+                requestor_type=#{requestorType, jdbcType=VARCHAR},
+            </if>
+            <if test="refCompanyName != null">
+                ref_company_name=#{refCompanyName, jdbcType=VARCHAR},
+            </if>
+            <if test="orgId != null">
+                org_id=#{orgId, jdbcType=VARCHAR},
+            </if>
+            <if test="requestorName != null">
+                requestor_name=#{requestorName, jdbcType=VARCHAR},
+            </if>
+            <if test="requestorTel != null">
+                requestor_tel=#{requestorTel, jdbcType=VARCHAR},
+            </if>
+            <if test="requestorIdcard != null">
+                requestor_idcard=#{requestorIdcard, jdbcType=VARCHAR},
+            </if>
+            <if test="requestorSex != null">
+                requestor_sex=#{requestorSex, jdbcType=VARCHAR},
+            </if>
+            <if test="requestorAge != null">
+                requestor_age=#{requestorAge, jdbcType=INTEGER},
+            </if>
+            <if test="requestorAddress != null">
+                requestor_address=#{requestorAddress, jdbcType=VARCHAR},
+            </if>
+            <if test="hasModLimit != null">
+                has_mod_limit=#{hasModLimit, jdbcType=VARCHAR},
+            </if>
+            <if test="timeLimit != null">
+                time_limit=#{timeLimit, jdbcType=VARCHAR},
+            </if>
+            <if test="emrgencyLevel != null">
+                emrgency_level=#{emrgencyLevel, jdbcType=VARCHAR},
+            </if>
+            <if test="comment != null">
+                comment=#{comment, jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                end_time=#{endTime, jdbcType=VARCHAR},
+            </if>
+            <if test="x != null">
+                x=#{x, jdbcType=VARCHAR},
+            </if>
+            <if test="y != null">
+                y=#{y, jdbcType=VARCHAR},
+            </if>
+            <if test="addrDesc != null">
+                addr_desc=#{addrDesc, jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status=#{status, jdbcType=VARCHAR},
+            </if>
+            <if test="evaluationStatus != null">
+                evaluation_status=#{evaluationStatus, jdbcType=VARCHAR},
+            </if>
+            <if test="evaluationLevel != null">
+                evaluation_level=#{evaluationLevel, jdbcType=INTEGER},
+            </if>
+            <if test="d1 != null">
+                d1=#{d1, jdbcType=VARCHAR},
+            </if>
+            <if test="processId != null">
+                process_id=#{processId, jdbcType=VARCHAR},
+            </if>
+            <if test="isArchived != null">
+                is_archived=#{isArchived, jdbcType=VARCHAR},
+            </if>
+            <if test="whoReported != null">
+                who_reported=#{whoReported, jdbcType=VARCHAR},
+            </if>
+            <if test="isOpen != null">
+                is_open=#{isOpen, jdbcType=VARCHAR},
+            </if>
+            <if test="dealWay != null">
+                deal_way=#{dealWay, jdbcType=VARCHAR},
+            </if>
+            <if test="isPassDistrictcenter != null">
+                is_pass_districtcenter=#{isPassDistrictcenter, jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time=#{startTime, jdbcType=VARCHAR},
+            </if>
+            <if test="totalTime != null">
+                total_time=#{totalTime, jdbcType=VARCHAR},
+            </if>
+            <if test="actualTime != null">
+                actual_time=#{actualTime, jdbcType=VARCHAR},
+            </if>
+            <if test="zxczType != null">
+                zxcz_type=#{zxczType, jdbcType=VARCHAR}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateLightStatus" parameterType="HashMap">
+        update t_main_issue
+        <set>
+            <if test="d1 != null">
+                d1=#{d1, jdbcType=INTEGER},
+            </if>
+            <if test="d2 != null">
+                d2=#{d2, jdbcType=INTEGER},
+            </if>
+            <if test="d3 != null">
+                d3=#{d3, jdbcType=INTEGER},
+            </if>
+            <if test="d4 != null">
+                d4=#{d4, jdbcType=INTEGER}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTMainIssueByPk" parameterType="int">
+		delete from t_main_issue where id = #{id}
+	</delete>
+
+    <!-- 案件状态统计 -->
+    <select id="selectIssueStatusStatistic" parameterType="HashMap"
+            resultType="java.util.HashMap">
+        SELECT tbb.dmms AS issue_status,tba.percents AS percents
+        FROM
+        (SELECT `status` AS statuscode,(COUNT(id)/(SELECT COUNT(id) FROM t_main_issue
+        <where>
+            <if test="startDay !=null and startDay != ''">
+                <![CDATA[
+								and add_time >= #{startDay}
+								 ]]>
+            </if>
+            <if test="endDay !=null and endDay != ''">
+                <![CDATA[
+								and add_time <= #{endDay}
+								 ]]>
+            </if>
+        </where>
+        ))*100 AS percents FROM t_main_issue
+        <where>
+            <if test="startDay !=null and startDay != ''">
+                <![CDATA[
+								and add_time >= #{startDay}
+								 ]]>
+            </if>
+            <if test="endDay !=null and endDay != ''">
+                <![CDATA[
+								and add_time <= #{endDay}
+								 ]]>
+            </if>
+        </where>
+        GROUP BY `status`) tba
+        LEFT JOIN
+        (SELECT dmbh,dmms FROM t_sys_zd WHERE dmmc = 'statuscode') tbb
+        ON tba.statuscode = tbb.dmbh;
+    </select>
+
+    <!-- 案件数量统计 -->
+    <select id="selectIssueCountStatistic" parameterType="HashMap"
+            resultType="java.util.HashMap">
+        select UNIX_TIMESTAMP(DATE_FORMAT(add_time,'%Y%m%d'))*1000 days,count(id) counts
+        from t_main_issue
+        <where>
+            <if test="startDay !=null and startDay != ''">
+                <![CDATA[
+						and add_time >= #{startDay}
+						 ]]>
+            </if>
+            <if test="endDay !=null and endDay != ''">
+                <![CDATA[
+						and add_time <= #{endDay}
+						 ]]>
+            </if>
+        </where>
+        GROUP BY days;
+    </select>
+
+    <!-- 街道案件统计 -->
+    <select id="selectStreetIssueCountByClause" parameterType="HashMap"
+            resultType="java.util.HashMap">
+
+        SELECT a.qhmc AS qhmc,COUNT(add_time) AS counts
+        FROM
+        (SELECT left(qhdm,9) AS qhdm,qhmc FROM t_sys_qhzd WHERE qhjb = 2 ) a
+        LEFT JOIN
+        (SELECT LEFT(issue_number,9) AS qhdm,add_time FROM t_main_issue
+        <where>
+            <if test="startDay !=null and startDay != ''">
+                <![CDATA[
+								and add_time >= #{startDay}
+								 ]]>
+            </if>
+            <if test="endDay !=null and endDay != ''">
+                <![CDATA[
+								and add_time <= #{endDay}
+								 ]]>
+            </if>
+            <if test="finished !=null and finished != ''">
+                <![CDATA[
+								and end_time IS NOT NULL
+								 ]]>
+            </if>
+            <if test="1==1">
+                <![CDATA[
+								and issue_exec_dept IS NULL
+								 ]]>
+            </if>
+        </where>
+        ) b
+        ON a.qhdm = b.qhdm
+        GROUP BY a.qhdm;
+
+    </select>
+    <select id="selectStreetIssueCountByDay" parameterType="HashMap" resultType="java.util.HashMap">
+        select t1.name_ as qhmc,IFNULL(t2.c2,0) as counts from
+        (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE TYPE_='2' AND PID_ IS NULL ORDER BY TYPE_ ) t1
+        LEFT JOIN(
+        select count(d.pid_) c2, d.pid_ from (
+        SELECT * FROM act_id_group b
+        INNER JOIN (select * from (select * from t_main_issue
+        <where>
+            <if test="startDay !=null and startDay != ''">
+                <![CDATA[
+								and add_time >= #{startDay}
+								 ]]>
+            </if>
+            <if test="endDay !=null and endDay != ''">
+                <![CDATA[
+            and add_time <= #{endDay}
+								 ]]>
+            </if>
+            <if test="finished !=null and finished != ''">
+                <![CDATA[
+								and status='16'
+								 ]]>
+            </if>
+        </where>
+        ) t INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+        ) c ON c.group_id_=b.ID_) d group by d.pid_)t2 ON t1.id_ = t2.pid_
+
+
+    </select>
+
+    <!-- 处置部门案件统计 -->
+    <select id="selectWeiBanJuIssueCountByClause" parameterType="HashMap"
+            resultType="java.util.HashMap">
+
+        SELECT tba.wbj_name,COUNT(tbb.id) AS counts
+        FROM
+        t_sys_weibanjuzd tba
+        LEFT JOIN
+        (select a.id,substring_index(substring_index(a.issue_exec_dept,',',b.help_topic_id+1),',',-1) AS wbj_bh
+        from
+        (select id,issue_exec_dept from t_main_issue
+        <where>
+            <if test="startDay !=null and startDay != ''">
+                <![CDATA[
+									and add_time >= #{startDay}
+									 ]]>
+            </if>
+            <if test="endDay !=null and endDay != ''">
+                <![CDATA[
+									and add_time <= #{endDay}
+									 ]]>
+            </if>
+            <if test="finished !=null and finished != ''">
+                <![CDATA[
+									and end_time IS NOT NULL
+									 ]]>
+            </if>
+            <if test="1==1">
+                <![CDATA[
+									and issue_exec_dept IS NOT NULL
+									 ]]>
+            </if>
+        </where>
+        )a
+        join
+        mysql.help_topic b
+        on <![CDATA[b.help_topic_id < (length(a.issue_exec_dept) - length(replace(a.issue_exec_dept,',',''))+1)]]>
+        ) tbb
+        ON tba.id = tbb.wbj_bh
+        GROUP BY tba.wbj_name;
+    </select>
+    <select id="selectWeiBanJuIssueCountByDay" parameterType="HashMap"
+            resultType="java.util.HashMap">
+        select t1.name_ as wbj_name,IFNULL(t2.c2,0) as counts from
+        (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE TYPE_='5' AND PID_ IS NULL ORDER BY TYPE_ ) t1
+        LEFT JOIN(
+        select count(d.issue_exec) c2, d.issue_exec from (
+        SELECT * FROM act_id_group b
+        INNER JOIN (select * from (
+        SELECT DISTINCT d.issue_exec,
+        a.id,a.issue_number,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,is_open FROM (select * from
+        t_main_issue
+        <where>
+            <if test="startDay !=null and startDay != ''">
+                <![CDATA[
+								and add_time >= #{startDay}
+								 ]]>
+            </if>
+            <if test="endDay !=null and endDay != ''">
+                <![CDATA[
+            and add_time <= #{endDay}
+								 ]]>
+            </if>
+            <if test="finished !=null and finished != ''">
+                <![CDATA[
+								and status='16'
+								 ]]>
+            </if>
+        </where>
+        ) As a
+        left join `act_hi_identitylink` AS b on a.process_id=b.PROC_INST_ID_
+        left join t_issue_lbbm d on a.issue_number=d.issue_number
+        ) t INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+        ) c ON c.group_id_=b.ID_) d group by d.issue_exec)t2 ON t1.id_ = t2.issue_exec
+    </select>
+
+    <!-- 事项归口统计 -->
+    <select id="selectPowerBelongIssueCount" parameterType="HashMap"
+            resultType="java.util.HashMap">
+        SELECT a.wbj_name wbj_name,COUNT(add_time) counts
+        FROM (SELECT id,wbj_name FROM t_sys_weibanjuzd) a
+        LEFT JOIN (SELECT belong_weibanju_id,add_time FROM t_main_issue
+        <where>
+            <if test="startDay !=null and startDay != ''">
+                <![CDATA[
+						and add_time >= #{startDay}
+						 ]]>
+            </if>
+            <if test="endDay !=null and endDay != ''">
+                <![CDATA[
+						and add_time <= #{endDay}
+						 ]]>
+            </if>
+            <if test="finished !=null and finished != '' and finished">
+                <![CDATA[
+						and end_time IS NOT NULL
+						 ]]>
+            </if>
+            <if test="finished !=null and finished != '' and !finished">
+                <![CDATA[
+						and end_time IS NULL
+						 ]]>
+            </if>
+        </where>
+        ) b
+        ON a.id = b.belong_weibanju_id
+        GROUP BY a.id;
+    </select>
+
+
+    <select id="selectTMainIssueForHeatmap" parameterType="HashMap"
+            resultType="java.util.HashMap">
+        SELECT x,y FROM t_main_issue
+        <where>
+            <if test="1 == 1">
+                and x!="" and y!=""
+            </if>
+        </where>
+    </select>
+
+    <select id="queryIssueMap" resultMap="issueMap" parameterType="HashMap">
+        SELECT b.x, b.y, a.id_
+        FROM act_hi_procinst a, t_main_issue b
+        <where>
+            a.PROC_INST_ID_ = b.process_id
+            <![CDATA[
+                AND b.x <> ''
+                AND b.y <> ''
+            ]]>
+            <if test="beginDate !=null and beginDate != ''">
+                <![CDATA[
+						and b.add_time >= #{beginDate}
+						 ]]>
+            </if>
+            <if test="endDate !=null and endDate != ''">
+                <![CDATA[
+						and b.add_time <= #{endDate}
+						 ]]>
+            </if>
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="groupId!=null and groupId!='' ">
+                and b.issue_exec_street = #{groupId}
+            </if>
+        </where>
+        GROUP BY b.x ,b.y
+        ORDER BY b.x,b.y,b.add_time DESC
+    </select>
+    <select id="queryIssueMapByDept" resultMap="issueMap" parameterType="HashMap">
+        select b.x,b.y,a.id_ from(
+        SELECT substring_index( substring_index(a.issue_exec_dept,',',b.help_topic_id + 1),',' ,- 1) AS wbj_bh,a.*FROM(
+        SELECT*FROM t_main_issue WHERE issue_exec_dept IS NOT NULL ) a
+        JOIN mysql.help_topic b ON b.help_topic_id &lt;(length(a.issue_exec_dept) - length( REPLACE (a.issue_exec_dept,
+        ',', '')) + 1)) b,`act_hi_procinst` as a
+
+        <where>
+            a.PROC_INST_ID_ = b.process_id
+            <![CDATA[
+                AND b.x <> ''
+                AND b.y <> ''
+            ]]>
+            <if test="beginDate !=null and beginDate != ''">
+                <![CDATA[
+						and b.add_time >= #{beginDate}
+						 ]]>
+            </if>
+            <if test="endDate !=null and endDate != ''">
+                <![CDATA[
+						and b.add_time <= #{endDate}
+						 ]]>
+            </if>
+            <if test="status!=null and status!='' ">
+                and status = #{status}
+            </if>
+            <if test="issueExecDept!=null and issueExecDept!='' ">
+                and b.wbj_bh = #{issueExecDept}
+            </if>
+        </where>
+        GROUP BY b.x ,b.y
+        ORDER BY b.x,b.y,b.add_time DESC
+    </select>
+    <select id="queryCaseNum" resultType="java.lang.Integer">
+        SELECT count(id) FROM `t_main_issue`
+        <where>
+            <if test="caseType!=null and caseType !=''">
+                and issue_number like '${caseType}%'
+            </if>
+            <if test="nowDate!=null and nowDate !=''">
+                and add_time like '${nowDate}%'
+            </if>
+        </where>
+    </select>
+    <select id="getSubject" resultType="java.lang.String">
+        select  a.name from t_sys_sxgkzd a where a.id=#{issueSubject}
+
+    </select>
+    <select id="selectCount" resultType="java.lang.Double" parameterType="string">
+        select SUM(t.c2)as c from(
+        select  count(d.pid_) c2,	d.pid_ from (
+        SELECT * FROM	act_id_group b
+        left JOIN (select * from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue) t
+        INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+        and   t.`status`='16' and t.zxcz_type in ('1','2') and t.khyf= #{khyf}) c ON
+        c.group_id_=b.ID_) d GROUP BY d.pid_)t
+
+    </select>
+
+    <select id="selectJdajNum" resultType="java.util.HashMap" parameterType="string">
+       SELECT	g.id_,g.name_,IFNULL(a.c2,0)as score FROM
+    (SELECT id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) g
+    left join(select  count(d.pid_) c2,	d.pid_ from (
+    SELECT * FROM	act_id_group b
+    left JOIN (select * from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue) t
+		INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+    and   t.`status`='16' and t.zxcz_type in ('1','2') and t.khyf= #{khyf}) c ON
+    c.group_id_=b.ID_) d GROUP BY d.pid_)a
+on g.id_=a.pid_
+    ORDER BY g.TYPE_
+
+    </select>
+    <select id="getDbIssueByProcessId" parameterType="String" resultMap="tMainIssueMap">
+        select  q.dmms AS issue_source,m.addr_desc,m.add_time,m.add_userid,m.add_user_tel,
+            m.belong_weibanju_id,m.case_type,m.`comment`,m.d1,m.deal_way,m.emrgency_level,m.end_time,
+            m.evaluation_status,m.has_mod_limit,m.id,m.issue_number,m.issue_desc,m.issue_exec_dept,
+            m.issue_exec_street,m.issue_time,m.issue_type,m.is_archived,m.is_multi_exector,
+            m.is_pass_districtcenter,m.org_id,m.process_id,m.ref_company_name,m.requestor_address,
+            m.requestor_age,m.requestor_idcard,m.requestor_name,m.requestor_sex,m.requestor_tel,
+            m.requestor_type,m.`status`,m.time_limit,m.who_reported,m.x,m.y,
+            c. NAME AS issue_subject,db.STATUS AS db_status,db.id AS db_id,i.deal_way as is_open
+        FROM
+            t_issue_dcdb_kh db
+          LEFT JOIN t_main_issue m ON db.issueNum = m.issue_number
+          LEFT JOIN t_sys_sxgkzd c ON m.issue_subject = c.id
+          LEFT JOIN  t_sys_zd q ON q.id=m.issue_source
+left join  (select * from db_issue_deal where task_id =0 )i on i.process_id=db.process_id
+        where db.process_id =#{processId}
+    </select>
+    <select id="getUserId" parameterType="String" resultType="string">
+    select  t.add_userid from  t_main_issue t where t.issue_number=#{issueNumber}
+    </select>
+    <!--   <select id="selectDealWay" parameterType="String" resultType="string">
+       select  t.deal_way from  t_main_issue t where t.process_id=#{processId}
+       </select>-->
+
+    <select id="selectProcessId" resultType="java.util.HashMap" parameterType="string">
+      SELECT
+        DISTINCT IFNULL(c.TASK_ID_,0) as TASK_ID_,
+            t.issue_number,
+        b.PROC_INST_ID_
+        FROM
+            (
+                SELECT
+                    *
+                FROM
+                    t_main_issue
+                WHERE
+                    issue_number = #{issueNumber}
+            ) t
+        left JOIN `act_hi_taskinst` b on b.PROC_INST_ID_=t.process_id
+        LEFT JOIN  `act_hi_comment` c on c.PROC_INST_ID_=t.process_id
+    </select>
+    <select id="selectZxclDetails" parameterType="map" resultMap="tMainIssueMap">
+        SELECT a.id,issue_number,c.name issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+       add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,g.name_ as  is_open
+      from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like  '%${khyf}%' )a
+          INNER JOIN act_id_membership a ON a.add_userid = a.USER_ID_
+          and   a.`status`='16' and a.zxcz_type in('1','2')  and a.issue_exec_street=#{jgmc}
+       LEFT JOIN t_sys_sxgkzd c ON a.issue_subject = c.id
+      left join  (select * from  act_id_group g where g.pid_ is  null) g on  a.issue_exec_street=g.id_
+      order by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectCountZxcl" parameterType="map" resultType="java.lang.Integer">
+      SELECT count(a.id)as counts from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like  '%${khyf}%'  )a
+        INNER JOIN act_id_membership a ON a.add_userid = a.USER_ID_
+        and   a.`status`='16' and a.zxcz_type in('1','2')  and a.issue_exec_street=#{jgmc}
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject = c.id
+        left join  (select * from  act_id_group g where g.pid_ is  null) g on  a.issue_exec_street=g.id_
+        order by add_time desc
+    </select>
+<!--    <select id="selectCountZcZxcl" parameterType="map" resultType="java.lang.Integer">
+     select count(t1.issue_exec_street)as counts  from
+    (select * from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like '%${khyf}%'  )t
+          INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+          and   t.`status`='16' and t.zxcz_type in(#{num}))t1 where  t1.issue_exec_street=#{jgmc}  group by t1.issue_exec_street
+    </select>-->
+    <select id="selectCountAscl" parameterType="map" resultType="java.lang.Integer">
+     select COUNT(t2.issue_exec) as counts
+    from t_main_issue t
+    INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+    and  t.`status`='16' and add_time like '%${khyf}%'
+    inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number and t2.issue_exec=#{jgmc}
+    group BY issue_exec
+    </select>
+    <select id="selectCountKscl" parameterType="map" resultType="java.lang.Integer">
+      select count(t.id)as counts
+    from  (select * from t_main_issue where  add_time like '%${khyf}%'  and status in ('16','9') ) t
+      inner JOIN (select * from t_issue_lbbm) l on t.issue_number=l.issue_number and   l.issue_exec=#{jgmc}
+    left join t_sys_sxgkzd c on c.id=t.issue_subject
+      left join  (select * from  act_id_group g where g.pid_ is  null) g on   l.issue_exec=g.id_
+
+    </select>
+    <select id="selectCountWzxgfx" parameterType="map" resultType="java.lang.Integer">
+     select count(t2.issue_exec) as counts from(select * from
+      (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like '%${khyf}%')t
+      INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+      and   t.`status`='16' and t.zxcz_type='1' )t1
+inner join  t_issue_lbbm t2 on t1.issue_number=t2.issue_number and t2.issue_exec=#{jgmc}
+		group by t2.issue_exec
+    </select>
+    <select id="selectRefreshCountZxcl" parameterType="map" resultType="java.lang.Integer">
+ SELECT count(a.id) as counts
+      from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like '%${khyf}%')a
+          INNER JOIN act_id_membership a ON a.add_userid = a.USER_ID_
+   inner join  t_issue_lbbm t2 on a.issue_number=t2.issue_number   and t2.issue_exec=#{jgmc}
+          and   a.`status`='16' and a.zxcz_type in(#{num})
+       LEFT JOIN t_sys_sxgkzd c ON a.issue_subject = c.id
+  left join  (select * from  act_id_group g where g.pid_ is  null) g on  t2.issue_exec=g.id_
+  order by add_time desc
+    </select>
+    <select id="selectCountZcAscl" parameterType="map" resultType="java.lang.Integer">
+       select count(t.id) as counts
+        from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue) t
+        INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+        and  t.`status`='16' and  t.time_limit-t.actual_time>0
+        and khyf=#{khyf}
+        inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number
+        and  issue_exec=#{jgmc}
+        LEFT JOIN t_sys_sxgkzd c ON t.issue_subject = c.id
+        left join  (select * from  act_id_group g where g.pid_ is  null) g on  t2.issue_exec=g.id_
+        order by add_time desc
+    </select>
+
+    <select id="selectCountKfAscl" parameterType="map" resultType="java.lang.Integer">
+        select count(t.id) as counts
+        from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue) t
+        INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+        and  t.`status`='16' and  t.actual_time-t.time_limit>0
+       and khyf= #{khyf}
+        inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number
+        and  issue_exec=#{jgmc}
+        LEFT JOIN t_sys_sxgkzd c ON t.issue_subject = c.id
+        left join  (select * from  act_id_group g where g.pid_ is  null) g on  t2.issue_exec=g.id_
+        order by add_time desc
+    </select>
+    <select id="selectCountZcKscl" parameterType="map" resultType="java.lang.Integer">
+       select count(t.id) as counts
+        from  (select * from t_main_issue where  add_time like  '%${khyf}%' and status in ('16','9') and 1 - actual_time /time_limit>0) t
+              inner JOIN (select * from t_issue_lbbm) l on t.issue_number=l.issue_number and   l.issue_exec=#{jgmc}
+        left join t_sys_sxgkzd c on c.id=t.issue_subject
+          left join  (select * from  act_id_group g where g.pid_ is  null) g on   l.issue_exec=g.id_
+          order  by add_time desc
+    </select>
+
+    <select id="selectCountKfKscl" parameterType="map" resultType="java.lang.Integer">
+       select count(t.id) as counts
+        from  (select * from t_main_issue where  add_time like '%${khyf}%'   and status in ('16','9') and  actual_time /time_limit-1>0) t
+               inner JOIN (select * from t_issue_lbbm) l on t.issue_number=l.issue_number and   l.issue_exec=#{jgmc}
+        left join t_sys_sxgkzd c on c.id=t.issue_subject
+          left join  (select * from  act_id_group g where g.pid_ is  null) g on   l.issue_exec=g.id_
+          order  by add_time desc
+    </select>
+    <select id="selectCountZcWzxgfx" parameterType="map" resultType="java.lang.Integer">
+   select count(t.id)as counts  from(SELECT t.* from
+        (select a.main_issue_id as main_issue_id,count(a.main_issue_id) as count from (
+				select * from t_attachment where addtime like '%${khyf}%')a
+        where a.type=1 or a.type=5
+        GROUP BY a.main_issue_id
+        HAVING  count=#{counts}
+        ORDER BY a.main_issue_id) as b LEFT JOIN (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where `status` in('16','9') )t
+		on  b.main_issue_id=t.id  and t.khyf= #{khyf})t
+		 left join  (select * from  act_id_group g where g.pid_ is  null) g on  t.issue_exec_street=g.id_
+		 LEFT JOIN t_sys_sxgkzd c ON t.issue_subject = c.id
+		 inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number
+			 where t2.issue_exec=#{jgmc}
+			 order by add_time desc
+    </select>
+    <select id="selectCountAjbz" parameterType="map" resultType="java.lang.Integer">
+    SELECT count(a.id) as counts
+        from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like  '%${khyf}%')a
+        INNER JOIN act_id_membership a ON a.add_userid = a.USER_ID_
+        and   a.`status`='16' and a.zxcz_type in('1','2')  and a.issue_exec_street=#{jgmc}
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject = c.id
+        left join  (select * from  act_id_group g where g.pid_ is  null) g on  a.issue_exec_street=g.id_
+        order by add_time desc
+    </select>
+    <select id="selectCountZcAjbz" parameterType="map" resultType="java.lang.Integer">
+    SELECT count(a.id) as counts
+        from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like  '%${khyf}%')a
+        INNER JOIN act_id_membership a ON a.add_userid = a.USER_ID_
+        and   a.`status`='16' and a.zxcz_type in(#{num})  and a.issue_exec_street=#{jgmc}
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject = c.id
+        left join  (select * from  act_id_group g where g.pid_ is  null) g on  a.issue_exec_street=g.id_
+        order by add_time desc
+    </select>
+
+    <select id="selectJsgs" parameterType="map" resultMap="tMainIssueMap">
+    select  t1.issue_exec_street,IFNULL(t1.c1,0) as is_open ,IFNULL(t2.c2,0) as who_reported,FORMAT(IFNULL(t1.c1/(t2.c2),0)*150,2)  as is_archived,t1.khyf from
+    (select t1.issue_exec_street,IFNULL(COUNT(t1.issue_exec_street),0) c1,t1.khyf from
+    (select * from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like  '%${khyf}%'  )t
+          INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+          and   t.`status`='16' and t.zxcz_type='1' )t1  where  t1.issue_exec_street=#{jgmc}   group by t1.issue_exec_street )t1
+    left join
+          (select t1.issue_exec_street,IFNULL(COUNT(t1.issue_exec_street),0) c2,t1.khyf from
+    (select * from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like  '%${khyf}%'  )t
+          INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+          and   t.`status`='16' and t.zxcz_type in('1','2'))t1 where  t1.issue_exec_street=#{jgmc}   group by t1.issue_exec_street)t2
+     on  t1.issue_exec_street=t2.issue_exec_street
+    </select>
+    <select id="selectAjbzDetails" parameterType="map" resultMap="tMainIssueMap">
+        SELECT a.id,issue_number,c.name issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,g.name_ as  is_open
+        from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like  '%${khyf}%' )a
+        INNER JOIN act_id_membership a ON a.add_userid = a.USER_ID_
+        and   a.`status`='16' and a.zxcz_type in('1','2')  and a.issue_exec_street=#{jgmc}
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject = c.id
+        left join  (select * from  act_id_group g where g.pid_ is  null) g on  a.issue_exec_street=g.id_
+        order by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectZcAjbzDetails" parameterType="map" resultMap="tMainIssueMap">
+        SELECT a.id,issue_number,c.name issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,g.name_ as  is_open
+        from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like  '%${khyf}%' )a
+        INNER JOIN act_id_membership a ON a.add_userid = a.USER_ID_
+        and   a.`status`='16' and a.zxcz_type in(#{num})  and a.issue_exec_street=#{jgmc}
+        LEFT JOIN t_sys_sxgkzd c ON a.issue_subject = c.id
+        left join  (select * from  act_id_group g where g.pid_ is  null) g on  a.issue_exec_street=g.id_
+        order by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectAjbzJsgs" parameterType="map" resultMap="tMainIssueMap">
+       SELECT t.id,t.qhzd_id as issue_exec_street,t.issueNum as who_reported,IFNULL(t.proportion,0) as  caseType,t.coefficient as isOpen,t.khyf,t.score as is_archived
+      FROM `t_issue_radio_kh` t where  t.qhzd_id=#{jgmc} and t.khyf=#{khyf}
+
+    </select>
+    <select id="selectKsclJsgs" parameterType="map" resultMap="tMainIssueMap">
+      select t1.qhzd_id as issue_exec_street,IFNULL(t1.kscl,0) as is_archived,t1.khyf
+from t_main_issue_kh t1  where t1.qhzd_id=#{jgmc} and t1.khyf=#{khyf}
+
+    </select>
+    <select id="selectAsclDetails" parameterType="map" resultMap="tMainIssueMap">
+       select t.id,t.issue_number,c.name issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,g.name_ as  is_open
+        from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue) t
+        INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+        and  t.`status`='16' and khyf= #{khyf}
+        inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number
+        and  issue_exec=#{jgmc}
+        LEFT JOIN t_sys_sxgkzd c ON t.issue_subject = c.id
+        left join  (select * from  act_id_group g where g.pid_ is  null) g on  t2.issue_exec=g.id_
+        order by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectAsclJsgs" parameterType="map" resultMap="tMainIssueMap">
+    select   t1.issue_exec as  issue_exec_street,IFNULL(t1.c1,0) as is_open ,IFNULL(t2.c2,0) as who_reported,
+FORMAT(IFNULL(if(t1.c1/(t2.c2)>0,t1.c1/(t2.c2),0),0)*150,2) as is_archived,DATE_FORMAT(t1.add_time,'%Y-%m')as khyf from (
+    select t2.issue_exec,count(t2.issue_exec)as c1,t.add_time
+         from t_main_issue t
+        INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+            and   t.`status`='16' and  t.time_limit-t.actual_time>0 and  add_time like '%${khyf}%'
+     inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number   and t2.issue_exec=#{jgmc}
+    group BY issue_exec)t1  left join (select t2.issue_exec,count(t2.issue_exec)as c2,t.add_time
+    from t_main_issue t
+    INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+    and  t.`status`='16' and add_time like '%${khyf}%'
+    inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number and t2.issue_exec=#{jgmc}
+    group BY issue_exec)t2 on t1.issue_exec=t2.issue_exec
+    </select>
+    <select id="refreshZxclDetails" parameterType="map" resultMap="tMainIssueMap">
+    SELECT a.id,a.issue_number,c.name issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+       add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,g.name_ as  is_open
+      from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like   '%${khyf}%' )a
+          INNER JOIN act_id_membership a ON a.add_userid = a.USER_ID_
+   inner join  t_issue_lbbm t2 on a.issue_number=t2.issue_number   and t2.issue_exec=#{jgmc}
+          and   a.`status`='16' and a.zxcz_type in(#{num})
+       LEFT JOIN t_sys_sxgkzd c ON a.issue_subject = c.id
+  left join  (select * from  act_id_group g where g.pid_ is  null) g on  t2.issue_exec=g.id_
+  order by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="refreshAsclDetails" parameterType="map" resultMap="tMainIssueMap">
+      select t.id,t.issue_number,c.name issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,g.name_ as  is_open
+        from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue) t
+        INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+        and  t.`status`='16' and  t.actual_time-t.time_limit>0
+
+       and khyf= #{khyf}
+        inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number
+        and  issue_exec=#{jgmc}
+        LEFT JOIN t_sys_sxgkzd c ON t.issue_subject = c.id
+        left join  (select * from  act_id_group g where g.pid_ is  null) g on  t2.issue_exec=g.id_
+        order by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="refreshZcAsclDetails" parameterType="map" resultMap="tMainIssueMap">
+        select t.id,t.issue_number,c.name issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived,g.name_ as  is_open
+        from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue) t
+        INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+        and  t.`status`='16' and  t.time_limit-t.actual_time>0
+        and khyf= #{khyf}
+        inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number
+        and  issue_exec=#{jgmc}
+        LEFT JOIN t_sys_sxgkzd c ON t.issue_subject = c.id
+        left join  (select * from  act_id_group g where g.pid_ is  null) g on  t2.issue_exec=g.id_
+        order by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectWzxDetails" parameterType="map" resultMap="tMainIssueMap">
+           select t.id,t.issue_number,c.name as issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived ,g.name_ as  is_open  from(select * from
+      (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like '%${khyf}%'  )t
+      INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+      and   t.`status`='16' and t.zxcz_type='1' and  issue_exec_street=#{jgmc})t
+      	LEFT JOIN t_sys_sxgkzd c ON t.issue_subject = c.id
+      left join  (select * from  act_id_group g where g.pid_ is  null) g on  t.issue_exec_street=g.id_
+        order by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectZcWzxDetails" parameterType="map" resultMap="tMainIssueMap">
+
+      select t.id,t.issue_number,c.name as issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+        add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+        issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+        requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+        `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived ,g.name_ as  is_open from(SELECT t.* from
+        (select a.main_issue_id as main_issue_id,count(a.main_issue_id) as count from (
+				select * from t_attachment where addtime like '%${khyf}%')a
+        where a.type=1 or a.type=5
+        GROUP BY a.main_issue_id
+        HAVING  count=#{counts}
+        ORDER BY a.main_issue_id) as b LEFT JOIN (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where `status` in('16','9') )t
+		on  b.main_issue_id=t.id  and t.khyf= #{khyf})t
+		 left join  (select * from  act_id_group g where g.pid_ is  null) g on  t.issue_exec_street=g.id_
+		 LEFT JOIN t_sys_sxgkzd c ON t.issue_subject = c.id
+		 inner join  t_issue_lbbm t2 on t.issue_number=t2.issue_number
+			 where t2.issue_exec=#{jgmc}
+			 order by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="selectWzxJsgs" parameterType="map" resultMap="tMainIssueMap">
+      select  t1.issue_exec,ifnull(t1.issueNum2,0) as is_open,ifnull(t4.c2,0)as who_reported ,
+      FORMAT(IFNULL(t1.issueNum2/(t4.c2),0)*150,2)  as is_archived,t1.khyf from (
+		select t2.issue_exec,COUNT(t2.issue_exec)issueNum2,t1.khyf from(SELECT t.* from
+        (select a.main_issue_id as main_issue_id,count(a.main_issue_id) as count from (
+			select * from t_attachment where addtime like '%${khyf}%')a
+        where a.type=1 or a.type=5
+        GROUP BY a.main_issue_id
+        HAVING  count=2
+        ORDER BY a.main_issue_id) as b LEFT JOIN (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue )t
+				on  b.main_issue_id=t.id  and t.khyf=#{khyf})t1
+				inner join  t_issue_lbbm t2 on t1.issue_number=t2.issue_number and t2.issue_exec=#{jgmc}
+				   group by t2.issue_exec )t1 LEFT JOIN(select t2.issue_exec,IFNULL(COUNT(t2.issue_exec),0) c2,t1.khyf from(select * from
+      (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like  '%${khyf}%' )t
+      INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+      and   t.`status`='16' and t.zxcz_type='1' )t1
+inner join  t_issue_lbbm t2 on t1.issue_number=t2.issue_number and t2.issue_exec=#{jgmc}
+		group by t2.issue_exec)t4 on t1.issue_exec=t4.issue_exec
+    </select>
+    <select id="selectKsclDetails" parameterType="map" resultMap="tMainIssueMap">
+      select t.id,t.issue_number,c.name as issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+            add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+            issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+            requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+            `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived ,g.name_ as  is_open
+    from  (select * from t_main_issue where  add_time like '%${khyf}%'  and status in ('16','9') ) t
+      inner JOIN (select * from t_issue_lbbm) l on t.issue_number=l.issue_number and   l.issue_exec=#{jgmc}
+    left join t_sys_sxgkzd c on c.id=t.issue_subject
+      left join  (select * from  act_id_group g where g.pid_ is  null) g on   l.issue_exec=g.id_
+      order  by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="refreshZcKsclDetails" parameterType="map" resultMap="tMainIssueMap">
+      select t.id,t.issue_number,c.name as issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+            add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+            issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+            requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+            `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived ,g.name_ as  is_open
+        from  (select * from t_main_issue where  add_time like '%${khyf}%'  and status in ('16','9') and 1 - actual_time /time_limit>0) t
+              inner JOIN (select * from t_issue_lbbm) l on t.issue_number=l.issue_number and   l.issue_exec=#{jgmc}
+        left join t_sys_sxgkzd c on c.id=t.issue_subject
+          left join  (select * from  act_id_group g where g.pid_ is  null) g on   l.issue_exec=g.id_
+          order  by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+    <select id="refreshKsclDetails" parameterType="map" resultMap="tMainIssueMap">
+      select t.id,t.issue_number,c.name as issue_subject,process_id,`status`,who_reported,deal_way,is_pass_districtcenter,
+            add_user_tel,add_userid,add_time,is_multi_exector,issue_exec_street,issue_exec_dept,belong_weibanju_id,
+            issue_time,issue_source,issue_type,issue_desc,requestor_type,ref_company_name,org_id,requestor_name,
+            requestor_tel,requestor_idcard,requestor_sex,requestor_age,requestor_address,has_mod_limit,time_limit,emrgency_level,
+            `comment`,end_time,x,y,addr_desc,evaluation_status,evaluation_level,d1,is_archived ,g.name_ as  is_open
+        from  (select * from t_main_issue where  add_time like '%${khyf}%'  and status in ('16','9') and  actual_time /time_limit-1>0) t
+               inner JOIN (select * from t_issue_lbbm) l on t.issue_number=l.issue_number and   l.issue_exec=#{jgmc}
+        left join t_sys_sxgkzd c on c.id=t.issue_subject
+          left join  (select * from  act_id_group g where g.pid_ is  null) g on   l.issue_exec=g.id_
+          order  by add_time desc
+        <if test="pageIndex!=null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+
+
+</mapper>
