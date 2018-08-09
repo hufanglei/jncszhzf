@@ -629,54 +629,54 @@ select h.id,h.qhzd_id,h.qhzd_name,t6.score from (select * from t_main_issue_kh w
 
     </select>
     <select id="zfhjList" resultType="java.util.HashMap">
-        select h.id,h.qhzd_id,h.qhzd_name,t6.score from (select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf}) h LEFT JOIN (
+ select h.id,h.qhzd_id,h.qhzd_name,IFNULL(t6.score,0)score from (select * from t_main_issue_kh where  bm_type='2' and  khyf=#{khyf}) h LEFT JOIN (
         SELECT	t5.id_,	t5.name_,FORMAT(IFNULL(t5.c1/(t5.c2),0)*150,2)  as score FROM(
-        select t3.id_,t3.name_,t3.c1,t4.c2,t3.khyf from
-                (SELECT b.id_,b.name_,IFNULL(c.issueNum2,0) as c1,c.khyf FROM
+        select t3.id_,t3.name_,t3.c1,t4.c2,t3.add_time from
+                (SELECT b.id_,b.name_,IFNULL(c.issueNum2,0) as c1,c.add_time FROM
         (SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
       left JOIN (
-      select t1.issue_exec_street,COUNT(t1.issue_exec_street)issueNum2,t1.khyf from(SELECT t.* from
-        (select a.main_issue_id as main_issue_id,count(a.main_issue_id) as count from (select * from t_attachment where addtime like '%${khyf}%')a
+   select t1.issue_exec_street,COUNT(t1.issue_exec_street)issueNum2,t1.add_time from(SELECT t.* from
+        (select a.main_issue_id as main_issue_id,count(a.main_issue_id) as count from t_attachment a
         where a.type=1 or a.type=5
         GROUP BY a.main_issue_id
-        HAVING  count=2
-        ORDER BY a.main_issue_id) as b LEFT JOIN (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue )t
-				on  b.main_issue_id=t.id  and t.khyf= #{khyf})t1
-				   group by t1.issue_exec_street  ) c ON
+        HAVING  count>=2
+        ORDER BY a.main_issue_id) as b LEFT JOIN  t_main_issue t
+				on  b.main_issue_id=t.id  and t.add_time like '%${khyf}%')t1
+				   group by t1.issue_exec_street
+ ) c ON
       c.issue_exec_street=b.ID_)t3
       left join
-        (SELECT * FROM	(SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
-      left JOIN (
-      select t1.issue_exec_street,IFNULL(COUNT(t1.issue_exec_street),0) c2,t1.khyf from(select * from
-      (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue where  add_time like '%${khyf}%' )t
+        (  SELECT * FROM	(SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
+      left JOIN (  select t1.issue_exec_street,IFNULL(COUNT(t1.issue_exec_street),0) c2,t1.add_time from(select * from
+       t_main_issue t
       INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
-      and   t.`status`='16' and t.zxcz_type='1' )t1  group by t1.issue_exec_street  ) c ON
-      c.issue_exec_street=b.ID_)t4 on t3.id_=t4.id_)t5)t6 on h.qhzd_id=t6.id_
+      and   t.`status`='16' and t.zxcz_type='1' )t1 where  t1.add_time like '%${khyf}%'  group by t1.issue_exec_street   ) c ON
+      c.issue_exec_street=b.ID_ )t4 on t3.id_=t4.id_)t5)t6 on h.qhzd_id=t6.id_
     </select>
     <select id="zfhjWbjList" resultType="java.util.HashMap">
-      select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='5'  and khyf=#{khyf}) h LEFT JOIN (
-        SELECT	t5.id_,	t5.name_,FORMAT(IFNULL(t6.c1/(t6.c2),0)*150,2)  as score FROM
-        (SELECT id_,	NAME_,TYPE_ FROM act_id_group WHERE	TYPE_='5' AND PID_ IS NULL ORDER BY TYPE_ ) t5
-            LEFT JOIN (select  t3.c1,t4.c2,t3.pid_ from
-        (select count(t1.pid_)c1,t1.pid_ from  (
-        SELECT * FROM	act_id_group b
-        INNER JOIN (select * from (select * from t_main_issue WHERE add_time like '%${khyf}%') t  INNER JOIN act_id_membership a
-        ON t.add_userid = a.USER_ID_  and t.zxcz_type='1') c ON
-        c.group_id_=b.ID_)t1
-        inner JOIN
-        (SELECT * from
-        (select main_issue_id as main_issue_id,count(main_issue_id) as count from t_attachment
-        where type=1 or type=5
-        GROUP BY main_issue_id
-        HAVING  count=2
-        ORDER BY main_issue_id) as b
-        )t2 on t1.id=t2.main_issue_id)t3
-        ,
-        (select  count(d.pid_) c2,	d.pid_ from (
-            SELECT * FROM	act_id_group b
-            INNER JOIN (select * from (select * from t_main_issue WHERE add_time like '%${khyf}%') t  INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
-         and t.zxcz_type='1') c ON
-            c.group_id_=b.ID_) d)t4)t6 on t5.id_ = t6.pid_)t6  on h.qhzd_id=t6.id_
+     select h.id,h.qhzd_id,h.qhzd_name,IFNULL(t6.score,0)score from (select * from t_main_issue_kh where  bm_type='2' and  khyf=#{khyf}) h LEFT JOIN (
+        SELECT	t5.id_,	t5.name_,FORMAT(IFNULL(t5.c1/(t5.c2),0)*150,2)  as score FROM(
+        select t3.id_,t3.name_,t3.c1,t4.c2,t3.add_time from
+                (SELECT b.id_,b.name_,IFNULL(c.issueNum2,0) as c1,c.add_time FROM
+        (SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='5' AND PID_ IS NULL ORDER BY TYPE_) b
+      left JOIN (
+   select t1.issue_exec_street,COUNT(t1.issue_exec_street)issueNum2,t1.add_time from(SELECT t.* from
+        (select a.main_issue_id as main_issue_id,count(a.main_issue_id) as count from t_attachment a
+        where a.type=1 or a.type=5
+        GROUP BY a.main_issue_id
+        HAVING  count>=2
+        ORDER BY a.main_issue_id) as b LEFT JOIN  t_main_issue t
+				on  b.main_issue_id=t.id  and t.add_time like '%${khyf}%')t1
+				   group by t1.issue_exec_street
+ ) c ON
+      c.issue_exec_street=b.ID_)t3
+      left join
+        (  SELECT * FROM	(SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='5' AND PID_ IS NULL ORDER BY TYPE_) b
+      left JOIN (  select t1.issue_exec_street,IFNULL(COUNT(t1.issue_exec_street),0) c2,t1.add_time from(select * from
+       t_main_issue t
+      INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
+      and   t.`status`='16' and t.zxcz_type='1' )t1 where  t1.add_time like '%${khyf}%'  group by t1.issue_exec_street   ) c ON
+      c.issue_exec_street=b.ID_ )t4 on t3.id_=t4.id_)t5)t6 on h.qhzd_id=t6.id_
     </select>
     <select id="selectFftsList" resultType="java.util.HashMap">
       select h.id,h.qhzd_id,h.qhzd_name,t6.score from(select * from t_main_issue_kh where  bm_type='2'  and khyf=#{khyf}) h LEFT JOIN (

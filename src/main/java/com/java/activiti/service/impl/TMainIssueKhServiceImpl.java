@@ -361,8 +361,8 @@ public class TMainIssueKhServiceImpl implements TMainIssueKhService {
                 tIssueRadioKhMapper.updateByKhyf(tissueRadioKhBean1);
             }
 
-        result=1;
         }
+        result=1;
         Map map =new HashMap();
         map.put("khyf",khyf);
         double  a=0;
@@ -419,9 +419,11 @@ public class TMainIssueKhServiceImpl implements TMainIssueKhService {
                     tMainIssueKhBean1.setKhyf(khyf);
                     tMainIssueKhBean1.setKhsj(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
                     tMainIssueKhBean1.setAjbz(String.valueOf(df.format(newScore)));
+                    tMainIssueKhBean1.setBmType("2");
                     tMainIssueKhMapper.insertTMainIssueKh(tMainIssueKhBean1);
                 }else{
                     tMainIssueKhBean.setAjbz(String.valueOf(df.format(newScore)));
+                    tMainIssueKhBean.setBmType("2");
                     tMainIssueKhMapper.updateTMainIssueXcbd(tMainIssueKhBean);
                 }
                 }

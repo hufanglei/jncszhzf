@@ -254,11 +254,11 @@ public class TMainIssueController {
                     c.setTime(today);
                     c.add(Calendar.DAY_OF_MONTH, 2);// 今天+2天
                     Date newDate = c.getTime();*/
-                    List  list=SetWeekDay.getEndTime(tMainIssueBean.getStartTime(),Const.TIME_LIMIT_TWO);
+                   /* List  list=SetWeekDay.getEndTime(tMainIssueBean.getStartTime(),Const.TIME_LIMIT_TWO);*/
                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
                     int c=0;
                     int count = 0;
-                    for(int i=0;i<list.size();i++){
+                   /* for(int i=0;i<list.size();i++){
                         System.out.println(list.get(i));
                         try {
                             count = workdayDao.selectWorkdayCountByWorkDay((String) list.get(i));
@@ -268,7 +268,7 @@ public class TMainIssueController {
                         if(count!=0){
                             c+=count;
                         }
-                    }
+                    }*/
                     //4.得出list中元素的在表中存在的总条数,在limitTime的基础上再加c,就得到案件实际结束的时间
                     String  temp2="";
                     Calendar c2 = Calendar.getInstance();
@@ -279,10 +279,10 @@ public class TMainIssueController {
                         e.printStackTrace();
                     }
                     c2.setTime(date2);
-                    int total= Const.TIME_LIMIT_TWO+c;
-                    c2.add(Calendar.DAY_OF_MONTH,total);
+           /*         int total= Const.TIME_LIMIT_TWO+c;*/
+                    c2.add(Calendar.DAY_OF_MONTH,2);
                     temp2 = sdf.format(c2.getTime());
-                    tMainIssueBean.setTimeLimit(String.valueOf(total));
+                    tMainIssueBean.setTimeLimit("2");
                     tMainIssueBean.setTotalTime( temp2);
                     issueNum = tMainIssueService.queryCaseNum("XC");
                     tMainIssueBean.setCaseType("XC");

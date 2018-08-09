@@ -23,6 +23,7 @@
         .filter, .filter form {
             height: 100px;
         }
+        .modal{overflow:auto!important;}
     </style>
 </head>
 <body style='overflow-x: hidden;'>

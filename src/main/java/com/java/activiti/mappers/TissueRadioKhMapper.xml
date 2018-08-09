@@ -215,21 +215,7 @@
     </where>
   </select>
     <select id="selectJdCountBykhyf" resultType="double" parameterType="java.util.HashMap">
-      SELECT sum(t4.issueNum) as issunum FROM ( select t3.qhzd_id,t3.qhzd_name,IFNULL(t2.issueNum,0)as issueNum,IFNULL(t3.avg12345Num,0) as  avg12345Num,
-      t3.coefficient,t3.proportion,t3.khyf from (select * from t_issue_radio_kh where khyf=#{khyf}) t3
-      LEFT JOIN (
-      SELECT * FROM	(SELECT pid_,id_,NAME_,TYPE_ FROM act_id_group WHERE	TYPE_ ='2' AND PID_ IS NULL ORDER BY TYPE_) b
-      left JOIN (
-      select t1.issue_exec_street,COUNT(t1.issue_exec_street)issueNum,t1.khyf from(select * from (select *,DATE_FORMAT(add_time,'%Y-%m')as khyf from t_main_issue  )t
-      INNER JOIN act_id_membership a ON t.add_userid = a.USER_ID_
-      and   t.`status`='16' and t.zxcz_type='1' )t1 where khyf= #{khyf} group by t1.issue_exec_street  ) c ON
-      c.issue_exec_street=b.ID_)t2 on t2.id_=t3.qhzd_id) t4
-  <!--  <where>
-
-      <if test="khyf!=null and khyf!='' ">
-        and khyf = #{khyf}
-      </if>
-    </where>-->
+       select count(*)as issunum   from  t_main_issue  where  add_time like '%${khyf}%'
   </select>
     <select id="selectSumByKhyf" resultType="double" parameterType="java.util.HashMap">
         SELECT sum(avg12345Num) as avg12345Num FROM `t_issue_radio_kh`

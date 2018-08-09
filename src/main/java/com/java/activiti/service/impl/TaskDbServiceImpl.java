@@ -868,7 +868,7 @@ public class TaskDbServiceImpl  implements TaskDbService {
         String temp = "";
         temp = sdf.format(cl.getTime());*/
         List list1;
-        list1=SetWeekDay.getEndTime(tDbMainIssueBean.getStartTime(),Const.TIME_LIMIT_FIVE);
+      /*  list1=SetWeekDay.getEndTime(tDbMainIssueBean.getStartTime(),Const.TIME_LIMIT_FIVE);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         int c=0;
         int count = 0;
@@ -883,7 +883,8 @@ public class TaskDbServiceImpl  implements TaskDbService {
             if(count!=0){
                 c+=count;
             }
-        }
+        }*/
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         //4.得出list中元素的在表中存在的总条数,在limitTime的基础上再加c,就得到案件实际结束的时间
         String  temp2="";
         Calendar c2 = Calendar.getInstance();
@@ -894,10 +895,10 @@ public class TaskDbServiceImpl  implements TaskDbService {
             e.printStackTrace();
         }
         c2.setTime(date2);
-        int total= Const.TIME_LIMIT_FIVE+c;
-        c2.add(Calendar.DAY_OF_MONTH,total);
+     /*   int total= Const.TIME_LIMIT_FIVE+c;*/
+        c2.add(Calendar.DAY_OF_MONTH,5);
         temp2 = sdf.format(c2.getTime());
-        tDbMainIssueBean.setTimeLimit(String.valueOf(total));
+        tDbMainIssueBean.setTimeLimit("5");
         tDbMainIssueBean.setTotalTime( temp2);
        // tDbMainIssueBean.setTotalTime(temp);
         //更新主流程表

@@ -596,7 +596,7 @@ function showZxclDetails(khyf_, qhzdId_,column_name_,num_) {
             }else {
                 // re = myapp.jsgsDetail[0].isArchived;//得分
                 re=((num3/num1)*num2*150).toFixed(1)>150? 150:((num3/num1)*num2*150).toFixed(1);
-                str2 +="(" + num3 + "/" + num1 + ")"+"*"+num2+ "*150"+"=" + re + "</th>"
+                str2 +="(" + num3 + "/" + num1 + ")"+"*"+num2+ "150"+"=" + re + "</th>"
 
 
             }
@@ -650,7 +650,11 @@ function showPage (issueNumber_, processId_){
                 /* data = (typeof data == "object") ? data : $.parseJSON(data);*/
                 myapp3.ajDetail = data.tMainIssueBean;
                 $("#newModal").modal('show');
+               /* $("#newModal").on("hidden.bs.modal",function(){
+                    $(document.body).addClass("modal-open");
+                });*/
             }
+
         });
         $.ajax({
             method: 'get',

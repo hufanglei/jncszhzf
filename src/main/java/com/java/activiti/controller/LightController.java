@@ -212,6 +212,7 @@ public class LightController {
                     tMainIssueKhBean1.setBmType("2");
                     tMainIssueKhMapper.insertTMainIssueKh(tMainIssueKhBean1);
                 } else {
+                    tMainIssueKhBean2.setBmType("2");
                     tMainIssueKhBean2.setAjbz(String.valueOf(df.format(newScore)));
                     tMainIssueKhMapper.updateTMainIssueXcbd(tMainIssueKhBean2);
                 }
