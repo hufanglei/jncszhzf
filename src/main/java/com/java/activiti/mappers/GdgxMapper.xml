@@ -288,13 +288,7 @@
                 and a.issue_subject like concat(#{issueSubject},'%')
             </if>
             <if test="userId !=null and userId != ''">
-                AND a.issue_number like (
-                SELECT
-                concat(replace(LEFT (c.ORG_NO_, 9),'000',''),'%') AS org_no
-                FROM
-                `act_id_user` c
-                WHERE
-                c.id_ = #{userId})
+                and b.`USER_ID_` = #{userId}
             </if>
         </where>
 
@@ -523,13 +517,7 @@
                 and a.issue_subject like concat(#{issueSubject},'%')
             </if>
             <if test="userId !=null and userId != ''">
-                AND a.issue_number like (
-                SELECT
-                concat(replace(LEFT (c.ORG_NO_, 9),'000',''),'%') AS org_no
-                FROM
-                `act_id_user` c
-                WHERE
-                c.id_ = #{userId})
+                 and b.`USER_ID_` = #{userId})
             </if>
         </where>
         <!--<if test="orderString !=null">-->
@@ -581,13 +569,7 @@
                 and a.issue_subject like concat(#{issueSubject},'%')
             </if>
             <if test="userId !=null and userId != ''">
-                AND a.issue_number like (
-                SELECT
-                concat(replace(LEFT (c.ORG_NO_, 9),'000',''),'%') AS org_no
-                FROM
-                `act_id_user` c
-                WHERE
-                c.id_ = #{userId})
+                and b.`USER_ID_` = #{userId}
             </if>
         </where>
         <!--<if test="orderString !=null">-->

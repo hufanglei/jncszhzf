@@ -1,8 +1,10 @@
 package com.java.activiti.controller;
 
 
+import com.java.activiti.dao.GroupDao;
 import com.java.activiti.dao.TMainIssueKhDao;
 import com.java.activiti.dao.TissueRadioKhMapper;
+import com.java.activiti.model.Group;
 import com.java.activiti.model.TMainIssueBean;
 import com.java.activiti.model.TMainIssueKhBean;
 import com.java.activiti.model.TissueRadioKhBean;
@@ -28,6 +30,8 @@ public class LightController {
     private TissueRadioKhMapper tIssueRadioKhMapper;
     @Resource
     private TMainIssueKhDao tMainIssueKhMapper;
+    @Resource
+    private GroupDao groupDao;
 
     /**
      * 定时任务:每月初 定时计算 上个月 每个街道 部门 的考核得分，保存到考核表中
@@ -218,59 +222,82 @@ public class LightController {
                 }
             }
         }
-        for (int i = 0; i < onTimeListWbj.size(); i++) {
-            //给委办局赋值
-            tMainIssueKhBean = new TMainIssueKhBean();
-            HashMap<String, Object> onTimeListWbjItem = onTimeListWbj.get(i);
-            HashMap<String, Object> quickListWbjItem = quickListWbj.get(i);
-            HashMap<String, Object> zfhjWbjListItem = zfhjWbjList.get(i);
-            HashMap<String, Object> fftsWbjListItem = fftsWbjList.get(i);
-            HashMap<String, Object> dbwzWbjListItem = dbwzWbjList.get(i);
-            HashMap<String, Object> gzxtWbjListItem = gzxtWbjList.get(i);
-            HashMap<String, Object> jdjcWbjListItem = jdjcWbjList.get(i);
-            String qhdm = (String) onTimeListWbjItem.get("qhzd_id");
-            String qhmc = (String) onTimeListWbjItem.get("qhzd_name");
-            double onTimeListScore = Double.valueOf(String.valueOf(onTimeListWbjItem.get("score"))); //给按时处理分数字段赋值
-            double quickListWbjScore = Double.valueOf(String.valueOf(quickListWbjItem.get("score"))); //给快速处理分数字段赋值
-            double zfhjWbjListScore = Double.valueOf(String.valueOf(zfhjWbjListItem.get("score"))); //给执法痕迹考核评分 委办局
-            double ffxtWbjListScore = Double.valueOf(String.valueOf(fftsWbjListItem.get("score"))); //反复协调 委办局
-            double dbwzWbjListScore = Double.valueOf(String.valueOf(dbwzWbjListItem.get("score"))); //督办问责 委办局
-            double gzxtWbjListScore = Double.valueOf(String.valueOf(gzxtWbjListItem.get("score"))); //工作协调 委办局
-            double jdjcWbjListScore = Double.valueOf(String.valueOf(jdjcWbjListItem.get("score"))); //监督检查 委办局
+        if (onTimeListWbj.size() == 0){
+            TMainIssueKhBean tMainIssueKhBean3 = new TMainIssueKhBean();
+            List<Group> qhlist=groupDao.selectQhList();
+            for(Group group:qhlist){
+                tMainIssueKhBean3.setQhzdId(group.getGroupPid());
+                tMainIssueKhBean3.setQhzdName(group.getGroupName());
+                tMainIssueKhBean3.setAscl(String.valueOf(0));
+                tMainIssueKhBean3.setKscl(String.valueOf(0));
+                tMainIssueKhBean3.setWzxgfx(String.valueOf(0));
+                tMainIssueKhBean3.setFfts(String.valueOf(50));
+                tMainIssueKhBean3.setDbwz(String.valueOf(50));
+                tMainIssueKhBean3.setGzxt(String.valueOf(50));
+                tMainIssueKhBean3.setJdjc(String.valueOf(40));
+                tMainIssueKhBean3.setKhyf(khyf);
+                tMainIssueKhBean3.setKhsj(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+                tMainIssueKhBean3.setBmType("5");
+                tMainIssueKhDao.insertTMainIssueKh(tMainIssueKhBean3);
+            }
 
-            double ffxtScore = (50 - ffxtWbjListScore) < 0 ? 0 : (50 - ffxtWbjListScore);
-            double dbwzScore = (50 - dbwzWbjListScore) < 0 ? 0 : (50 - dbwzWbjListScore);
-            double gzxtScore = (50 - gzxtWbjListScore) < 0 ? 0 : (50 - gzxtWbjListScore);
-            double jdjcScore = (40 - jdjcWbjListScore) < 0 ? 0 : (40 - jdjcWbjListScore);
 
-            Map map = new HashMap();
-            map.put("qhzdDm", qhdm);
-            map.put("khyf", khyf);
-            TMainIssueKhBean tMainIssueKhBean1 = tMainIssueKhDao.selectXcbd(map);
-            if (tMainIssueKhBean1 != null) {
-                tMainIssueKhBean1.setAscl(String.valueOf(onTimeListScore));
-                tMainIssueKhBean1.setKscl(String.valueOf(quickListWbjScore));
-                tMainIssueKhBean1.setWzxgfx(String.valueOf(zfhjWbjListScore));
-                tMainIssueKhBean1.setFfts(String.valueOf(ffxtScore));
-                tMainIssueKhBean1.setDbwz(String.valueOf(dbwzScore));
-                tMainIssueKhBean1.setGzxt(String.valueOf(gzxtScore));
-                tMainIssueKhBean1.setJdjc(String.valueOf(jdjcScore));
-                tMainIssueKhBean1.setBmType("5");
-                tMainIssueKhDao.updateTMainIssueKh(tMainIssueKhBean1);
-            } else {
-                tMainIssueKhBean.setQhzdId(qhdm);
-                tMainIssueKhBean.setQhzdName(qhmc);
-                tMainIssueKhBean.setAscl(String.valueOf(onTimeListScore));
-                tMainIssueKhBean.setKscl(String.valueOf(quickListWbjScore));
-                tMainIssueKhBean.setWzxgfx(String.valueOf(zfhjWbjListScore));
-                tMainIssueKhBean.setFfts(String.valueOf(ffxtScore));
-                tMainIssueKhBean.setDbwz(String.valueOf(dbwzScore));
-                tMainIssueKhBean.setGzxt(String.valueOf(gzxtScore));
-                tMainIssueKhBean.setJdjc(String.valueOf(jdjcScore));
-                tMainIssueKhBean.setKhyf(khyf);
-                tMainIssueKhBean.setKhsj(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
-                tMainIssueKhBean.setBmType("5");
-                tMainIssueKhDao.insertTMainIssueKh(tMainIssueKhBean);
+
+        }else {
+            for (int i = 0; i < onTimeListWbj.size(); i++) {
+                //给委办局赋值
+                tMainIssueKhBean = new TMainIssueKhBean();
+                HashMap<String, Object> onTimeListWbjItem = onTimeListWbj.get(i);
+                HashMap<String, Object> quickListWbjItem = quickListWbj.get(i);
+                HashMap<String, Object> zfhjWbjListItem = zfhjWbjList.get(i);
+                HashMap<String, Object> fftsWbjListItem = fftsWbjList.get(i);
+                HashMap<String, Object> dbwzWbjListItem = dbwzWbjList.get(i);
+                HashMap<String, Object> gzxtWbjListItem = gzxtWbjList.get(i);
+                HashMap<String, Object> jdjcWbjListItem = jdjcWbjList.get(i);
+                String qhdm = (String) onTimeListWbjItem.get("qhzd_id");
+                String qhmc = (String) onTimeListWbjItem.get("qhzd_name");
+                double onTimeListScore = Double.valueOf(String.valueOf(onTimeListWbjItem.get("score"))); //给按时处理分数字段赋值
+                double quickListWbjScore = Double.valueOf(String.valueOf(quickListWbjItem.get("score"))); //给快速处理分数字段赋值
+                double zfhjWbjListScore = Double.valueOf(String.valueOf(zfhjWbjListItem.get("score"))); //给执法痕迹考核评分 委办局
+                double ffxtWbjListScore = Double.valueOf(String.valueOf(fftsWbjListItem.get("score"))); //反复协调 委办局
+                double dbwzWbjListScore = Double.valueOf(String.valueOf(dbwzWbjListItem.get("score"))); //督办问责 委办局
+                double gzxtWbjListScore = Double.valueOf(String.valueOf(gzxtWbjListItem.get("score"))); //工作协调 委办局
+                double jdjcWbjListScore = Double.valueOf(String.valueOf(jdjcWbjListItem.get("score"))); //监督检查 委办局
+
+                double ffxtScore = (50 - ffxtWbjListScore) < 0 ? 0 : (50 - ffxtWbjListScore);
+                double dbwzScore = (50 - dbwzWbjListScore) < 0 ? 0 : (50 - dbwzWbjListScore);
+                double gzxtScore = (50 - gzxtWbjListScore) < 0 ? 0 : (50 - gzxtWbjListScore);
+                double jdjcScore = (40 - jdjcWbjListScore) < 0 ? 0 : (40 - jdjcWbjListScore);
+
+                Map map = new HashMap();
+                map.put("qhzdDm", qhdm);
+                map.put("khyf", khyf);
+                TMainIssueKhBean tMainIssueKhBean1 = tMainIssueKhDao.selectXcbd(map);
+                if (tMainIssueKhBean1 != null) {
+                    tMainIssueKhBean1.setAscl(String.valueOf(onTimeListScore));
+                    tMainIssueKhBean1.setKscl(String.valueOf(quickListWbjScore));
+                    tMainIssueKhBean1.setWzxgfx(String.valueOf(zfhjWbjListScore));
+                    tMainIssueKhBean1.setFfts(String.valueOf(ffxtScore));
+                    tMainIssueKhBean1.setDbwz(String.valueOf(dbwzScore));
+                    tMainIssueKhBean1.setGzxt(String.valueOf(gzxtScore));
+                    tMainIssueKhBean1.setJdjc(String.valueOf(jdjcScore));
+                    tMainIssueKhBean1.setBmType("5");
+                    tMainIssueKhDao.updateTMainIssueKh(tMainIssueKhBean1);
+                } else {
+                    tMainIssueKhBean.setQhzdId(qhdm);
+                    tMainIssueKhBean.setQhzdName(qhmc);
+                    tMainIssueKhBean.setAscl(String.valueOf(onTimeListScore));
+                    tMainIssueKhBean.setKscl(String.valueOf(quickListWbjScore));
+                    tMainIssueKhBean.setWzxgfx(String.valueOf(zfhjWbjListScore));
+                    tMainIssueKhBean.setFfts(String.valueOf(ffxtScore));
+                    tMainIssueKhBean.setDbwz(String.valueOf(dbwzScore));
+                    tMainIssueKhBean.setGzxt(String.valueOf(gzxtScore));
+                    tMainIssueKhBean.setJdjc(String.valueOf(jdjcScore));
+                    tMainIssueKhBean.setKhyf(khyf);
+                    tMainIssueKhBean.setKhsj(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+                    tMainIssueKhBean.setBmType("5");
+                    tMainIssueKhDao.insertTMainIssueKh(tMainIssueKhBean);
+                }
             }
         }
         for (int i = 0; i < dealSelfList.size(); i++) {

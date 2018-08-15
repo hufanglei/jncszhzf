@@ -654,7 +654,7 @@ select h.id,h.qhzd_id,h.qhzd_name,t6.score from (select * from t_main_issue_kh w
       c.issue_exec_street=b.ID_ )t4 on t3.id_=t4.id_)t5)t6 on h.qhzd_id=t6.id_
     </select>
     <select id="zfhjWbjList" resultType="java.util.HashMap">
-     select h.id,h.qhzd_id,h.qhzd_name,IFNULL(t6.score,0)score from (select * from t_main_issue_kh where  bm_type='2' and  khyf=#{khyf}) h LEFT JOIN (
+     select h.id,h.qhzd_id,h.qhzd_name,IFNULL(t6.score,0)score from (select * from t_main_issue_kh where  bm_type='5' and  khyf=#{khyf}) h LEFT JOIN (
         SELECT	t5.id_,	t5.name_,FORMAT(IFNULL(t5.c1/(t5.c2),0)*150,2)  as score FROM(
         select t3.id_,t3.name_,t3.c1,t4.c2,t3.add_time from
                 (SELECT b.id_,b.name_,IFNULL(c.issueNum2,0) as c1,c.add_time FROM

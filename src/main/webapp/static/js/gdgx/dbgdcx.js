@@ -175,7 +175,7 @@ $(function () {
             this.initTree();
             this.initEvent();
             this.initDataTable();
-            this.findGdgxDate();
+  /*          this.findGdgxDate();*/
         },
         initEvent: function () {
             var _this = this;
@@ -230,6 +230,8 @@ $(function () {
                             if (data.nodes == null && data.attrs.groupId != null) {
                                 _this.groupId = data.attrs.groupId;
                                 _this.groupTypeId = data.attrs.groupType;
+                                $('#boot-table-dbrw').bootstrapTable('destroy');
+                                _this.initDataTable();
                                 _this.findGdgxDate();
                             } else {
                                 _this.groupId = null;

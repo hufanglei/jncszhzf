@@ -195,5 +195,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findLianbanListByType"   resultMap="GroupResult">
  	select * from act_id_group where TYPE_ in('2','5') and pid_ is  not null order by  TYPE_ desc
     </select>
+	<select id="selectQhList"   resultMap="GroupResult">
+ 	select * from act_id_group where TYPE_ ='5' and pid_ is  not null order by  TYPE_ desc
+    </select>
+
 
 </mapper> 

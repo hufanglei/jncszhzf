@@ -108,4 +108,6 @@ public interface GroupDao {
 	List<Group> findLianbanListByType();
 
 	String getGroupMenuByUserName(String id);
+
+	List<Group> selectQhList();
 }

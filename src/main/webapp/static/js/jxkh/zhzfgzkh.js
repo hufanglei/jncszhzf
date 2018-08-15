@@ -590,13 +590,17 @@ function showZxclDetails(khyf_, qhzdId_,column_name_,num_) {
                 "）*P×150分</th>"
             num1 = myapp.jsgsDetail[0].caseType;//单个街道园区12345网站年工单量/12
             num2 = myapp.jsgsDetail[0].isOpen;//统一系数
+
             num3 = myapp.jsgsDetail[0].whoReported;//单月街道案件总数
+            if(num2==""){
+                num2=1
+            }
             if(num1==0||num1==('')){
                 str2+=0+ "</th>"
             }else {
                 // re = myapp.jsgsDetail[0].isArchived;//得分
-                re=((num3/num1)*num2*150).toFixed(1)>150? 150:((num3/num1)*num2*150).toFixed(1);
-                str2 +="(" + num3 + "/" + num1 + ")"+"*"+num2+ "150"+"=" + re + "</th>"
+                re=((num3/num1)*num2*150)>150? 150:((num3/num1)*num2*150).toFixed(1);
+                str2 +="(" + num3 + "/" + num1 + ")"+"*"+num2+ "*150"+"=" + re + "</th>"
 
 
             }
